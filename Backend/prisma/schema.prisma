@@ -58,6 +58,7 @@ model Product {
   description   String         @db.Text
   specification String?        @db.Text
   status        String         @default("available")
+  youtube_url   String?        @db.Text
   images        ProductImage[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt

@@ -18,7 +18,7 @@ const getAllProducts = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    const { categoryId, name, description, specification, status } = req.body;
+    const { categoryId, name, description, specification, status, youtube_url } = req.body;
     const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + '-' + Date.now();
 
     const newProduct = await prisma.product.create({
@@ -28,7 +28,8 @@ const createProduct = async (req, res) => {
         slug,
         description,
         specification,
-        status
+        status,
+        youtube_url
       }
     });
 
@@ -42,7 +43,7 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { categoryId, name, description, specification, status } = req.body;
+    const { categoryId, name, description, specification, status, youtube_url } = req.body;
     const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + '-' + Date.now();
 
     const product = await prisma.product.update({
@@ -53,7 +54,8 @@ const updateProduct = async (req, res) => {
         slug,
         description,
         specification,
-        status
+        status,
+        youtube_url
       }
     });
 
