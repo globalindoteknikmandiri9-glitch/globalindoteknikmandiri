@@ -1,121 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { Suspense, lazy } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
+import { Toaster } from 'sonner'
+import PublicLayout from './layouts/PublicLayout'
+import AdminLayout from './layouts/AdminLayout'
+import ErrorBoundary from './components/ErrorBoundary'
+import NotFound from './pages/public/NotFound'
+import { AuthProvider } from './contexts/AuthContext'
+import ScrollToTop from './components/ScrollToTop'
+
+// Public Pages (Lazy loaded)
+const Home = lazy(() => import('./pages/public/Home'))
+const Products = lazy(() => import('./pages/public/Products'))
+const Contact = lazy(() => import('./pages/public/Contact'))
+const About = lazy(() => import('./pages/public/About'))
+const Articles = lazy(() => import('./pages/public/Articles'))
+
+// Admin Pages (Lazy loaded)
+const Login = lazy(() => import('./pages/admin/Login'))
+const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
+const ManageProducts = lazy(() => import('./pages/admin/ManageProducts'))
+const ManageCategories = lazy(() => import('./pages/admin/ManageCategories'))
+const ManageArticles = lazy(() => import('./pages/admin/ManageArticles'))
+const ManageUsers = lazy(() => import('./pages/admin/ManageUsers'))
+const Settings = lazy(() => import('./pages/admin/Settings'))
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <HelmetProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <ErrorBoundary>
+          <AuthProvider>
+            <Suspense fallback={<div className="flex h-screen items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>}>
+              <Routes>
+                {/* Public Routes */}
+                <Route element={<PublicLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/produk" element={<Products />} />
+                  <Route path="/artikel" element={<Articles />} />
+                  <Route path="/tentang-kami" element={<About />} />
+                  <Route path="/hubungi-kami" element={<Contact />} />
+                  {/* 404 Route */}
+                  <Route path="*" element={<NotFound />} />
+                </Route>
 
-      <div className="ticks"></div>
+                {/* Admin Auth Route */}
+                <Route path="/admin/login" element={<Login />} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+                {/* Admin Protected Routes */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="produk" element={<ManageProducts />} />
+                  <Route path="kategori" element={<ManageCategories />} />
+                  <Route path="artikel" element={<ManageArticles />} />
+                  <Route path="user" element={<ManageUsers />} />
+                  <Route path="pengaturan" element={<Settings />} />
+                </Route>
+              </Routes>
+            </Suspense>
+            <Toaster position="top-center" richColors />
+          </AuthProvider>
+        </ErrorBoundary>
+      </BrowserRouter>
+    </HelmetProvider>
   )
 }
 
