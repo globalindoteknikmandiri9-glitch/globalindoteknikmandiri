@@ -13,6 +13,7 @@ import ScrollToTop from './components/ScrollToTop'
 // Public Pages (Lazy loaded)
 const Home = lazy(() => import('./pages/public/Home'))
 const Products = lazy(() => import('./pages/public/Products'))
+const ProductDetail = lazy(() => import('./pages/public/ProductDetail'))
 const Contact = lazy(() => import('./pages/public/Contact'))
 const About = lazy(() => import('./pages/public/About'))
 const Articles = lazy(() => import('./pages/public/Articles'))
@@ -40,6 +41,7 @@ function App() {
                   <Route element={<PublicLayout />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/produk" element={<Products />} />
+                    <Route path="/products/:slug" element={<ProductDetail />} />
                     <Route path="/artikel" element={<Articles />} />
                     <Route path="/tentang-kami" element={<About />} />
                     <Route path="/hubungi-kami" element={<Contact />} />
