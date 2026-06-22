@@ -153,7 +153,7 @@ export default function Navbar() {
                   {theme === 'system' && <Monitor className="h-4 w-4 transition-all text-warning" />}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-[#0F172A] border border-slate-800 text-slate-300 w-32 shadow-dropdown">
+              <DropdownMenuContent align="end" className="bg-navy border border-border text-slate-300 w-32 shadow-dropdown">
                 <DropdownMenuItem onClick={() => setTheme('light')} className="focus:bg-white/5 focus:text-white gap-2 cursor-pointer text-xs py-2">
                   <Sun className="h-3.5 w-3.5" />
                   <span>Terang</span>
