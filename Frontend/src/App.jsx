@@ -7,6 +7,7 @@ import AdminLayout from './layouts/AdminLayout'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './pages/public/NotFound'
 import { AuthProvider } from './contexts/AuthContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 import ScrollToTop from './components/ScrollToTop'
 
 // Public Pages (Lazy loaded)
@@ -31,37 +32,39 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <ErrorBoundary>
-          <AuthProvider>
-            <Suspense fallback={<div className="flex h-screen items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>}>
-              <Routes>
-                {/* Public Routes */}
-                <Route element={<PublicLayout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/produk" element={<Products />} />
-                  <Route path="/artikel" element={<Articles />} />
-                  <Route path="/tentang-kami" element={<About />} />
-                  <Route path="/hubungi-kami" element={<Contact />} />
-                  {/* 404 Route */}
-                  <Route path="*" element={<NotFound />} />
-                </Route>
+          <ThemeProvider>
+            <AuthProvider>
+              <Suspense fallback={<div className="flex h-screen items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>}>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route element={<PublicLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/produk" element={<Products />} />
+                    <Route path="/artikel" element={<Articles />} />
+                    <Route path="/tentang-kami" element={<About />} />
+                    <Route path="/hubungi-kami" element={<Contact />} />
+                    {/* 404 Route */}
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
 
-                {/* Admin Auth Route */}
-                <Route path="/admin/login" element={<Login />} />
+                  {/* Admin Auth Route */}
+                  <Route path="/admin/login" element={<Login />} />
 
-                {/* Admin Protected Routes */}
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<Dashboard />} />
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="produk" element={<ManageProducts />} />
-                  <Route path="kategori" element={<ManageCategories />} />
-                  <Route path="artikel" element={<ManageArticles />} />
-                  <Route path="user" element={<ManageUsers />} />
-                  <Route path="pengaturan" element={<Settings />} />
-                </Route>
-              </Routes>
-            </Suspense>
-            <Toaster position="top-center" richColors />
-          </AuthProvider>
+                  {/* Admin Protected Routes */}
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<Dashboard />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="produk" element={<ManageProducts />} />
+                    <Route path="kategori" element={<ManageCategories />} />
+                    <Route path="artikel" element={<ManageArticles />} />
+                    <Route path="user" element={<ManageUsers />} />
+                    <Route path="pengaturan" element={<Settings />} />
+                  </Route>
+                </Routes>
+              </Suspense>
+              <Toaster position="top-center" richColors />
+            </AuthProvider>
+          </ThemeProvider>
         </ErrorBoundary>
       </BrowserRouter>
     </HelmetProvider>

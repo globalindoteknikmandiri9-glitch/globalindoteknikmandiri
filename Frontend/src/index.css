@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Background & Surface */
+    /* Background & Surface: #F8FAFC */
     --background: 210 40% 98%;
     --foreground: 222 47% 11%;
 
@@ -16,32 +16,36 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* Primary: Emerald Green — used sparingly as accent */
-    --primary: 160 84% 39%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary: Navy #0F172A */
+    --primary: 222 47% 11%;
+    --primary-foreground: 210 40% 98%;
 
-    /* Secondary: Light slate */
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    /* Secondary: Slate #1E293B */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
 
     /* Muted */
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    /* Accent */
-    --accent: 210 40% 96%;
-    --accent-foreground: 222 47% 11%;
+    /* Accent: Corporate Blue #2563EB */
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Warning: Logo Yellow #EAB308 */
+    --warning: 45 93% 47%;
+    --warning-foreground: 222 47% 11%;
 
     /* Destructive */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    /* Border & Input */
+    /* Border & Input: #E2E8F0 */
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 160 84% 39%;
+    --ring: 221 83% 53%;
 
-    /* Custom Design Tokens */
+    /* Custom Design Tokens: Navy #0F172A */
     --navy: 222 47% 11%;
     --navy-foreground: 210 40% 98%;
 
@@ -56,19 +60,21 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
-    --primary: 160 84% 39%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 33% 18%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 217 33% 18%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 222 47% 11%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 160 84% 39%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 221 83% 53%;
     --navy: 222 47% 11%;
     --navy-foreground: 210 40% 98%;
   }
