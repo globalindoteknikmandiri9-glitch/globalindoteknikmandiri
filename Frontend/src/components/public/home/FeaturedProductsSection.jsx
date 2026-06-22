@@ -86,9 +86,10 @@ export default function FeaturedProductsSection() {
             const techMeta = getTechnicalMeta(prod)
 
             return (
-              <div
+              <Link
                 key={prod.id}
-                className="bg-card border border-border rounded-xl overflow-hidden flex flex-col h-full shadow-card hover:shadow-card-hover hover:border-border/80 hover:-translate-y-0.5 transition-all duration-300 group cursor-default"
+                to={`/products/${prod.slug}`}
+                className="group surface-card overflow-hidden flex flex-col h-full hover:shadow-card-hover hover:border-border/80 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
               >
                 {/* Product Image */}
                 <div className="aspect-[4/3] w-full overflow-hidden bg-muted/30 relative">
@@ -109,7 +110,7 @@ export default function FeaturedProductsSection() {
                 {/* Product Details */}
                 <div className="p-5 flex-1 flex flex-col justify-between text-left">
                   <div>
-                    <h3 className="font-bold text-foreground text-sm mb-3 group-hover:text-warning transition-colors line-clamp-1">
+                    <h3 className="font-bold text-foreground text-sm mb-3 group-hover:text-accent transition-colors line-clamp-1">
                       {prod.name}
                     </h3>
 
@@ -142,19 +143,13 @@ export default function FeaturedProductsSection() {
                   </div>
 
                   <div className="pt-4 mt-4 border-t border-border">
-                    <Button
-                      variant="outline"
-                      className="w-full text-xs h-8 text-foreground border-border hover:bg-muted/50 gap-1.5 rounded-lg shadow-card cursor-pointer"
-                      asChild
-                    >
-                      <Link to="/produk">
-                        <Eye className="h-3.5 w-3.5" />
-                        Detail Spesifikasi
-                      </Link>
-                    </Button>
+                    <div className="w-full text-xs h-8 flex items-center justify-center text-foreground border border-border bg-card hover:bg-muted/50 gap-1.5 rounded-lg shadow-card font-semibold transition-colors">
+                      <Eye className="h-3.5 w-3.5" />
+                      Detail Spesifikasi
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </motion.div>

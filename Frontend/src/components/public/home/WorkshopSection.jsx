@@ -6,7 +6,7 @@ export default function WorkshopSection() {
   const { workshop } = procurementData;
 
   return (
-    <section className="bg-white dark:bg-slate-900/20 py-16 lg:py-24 border-b border-slate-100 dark:border-slate-800/40">
+    <section className="bg-muted/20 py-20 border-b border-border text-foreground">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -35,13 +35,13 @@ export default function WorkshopSection() {
                 if (idx === 3) Icon = ShieldCheck;
 
                 return (
-                  <div key={idx} className="flex gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl shadow-card hover:shadow-card-hover hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-300 cursor-default group">
-                    <div className="w-10 h-10 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-accent/10 group-hover:border-accent/20 transition-all">
-                      <Icon className="h-5 w-5 text-slate-600 dark:text-slate-350 group-hover:text-accent transition-colors" />
+                  <div key={idx} className="surface-card p-4 hover:shadow-card-hover transition-all duration-300 cursor-default group flex gap-4">
+                    <div className="w-10 h-10 bg-background border border-border rounded-lg flex items-center justify-center shrink-0 group-hover:bg-accent/10 group-hover:border-accent/20 transition-all">
+                      <Icon className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{fac.title}</h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{fac.desc}</p>
+                      <h4 className="font-semibold text-foreground text-sm">{fac.title}</h4>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{fac.desc}</p>
                     </div>
                   </div>
                 );
@@ -51,7 +51,7 @@ export default function WorkshopSection() {
 
           {/* Right Column: Physical Image / Blueprint layout */}
           <div className="lg:col-span-5 relative">
-            <div className="relative border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-card">
+            <div className="relative border border-border rounded-xl overflow-hidden shadow-card">
               <img
                 src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop"
                 alt="Fasilitas Pabrik CV Globalindo Teknik Mandiri"
@@ -60,11 +60,11 @@ export default function WorkshopSection() {
               />
               
               {/* Badge Overlay */}
-              <div className="absolute bottom-4 left-4 right-4 bg-slate-950/90 backdrop-blur-sm border border-slate-800/80 rounded-lg p-3 text-white flex items-center gap-2 shadow-card-hover">
+              <div className="absolute bottom-4 left-4 right-4 bg-background/95 backdrop-blur-xs border border-border rounded-lg p-3 text-foreground flex items-center gap-2 shadow-card-hover">
                 <MapPin className="h-4.5 w-4.5 text-accent shrink-0" />
                 <div className="text-xs">
-                  <span className="font-bold block text-white">Workshop Cibadak, Bogor</span>
-                  <span className="text-slate-300">Akses inspeksi fisik terbuka untuk auditor pengadaan tender.</span>
+                  <span className="font-bold block text-foreground">Workshop Cibadak, Bogor</span>
+                  <span className="text-muted-foreground">Akses inspeksi fisik terbuka untuk auditor pengadaan tender.</span>
                 </div>
               </div>
             </div>

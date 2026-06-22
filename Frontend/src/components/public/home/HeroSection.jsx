@@ -43,8 +43,9 @@ export default function HeroSection() {
           {/* Action CTAs */}
           <div className="flex flex-wrap gap-4">
             <Button
+              variant="warning"
               size="lg"
-              className="bg-warning hover:bg-warning/90 text-warning-foreground px-6 h-11 text-sm font-semibold rounded-lg"
+              className="px-6 h-11 text-sm font-semibold rounded-lg"
               asChild
             >
               <Link to="/produk">
