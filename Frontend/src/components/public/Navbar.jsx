@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom"
-import { Menu, MessageSquare, X } from "lucide-react"
+import { Menu, MessageSquare, X, Sun, Moon } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+import { useTheme } from "@/contexts/ThemeContext"
 
 const navLinks = [
   { name: "Beranda", path: "/" },
@@ -17,6 +18,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
@@ -35,8 +37,8 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 inset-x-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-[#0f172a]/95 backdrop-blur-sm shadow-lg shadow-black/10"
-          : "bg-[#0f172a]"
+          ? "bg-primary/80 backdrop-blur-md shadow-soft-sm border-b border-white/5"
+          : "bg-primary"
       )}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -44,10 +46,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center shrink-0">
-            <span className="text-white font-semibold text-base tracking-tight leading-tight">
-              CV Globalindo<br />
-              <span className="text-primary font-bold">Teknik Mandiri</span>
-            </span>
+            <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-8 md:h-10 w-auto object-contain" />
           </Link>
 
           {/* Desktop Nav - centered */}
@@ -65,7 +64,7 @@ export default function Navbar() {
               >
                 {link.name}
                 {isActive(link.path) && (
-                  <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-primary rounded-full" />
+                  <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-accent rounded-full" />
                 )}
               </Link>
             ))}
@@ -73,6 +72,19 @@ export default function Navbar() {
 
           {/* Desktop Right Actions */}
           <div className="hidden lg:flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-slate-400 hover:text-white hover:bg-white/5 h-9 w-9 rounded-lg"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <Sun className="h-4.5 w-4.5 text-warning transition-all" />
+              ) : (
+                <Moon className="h-4.5 w-4.5 transition-all" />
+              )}
+            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -86,7 +98,7 @@ export default function Navbar() {
             </Button>
             <Button
               size="sm"
-              className="bg-primary hover:bg-primary/90 text-white text-sm px-4"
+              className="bg-warning hover:bg-warning/90 text-warning-foreground font-semibold text-sm px-4"
               asChild
             >
               <Link to="/hubungi-kami">Hubungi Kami</Link>
@@ -100,7 +112,7 @@ export default function Navbar() {
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-[#0f172a] border-l border-slate-800 p-0">
+            <SheetContent side="right" className="w-72 bg-[#0F172A] border-l border-slate-800 p-0">
               <div className="flex flex-col h-full">
                 {/* Mobile header */}
                 <div className="px-6 py-5 border-b border-slate-800">
@@ -118,7 +130,7 @@ export default function Navbar() {
                       className={cn(
                         "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors",
                         isActive(link.path)
-                          ? "bg-primary/10 text-primary"
+                          ? "bg-accent/10 text-accent"
                           : "text-slate-400 hover:text-white hover:bg-white/5"
                       )}
                     >
@@ -129,6 +141,22 @@ export default function Navbar() {
 
                 {/* Mobile CTA */}
                 <div className="px-4 pb-6 space-y-3 border-t border-slate-800 pt-4">
+                  <div className="flex items-center justify-between px-4 py-1.5 bg-white/5 rounded-lg">
+                    <span className="text-xs text-slate-400 font-medium">Mode Gelap</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-slate-400 hover:text-white hover:bg-white/5 h-8 w-8 rounded-md"
+                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                      aria-label="Toggle theme"
+                    >
+                      {theme === 'dark' ? (
+                        <Sun className="h-4 w-4 text-warning" />
+                      ) : (
+                        <Moon className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
                   <Button
                     variant="outline"
                     className="w-full text-slate-400 border-slate-700 bg-transparent hover:bg-white/5 hover:text-white gap-2 text-sm"
@@ -139,7 +167,7 @@ export default function Navbar() {
                       WhatsApp
                     </a>
                   </Button>
-                  <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm" asChild>
+                  <Button className="w-full bg-warning hover:bg-warning/90 text-warning-foreground font-semibold text-sm" asChild>
                     <Link to="/hubungi-kami">Hubungi Kami</Link>
                   </Button>
                 </div>
