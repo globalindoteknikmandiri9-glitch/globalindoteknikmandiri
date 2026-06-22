@@ -6,14 +6,14 @@ import { Mail, MessageSquare } from "lucide-react";
 
 export default function CTASection() {
   return (
-    <section className="bg-[#0f172a] py-16 lg:py-20">
+    <section className="bg-navy py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.3 }}
-          className="max-w-4xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-8 lg:p-12 text-center lg:text-left shadow-lg"
+          transition={{ duration: 0.25 }}
+          className="max-w-4xl mx-auto bg-slate-900 dark:bg-slate-950 border border-slate-800 dark:border-slate-900 rounded-2xl p-8 lg:p-12 text-center lg:text-left shadow-modal"
         >
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
@@ -27,7 +27,7 @@ export default function CTASection() {
             
             <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3 w-full sm:w-auto shrink-0 justify-center">
               <Button
-                className="bg-[#059669] hover:bg-[#059669]/90 text-white gap-2 h-11 px-6 text-sm font-semibold rounded-lg w-full sm:w-auto justify-center"
+                className="bg-warning hover:bg-warning/90 text-warning-foreground gap-2 h-11 px-6 text-sm font-semibold rounded-lg w-full sm:w-auto justify-center"
                 asChild
               >
                 <a href={companyData.contacts.whatsappLink} target="_blank" rel="noreferrer">

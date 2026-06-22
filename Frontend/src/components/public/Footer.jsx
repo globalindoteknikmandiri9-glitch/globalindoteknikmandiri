@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { MapPin, Phone, Mail } from "lucide-react"
+import { companyData } from "@/data/company"
 
 const navLinks = [
   { name: "Beranda", path: "/" },
@@ -11,21 +12,21 @@ const navLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0f172a] text-slate-400">
+    <footer className="bg-navy text-slate-400">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
 
           {/* Brand */}
           <div className="space-y-4">
             <div>
-              <h2 className="text-white font-bold text-lg">CV Globalindo Teknik Mandiri</h2>
-              <p className="text-sm mt-3 text-slate-500 leading-relaxed max-w-xs">
+              <img src="/logo.png" alt={companyData.name} className="h-8 md:h-10 w-auto object-contain mb-4" />
+              <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
                 Mitra terpercaya dalam penyediaan peralatan industri dan manufaktur. Melayani perusahaan-perusahaan terkemuka di seluruh Indonesia.
               </p>
             </div>
             <div className="pt-2">
               <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">
-                Est. 2009 · Bekasi, Indonesia
+                Est. {companyData.established} · {companyData.address.city}, Indonesia
               </span>
             </div>
           </div>
@@ -54,19 +55,20 @@ export default function Footer() {
               <li className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-slate-600 mt-0.5 shrink-0" />
                 <span className="text-sm text-slate-500 leading-relaxed">
-                  Jl. Jababeka Raya No.12,<br />Bekasi, Jawa Barat 17530
+                  {companyData.address.street},<br />
+                  {companyData.address.city}, {companyData.address.province} {companyData.address.postalCode}
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-slate-600 shrink-0" />
-                <a href="tel:+622189831234" className="text-sm text-slate-500 hover:text-slate-200 transition-colors">
-                  +62 21 8983 1234
+                <a href={`tel:${companyData.contacts.phone.replace(/[^0-9+]/g, '')}`} className="text-sm text-slate-500 hover:text-slate-200 transition-colors">
+                  {companyData.contacts.phone}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 text-slate-600 shrink-0" />
-                <a href="mailto:info@globalindoteknik.com" className="text-sm text-slate-500 hover:text-slate-200 transition-colors">
-                  info@globalindoteknik.com
+                <a href={`mailto:${companyData.contacts.email}`} className="text-sm text-slate-500 hover:text-slate-200 transition-colors">
+                  {companyData.contacts.email}
                 </a>
               </li>
             </ul>
@@ -77,7 +79,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-slate-600">
-            &copy; {new Date().getFullYear()} CV Globalindo Teknik Mandiri. Seluruh hak cipta dilindungi.
+            &copy; {new Date().getFullYear()} {companyData.name}. Seluruh hak cipta dilindungi.
           </p>
           <div className="flex gap-6 text-xs text-slate-600">
             <Link to="#" className="hover:text-slate-400 transition-colors">Kebijakan Privasi</Link>
