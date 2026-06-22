@@ -24,17 +24,11 @@ export default function AdminSidebar() {
   const isActive = (path) => pathname === path || pathname.startsWith(path + "/")
 
   return (
-    <aside className="w-60 bg-[#0f172a] text-slate-400 flex flex-col hidden md:flex shrink-0 h-screen sticky top-0 overflow-y-auto">
+    <aside className="w-60 bg-navy text-slate-400 flex flex-col hidden md:flex shrink-0 h-screen sticky top-0 overflow-y-auto">
       {/* Brand */}
       <div className="px-5 py-5 border-b border-slate-800">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center shrink-0">
-            <Package className="h-3.5 w-3.5 text-white" />
-          </div>
-          <div className="leading-tight">
-            <p className="text-white font-semibold text-xs">CV Globalindo</p>
-            <p className="text-slate-500 text-[10px]">Teknik Mandiri</p>
-          </div>
+        <div className="flex items-center">
+          <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-7 w-auto object-contain" />
         </div>
       </div>
 
@@ -51,7 +45,7 @@ export default function AdminSidebar() {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
                   isActive(item.path)
-                    ? "bg-primary/15 text-primary"
+                    ? "bg-accent/15 text-accent"
                     : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 )}
               >
