@@ -2,91 +2,95 @@ import { Helmet } from "react-helmet-async"
 import { CheckCircle, Award, Users, Package, MapPin, ArrowRight, ChevronRight } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-
-const credentials = [
-  { label: "Tahun Berdiri", value: "2009", icon: Award },
-  { label: "Mitra Perusahaan B2B", value: "50+", icon: Users },
-  { label: "Produk Tersedia", value: "500+", icon: Package },
-  { label: "Layanan Distribusi", value: "Nasional", icon: MapPin },
-]
+import { companyData } from "@/data/company"
 
 const values = [
   {
-    title: "Integritas",
-    desc: "Menjunjung tinggi kejujuran dan etika bisnis dalam setiap transaksi dan kemitraan jangka panjang.",
+    title: "Integritas & Transparansi",
+    desc: "Menjunjung tinggi kejujuran hukum dalam setiap transaksi, penerbitan faktur pajak resmi, dan dokumen dukungan tender.",
   },
   {
-    title: "Komitmen",
-    desc: "Berdedikasi penuh untuk menyediakan barang berkualitas dan layanan tepat waktu sesuai kesepakatan.",
+    title: "Kapasitas & Presisi",
+    desc: "Memastikan seluruh barang hasil fabrikasi lokal diproduksi presisi menggunakan mesin CNC dan las argon handal.",
   },
   {
-    title: "Kualitas",
-    desc: "Memastikan setiap produk telah melewati kontrol kualitas yang ketat sebelum dikirim ke pelanggan.",
+    title: "Kepatuhan Regulasi",
+    desc: "Mengedepankan kepatuhan penuh terhadap standar mutu SNI, spesifikasi teknis Kementerian Perhubungan, dan komitmen TKDN.",
   },
   {
-    title: "Inovasi",
-    desc: "Terus mengadopsi perkembangan teknologi terbaru demi efisiensi rantai pasok industri modern.",
+    title: "Layanan Purna Jual",
+    desc: "Tidak sekadar menjual, kami mengirim teknisi internal untuk supervisi instalasi, kalibrasi berkala, dan training operator.",
   },
 ]
 
 export default function About() {
+  const credentials = [
+    { label: "Tahun Berdiri", value: companyData.established, icon: Award },
+    { label: "Mitra Aktif B2B", value: "50+ Perusahaan", icon: Users },
+    { label: "Katalog Produk", value: "500+ SKU", icon: Package },
+    { label: "Layanan Pengiriman", value: "Nasional", icon: MapPin },
+  ]
+
   return (
     <>
       <Helmet>
         <title>Profil Perusahaan — CV Globalindo Teknik Mandiri</title>
         <meta
           name="description"
-          content="Profil lengkap CV Globalindo Teknik Mandiri — mitra terpercaya penyedia peralatan industri dan manufaktur sejak 2009."
+          content="Sejarah dan kredibilitas pabrikasi CV Globalindo Teknik Mandiri — produsen lokal mesin marka jalan dan furniture lab sejak 2009 di Bogor."
         />
       </Helmet>
 
-      {/* Page Header with Breadcrumbs */}
-      <div className="bg-slate-50 border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-          <nav className="text-xs text-slate-500 mb-3 flex items-center gap-1.5 font-medium">
-            <Link to="/" className="hover:text-primary transition-colors">Beranda</Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-slate-800 font-semibold">Tentang Kami</span>
+      {/* Page Header */}
+      <div className="bg-card border-b border-border text-foreground">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+          <nav className="text-[11px] text-muted-foreground/60 mb-3 flex items-center gap-1.5 font-bold uppercase tracking-wider">
+            <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-muted-foreground">Tentang Kami</span>
           </nav>
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">Tentang Perusahaan</h1>
-          <p className="text-slate-500 max-w-xl text-base leading-relaxed mt-2">
-            Mengenal lebih dekat CV Globalindo Teknik Mandiri, penyedia solusi peralatan industri dan manufaktur terpercaya di Indonesia.
+          <h1 className="text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">Tentang Perusahaan</h1>
+          <p className="text-muted-foreground max-w-xl text-sm leading-relaxed mt-2">
+            Mengenal rekam jejak, legalitas hukum, dan kapasitas produksi fisik CV Globalindo Teknik Mandiri sebagai pabrikator teknik nasional terpercaya.
           </p>
         </div>
       </div>
 
-      {/* Company intro + image */}
-      <section className="bg-white py-16 lg:py-24">
+      {/* Sejarah & Latar Belakang - Editorial 2 Column */}
+      <section className="bg-background py-20 text-foreground">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-14 items-center">
-            <div className="order-2 lg:order-1">
-              <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight mb-5">Sejarah & Latar Belakang</h2>
-              <div className="space-y-4 text-slate-600 text-base leading-relaxed">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <span className="text-xs font-semibold text-accent uppercase tracking-widest block mb-2">
+                Rekam Jejak 15+ Tahun
+              </span>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground tracking-tight mb-5">Sejarah & Komitmen Manufaktur</h2>
+              <div className="space-y-4 text-muted-foreground text-sm leading-relaxed">
                 <p>
-                  CV Globalindo Teknik Mandiri didirikan pada tahun 2009 dengan komitmen untuk menjadi mitra terpercaya dalam penyediaan peralatan industri dan manufaktur bagi perusahaan-perusahaan terkemuka di Indonesia.
+                  CV Globalindo Teknik Mandiri didirikan pada tahun {companyData.established} di Kota Bogor, Jawa Barat dengan visi mendukung kemandirian infrastruktur permesinan dalam negeri. Kami fokus mengembangkan divisi fabrikasi logam dan perdagangan umum untuk alat uji material teknik sipil serta marka jalan.
                 </p>
                 <p>
-                  Berawal dari perusahaan perdagangan skala menengah, kami kini telah berkembang menjadi distributor peralatan industri yang dipercaya oleh lebih dari 50 perusahaan aktif di berbagai sektor — mulai dari manufaktur, pertambangan, hingga infrastruktur nasional.
+                  Melalui pengalaman menyuplai pengadaan barang selama lebih dari 15 tahun, kami telah dipercaya oleh berbagai dinas kementerian, kontraktor jalan tol BUMN, serta laboratorium pengujian universitas negeri. Kami memiliki fasilitas workshop fisik terintegrasi di Bogor untuk menjamin ketersediaan sparepart dan kalibrasi alat.
                 </p>
                 <p>
-                  Dengan dukungan tim teknisi berpengalaman dan jaringan pemasok internasional, kami mampu menyediakan solusi pengadaan yang komprehensif, tepat waktu, dan sesuai standar industri yang ketat.
+                  Komitmen kami tertuang dalam penyediaan dokumen administrasi tender lengkap, faktur pajak resmi, serta kepatuhan TKDN guna memberikan keamanan bertransaksi bagi seluruh mitra kerja sama kami.
                 </p>
               </div>
               <div className="mt-8">
-                <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 h-10 text-sm rounded-lg" asChild>
+                <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-muted/50 h-10 text-sm rounded-lg" asChild>
                   <Link to="/hubungi-kami">
-                    Konsultasi dengan Tim Kami
+                    Ajukan RFQ Formal
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
             </div>
 
-            <div className="order-1 lg:order-2">
+            <div className="relative border border-border rounded-2xl overflow-hidden shadow-md">
               <img
-                src="https://images.unsplash.com/photo-1504307651254-35680f356f12?w=800&q=80"
-                alt="Fasilitas CV Globalindo Teknik Mandiri"
-                className="w-full aspect-[4/3] object-cover rounded-xl shadow-sm border border-slate-200/60"
+                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80"
+                alt="Proses Perakitan Mesin di Workshop Bogor"
+                className="w-full aspect-[4/3] object-cover"
                 loading="lazy"
               />
             </div>
@@ -95,16 +99,16 @@ export default function About() {
       </section>
 
       {/* Credentials / Stats */}
-      <section className="bg-slate-50 border-y border-slate-200/60 py-16">
+      <section className="bg-muted/30 border-y border-border py-20 text-foreground">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {credentials.map((c, i) => (
-              <div key={i} className="bg-white border border-slate-200/80 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center text-center">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                  <c.icon className="h-5 w-5 text-primary" />
+              <div key={i} className="surface-card p-8 flex flex-col items-center text-center hover:-translate-y-0.5">
+                <div className="w-10 h-10 bg-muted/30 border border-border/40 rounded-xl flex items-center justify-center mb-4">
+                  <c.icon className="h-5 w-5 text-muted-foreground" />
                 </div>
-                <div className="text-2xl font-bold text-slate-900">{c.value}</div>
-                <div className="text-sm font-medium text-slate-500 mt-1">{c.label}</div>
+                <div className="text-2xl font-bold text-foreground">{c.value}</div>
+                <div className="text-xs font-semibold text-muted-foreground mt-1 uppercase tracking-wide">{c.label}</div>
               </div>
             ))}
           </div>
@@ -112,32 +116,32 @@ export default function About() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="bg-white py-16 lg:py-24">
+      <section className="bg-background py-20 text-foreground">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight mb-8">Visi & Misi</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white border border-slate-200/80 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-300">
-              <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-3">Visi</p>
-              <h3 className="font-semibold text-slate-900 text-lg mb-3 leading-snug">
-                Menjadi distributor peralatan industri terkemuka di Indonesia
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground tracking-tight mb-8">Visi & Misi Perusahaan</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-card border border-border rounded-2xl p-10 shadow-md hover:-translate-y-0.5 hover:shadow-card-hover transition-all duration-300">
+              <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Visi Utama</p>
+              <h3 className="font-semibold text-foreground text-lg mb-3 leading-snug">
+                Menjadi pabrikator alat teknik nasional terkemuka yang tepercaya dalam kualitas dan integritas.
               </h3>
-              <p className="text-base text-slate-600 leading-relaxed">
-                Menjadi perusahaan penyedia barang dan jasa terkemuka di tingkat nasional yang mengedepankan kualitas, profesionalisme, dan kepuasan pelanggan secara berkelanjutan.
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Kami berkomitmen menjadi pemimpin pasar industri permesinan sipil skala nasional dengan mengedepankan standardisasi mutu dan kemudahan proses administrasi B2B pemerintah maupun swasta.
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200/80 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-300">
-              <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-3">Misi</p>
+            <div className="bg-card border border-border rounded-2xl p-10 shadow-md hover:-translate-y-0.5 hover:shadow-card-hover transition-all duration-300">
+              <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Misi Operasional</p>
               <ul className="space-y-4">
                 {[
-                  "Memberikan pelayanan dan produk berkualitas tinggi sesuai standar industri.",
-                  "Membangun kemitraan jangka panjang yang saling menguntungkan.",
-                  "Mengadopsi teknologi terbaru untuk efisiensi rantai pasok.",
-                  "Memberikan solusi teknis yang tepat guna dan tepat waktu.",
+                  "Menghasilkan produk manufaktur presisi bergaransi resmi.",
+                  "Menyediakan dokumen pendukung tender (TKDN, LKPP, E-Faktur) secara transparan.",
+                  "Mengutamakan purna jual meliputi kalibrasi alat dan pelatihan operator di lapangan.",
+                  "Membangun hubungan kemitraan jangka panjang berlandaskan integritas hukum.",
                 ].map((m, i) => (
                   <li key={i} className="flex items-start gap-2.5">
-                    <CheckCircle className="h-4.5 w-4.5 text-primary mt-0.5 shrink-0" />
-                    <span className="text-base text-slate-600 leading-relaxed">{m}</span>
+                    <CheckCircle className="h-4.5 w-4.5 text-accent mt-0.5 shrink-0" />
+                    <span className="text-xs text-muted-foreground leading-relaxed">{m}</span>
                   </li>
                 ))}
               </ul>
@@ -147,17 +151,17 @@ export default function About() {
       </section>
 
       {/* Core Values */}
-      <section className="bg-slate-50 border-t border-slate-200/60 py-16 lg:py-24">
+      <section className="bg-muted/30 border-t border-border py-20 text-foreground">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight mb-8">Nilai Inti Perusahaan</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground tracking-tight mb-8">Nilai Inti Perusahaan</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
-              <div key={i} className="bg-white border border-slate-200/80 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <span className="text-primary font-bold text-sm">{i + 1}</span>
+              <div key={i} className="surface-card p-8 hover:-translate-y-0.5">
+                <div className="w-8 h-8 rounded-xl bg-background border border-border flex items-center justify-center mb-4">
+                  <span className="text-muted-foreground font-bold text-xs">{i + 1}</span>
                 </div>
-                <h3 className="font-semibold text-slate-900 text-sm mb-2">{v.title}</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">{v.desc}</p>
+                <h3 className="font-bold text-foreground text-sm mb-2">{v.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
