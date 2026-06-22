@@ -4,7 +4,7 @@ import { FileCheck, ShieldCheck, Scale, Award } from "lucide-react";
 
 export default function CredentialsSection() {
   return (
-    <section className="bg-white dark:bg-slate-900/20 py-16 lg:py-24 border-b border-slate-100 dark:border-slate-800/40">
+    <section className="bg-background py-16 lg:py-24 border-b border-border">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -70,25 +70,25 @@ export default function CredentialsSection() {
           </div>
 
           {/* Right Column - Stats Grid */}
-          <div className="lg:col-span-5 bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 rounded-xl p-8 shadow-card">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider mb-6 pb-4 border-b border-slate-200 dark:border-slate-800">
+          <div className="bg-muted/30 border border-border rounded-2xl p-8 shadow-card lg:col-span-5">
+            <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border">
               Fakta & Rekam Jejak Operasional
             </h3>
             
             <div className="grid grid-cols-2 gap-6">
               {companyData.stats.map((stat, idx) => (
-                <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-lg p-5 shadow-card hover:shadow-card-hover transition-all duration-300 cursor-default">
-                  <div className="text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight">
+                <div key={idx} className="surface-card p-5 hover:shadow-card-hover transition-all duration-300 cursor-default">
+                  <div className="text-2xl lg:text-3xl font-extrabold text-foreground leading-tight">
                     {stat.value}
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium leading-relaxed">
+                  <div className="text-xs text-muted-foreground mt-1 font-medium leading-relaxed">
                     {stat.label}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            <div className="mt-8 pt-6 border-t border-border text-xs text-muted-foreground leading-relaxed">
               * Seluruh statistik di atas merujuk pada rekam jejak riil pengiriman alat dan pabrikasi unit kami sejak tahun 2009.
             </div>
           </div>

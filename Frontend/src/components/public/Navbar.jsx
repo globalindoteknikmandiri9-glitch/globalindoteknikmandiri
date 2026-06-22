@@ -181,8 +181,9 @@ export default function Navbar() {
               </a>
             </Button>
             <Button
+              variant="warning"
               size="sm"
-              className="bg-warning hover:bg-warning/90 text-warning-foreground font-semibold text-sm px-4 h-8 rounded-lg cursor-pointer shadow-card"
+              className="font-semibold text-sm px-4 h-8 rounded-lg cursor-pointer shadow-card"
               asChild
             >
               <Link to="/hubungi-kami">Hubungi Kami</Link>
@@ -276,7 +277,7 @@ export default function Navbar() {
                       WhatsApp
                     </a>
                   </Button>
-                  <Button className="w-full bg-warning hover:bg-warning/90 text-warning-foreground font-semibold text-sm h-9 rounded-lg cursor-pointer" asChild>
+                  <Button variant="warning" className="w-full font-semibold text-sm h-9 rounded-lg cursor-pointer" asChild>
                     <Link to="/hubungi-kami">Hubungi Kami</Link>
                   </Button>
                 </div>

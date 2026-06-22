@@ -27,7 +27,8 @@ export default function CTASection() {
             
             <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3 w-full sm:w-auto shrink-0 justify-center">
               <Button
-                className="bg-warning hover:bg-warning/90 text-warning-foreground gap-2 h-11 px-6 text-sm font-semibold rounded-lg w-full sm:w-auto justify-center"
+                variant="warning"
+                className="gap-2 h-11 px-6 text-sm font-semibold rounded-lg w-full sm:w-auto justify-center"
                 asChild
               >
                 <a href={companyData.contacts.whatsappLink} target="_blank" rel="noreferrer">
