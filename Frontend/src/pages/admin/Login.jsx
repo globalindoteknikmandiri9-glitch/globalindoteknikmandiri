@@ -1,0 +1,142 @@
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useNavigate } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { cn } from "@/lib/utils"
+import * as z from "zod"
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "Alamat email tidak valid" }),
+  password: z.string().min(6, { message: "Password minimal 6 karakter" }),
+})
+
+export default function Login() {
+  const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({ resolver: zodResolver(loginSchema) })
+
+  const onSubmit = async (data) => {
+    await new Promise((r) => setTimeout(r, 900))
+    console.log("Login:", data)
+    navigate("/admin/dashboard")
+  }
+
+  return (
+    <div className="min-h-screen flex animate-page-fade text-left">
+      {/* Left panel: branding */}
+      <div className="hidden lg:flex w-1/2 relative bg-navy items-end p-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2070&auto=format&fit=crop')",
+          }}
+        />
+        <div className="relative z-10">
+          <p className="text-warning text-xs font-bold tracking-widest uppercase mb-4">
+            Portal Administrasi
+          </p>
+          <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-12 w-auto object-contain mb-6" />
+          <p className="text-muted-foreground/80 text-sm max-w-xs leading-relaxed font-semibold">
+            Sistem manajemen internal untuk pengelolaan katalog produk, artikel, dan data perusahaan.
+          </p>
+          <div className="mt-8 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-warning" />
+            <span className="text-xs text-muted-foreground font-semibold">Secure Access Portal · Internal Use Only</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Right panel: form */}
+      <div className="flex-1 flex items-center justify-center bg-background p-8">
+        <div className="w-full max-w-sm">
+          {/* Mobile logo */}
+          <div className="lg:hidden mb-8 flex flex-col items-center">
+            <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-10 w-auto object-contain mb-2" />
+            <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider">Admin Panel</p>
+          </div>
+
+          <div className="bg-card border border-border rounded-xl p-8 shadow-card">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-foreground tracking-tight">Masuk ke Dashboard</h2>
+              <p className="text-sm text-muted-foreground mt-1">Gunakan kredensial akun administrator Anda.</p>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+              <div className="space-y-1.5">
+                <label htmlFor="email" className="text-sm font-semibold text-foreground block">
+                  Email
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="admin@globalindoteknik.com"
+                  {...register("email")}
+                  className={cn(
+                    "h-10 text-xs border-border bg-background focus-visible:ring-accent",
+                    errors.email && "border-red-400 focus-visible:ring-red-400"
+                  )}
+                />
+                {errors.email && (
+                  <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center mb-1">
+                  <label htmlFor="password" className="text-sm font-semibold text-foreground block">
+                    Password
+                  </label>
+                  <a href="#" className="text-xs text-accent hover:text-accent/80 transition-colors font-semibold">
+                    Lupa Password?
+                  </a>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  {...register("password")}
+                  className={cn(
+                    "h-10 text-xs border-border bg-background focus-visible:ring-accent",
+                    errors.password && "border-red-400 focus-visible:ring-red-400"
+                  )}
+                />
+                {errors.password && (
+                  <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  id="remember"
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-border bg-background text-accent focus:ring-accent"
+                />
+                <label htmlFor="remember" className="text-xs text-muted-foreground font-semibold cursor-pointer">
+                  Ingat saya
+                </label>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full h-10 bg-navy hover:bg-navy/90 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
+              >
+                {isSubmitting ? "Memverifikasi..." : "Masuk ke Dashboard →"}
+              </Button>
+            </form>
+          </div>
+
+          <p className="text-center text-xs text-muted-foreground/60 mt-6 font-semibold select-none">
+            Secure Access · Confidential · Internal Only
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,84 @@
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
+import { companyData } from "@/data/company";
+
+export default function HeroSection() {
+  return (
+    <section className="relative bg-navy overflow-hidden min-h-[85vh] flex items-center">
+      {/* Background image with low opacity for manufacturing texture */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop"
+          alt="Workshop Manufaktur CV Globalindo"
+          className="w-full h-full object-cover opacity-15"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/70" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="max-w-3xl"
+        >
+          {/* Tagline */}
+          <span className="block text-xs font-bold text-warning uppercase tracking-widest mb-4">
+            {companyData.tagline}
+          </span>
+
+          {/* Headline */}
+          <h1 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">
+            Mitra Penyedia Peralatan Jalan, Mesin Pertanian, dan Alat Uji Laboratorium Berstandar Industri
+          </h1>
+
+          {/* Subheadline */}
+          <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-2xl">
+            Sejak {companyData.established}, kami menyuplai kebutuhan pengadaan proyek swasta nasional, BUMN, dan tender pemerintah ke seluruh wilayah Indonesia dengan workshop lokal di Bogor.
+          </p>
+
+          {/* Action CTAs */}
+          <div className="flex flex-wrap gap-4">
+            <Button
+              size="lg"
+              className="bg-warning hover:bg-warning/90 text-warning-foreground px-6 h-11 text-sm font-semibold rounded-lg"
+              asChild
+            >
+              <Link to="/produk">
+                Lihat Katalog Produk
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-slate-700 text-slate-300 bg-transparent hover:bg-white/5 hover:text-white px-6 h-11 text-sm rounded-lg"
+              asChild
+            >
+              <Link to="/hubungi-kami">
+                <FileText className="mr-2 h-4 w-4" />
+                Minta Penawaran Resmi (RFQ)
+              </Link>
+            </Button>
+          </div>
+
+          {/* Trust Metadata */}
+          <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-wrap items-center gap-6 text-sm text-slate-400">
+            <span className="flex items-center gap-2">
+              <CheckCircle2 className="h-4.5 w-4.5 text-warning" /> Terdaftar di E-Katalog LKPP
+            </span>
+            <span className="flex items-center gap-2">
+              <CheckCircle2 className="h-4.5 w-4.5 text-warning" /> Standar SNI & Kementerian
+            </span>
+            <span className="flex items-center gap-2">
+              <CheckCircle2 className="h-4.5 w-4.5 text-warning" /> Faktur Pajak Resmi
+            </span>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
