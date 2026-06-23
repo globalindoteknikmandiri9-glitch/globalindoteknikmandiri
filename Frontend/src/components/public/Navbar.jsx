@@ -47,6 +47,13 @@ export default function Navbar() {
   const isActive = (path) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path)
 
+  // Scroll ke atas jika mengklik link halaman yang sedang aktif
+  const handleNavClick = (path) => {
+    if (isActive(path)) {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
   // Split categories into 2 columns for mega menu
   const half = Math.ceil(categories.length / 2)
   const leftCats = categories.slice(0, half)
@@ -81,6 +88,7 @@ export default function Navbar() {
                   <div key={link.path} className="group relative">
                     <Link
                       to={link.path}
+                      onClick={() => handleNavClick(link.path)}
                       className={cn(
                         "relative px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-1",
                         isActive(link.path)
@@ -167,6 +175,7 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
+                  onClick={() => handleNavClick(link.path)}
                   className={cn(
                     "relative px-4 py-2 text-sm font-medium rounded-md transition-colors",
                     isActive(link.path)
@@ -257,6 +266,10 @@ export default function Navbar() {
                     <Link
                       key={link.path}
                       to={link.path}
+                      onClick={() => {
+                        handleNavClick(link.path)
+                        setMobileOpen(false)
+                      }}
                       className={cn(
                         "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors",
                         isActive(link.path)

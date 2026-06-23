@@ -71,7 +71,7 @@ export default function AdminSidebar() {
   });
 
   return (
-    <aside className="w-60 bg-navy text-slate-400 flex flex-col hidden md:flex shrink-0 h-screen sticky top-0 overflow-y-auto">
+    <aside className="w-60 bg-navy text-slate-400 flex flex-col hidden md:flex shrink-0 h-screen sticky top-0 overflow-y-auto sidebar-scrollbar">
       {/* Brand */}
       <div className="px-5 py-5 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
@@ -96,7 +96,7 @@ export default function AdminSidebar() {
                 className={cn(
                   "flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-colors w-full",
                   isActive(item.path)
-                    ? "bg-accent/15 text-accent"
+                    ? "bg-accent/20 text-white font-semibold"
                     : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 )}
               >
@@ -122,7 +122,7 @@ export default function AdminSidebar() {
           className={cn(
             "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
             isActive('/admin/ganti-password')
-              ? "bg-accent/15 text-accent"
+              ? "bg-accent/20 text-white font-semibold"
               : "text-slate-500 hover:text-slate-300 hover:bg-white/5"
           )}
         >

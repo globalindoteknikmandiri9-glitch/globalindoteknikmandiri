@@ -56,7 +56,7 @@ export default function FeaturedProductsSection() {
     const fetchProducts = async () => {
       try {
         const res = await api.get('/public/products');
-        setFeaturedProducts(res.data.data.slice(0, 4));
+        setFeaturedProducts(res.data.slice(0, 4));
       } catch (error) {
         console.error("Gagal memuat produk unggulan", error);
       }
@@ -160,7 +160,7 @@ export default function FeaturedProductsSection() {
                       className="w-full text-xs h-8 text-foreground border-border hover:bg-muted/50 gap-1.5 rounded-lg shadow-card cursor-pointer"
                       asChild
                     >
-                      <Link to="/produk">
+                      <Link to={`/products/${prod.slug}`}>
                         <Eye className="h-3.5 w-3.5" />
                         Detail Spesifikasi
                       </Link>
