@@ -63,7 +63,7 @@ export default function Login() {
           </p>
           <div className="flex items-center gap-3 mb-6">
             <img 
-              src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.svg"} 
+              src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.png"} 
               alt="CV Globalindo Teknik Mandiri" 
               className="h-12 w-auto object-contain" 
             />
@@ -87,7 +87,7 @@ export default function Login() {
           <div className="lg:hidden mb-8 flex flex-col items-center gap-2">
             <div className="flex items-center gap-2.5">
               <img 
-                src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.svg"} 
+                src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.png"} 
                 alt="CV Globalindo Teknik Mandiri" 
                 className="h-10 w-auto object-contain" 
               />

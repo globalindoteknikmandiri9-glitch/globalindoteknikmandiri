@@ -31,36 +31,7 @@ const recentActivity = [
   { user: "Siti Aminah", initials: "SA", activity: "Menyetujui pesanan #ORD-88214", time: "Kemarin" },
 ]
 
-const stats = [
-  {
-    title: "Total Produk",
-    value: "1,245",
-    icon: Package,
-    trend: null,
-    sub: "dari 48 kategori",
-  },
-  {
-    title: "Kategori",
-    value: "48",
-    icon: Tags,
-    trend: null,
-    sub: "kategori aktif",
-  },
-  {
-    title: "Artikel",
-    value: "312",
-    icon: FileText,
-    trend: 0,
-    sub: "tidak ada perubahan",
-  },
-  {
-    title: "Staff Aktif",
-    value: "86",
-    icon: Users,
-    trend: -2,
-    sub: "vs bulan lalu",
-  },
-]
+
 
 function TrendBadge({ trend }) {
   if (trend === null || trend === undefined) return null

@@ -22,7 +22,7 @@ const defaultProfile = {
   hero_subtitle: 'Sejak 2009, kami menyuplai kebutuhan pengadaan proyek swasta nasional, BUMN, dan tender pemerintah ke seluruh wilayah Indonesia dengan workshop lokal di Bogor.',
   footer_tagline: 'Mitra terpercaya dalam penyediaan peralatan industri dan manufaktur. Melayani perusahaan-perusahaan terkemuka di seluruh Indonesia.',
   whatsapp_text: 'Halo%20CV%20Globalindo%20Teknik%20Mandiri,%20saya%20ingin%20berkonsultasi%20mengenai%20pengadaan%20alat.',
-  logo_url: '/logo.svg',
+  logo_url: '/logo.png',
 };
 
 let cachedProfile = null;
@@ -36,8 +36,6 @@ export function useCompanyProfile() {
   useEffect(() => {
     const now = Date.now();
     if (cachedProfile && now - cacheTime < CACHE_TTL) {
-      setProfile(cachedProfile);
-      setLoading(false);
       return;
     }
 

@@ -8,8 +8,10 @@ export function cn(...inputs) {
 export function getAssetUrl(path) {
   if (!path) return ""
   if (path.startsWith("http")) return path
-  
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api"
-  const baseUrl = apiUrl.replace(/\/api$/, "")
-  return `${baseUrl}${path}`
+  if (path.startsWith("/uploads")) {
+    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api"
+    const baseUrl = apiUrl.replace(/\/api$/, "")
+    return `${baseUrl}${path}`
+  }
+  return path
 }
