@@ -5,7 +5,7 @@ import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 import { Mail, MessageSquare } from "lucide-react";
 
 export default function CTASection() {
-  const { getWhatsappLink } = useCompanyProfile();
+  const { getWhatsappLink, profile } = useCompanyProfile();
 
   return (
     <section className="bg-navy py-16 lg:py-20">
@@ -20,10 +20,10 @@ export default function CTASection() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
               <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4 tracking-tight">
-                Butuh Penawaran Harga Resmi untuk Kebutuhan Pengadaan/Tender?
+                {profile?.home_cta_title || "Butuh Penawaran Harga Resmi untuk Kebutuhan Pengadaan/Tender?"}
               </h2>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Hubungi tim tender dan engineering kami untuk berkonsultasi spesifikasi teknis peralatan jalan, pertanian, serta pengujian laboratorium sipil. Dapatkan dokumen penawaran harga resmi (RFQ) lengkap.
+                {profile?.home_cta_desc || "Hubungi tim tender dan engineering kami untuk berkonsultasi spesifikasi teknis peralatan jalan, pertanian, serta pengujian laboratorium sipil. Dapatkan dokumen penawaran harga resmi (RFQ) lengkap."}
               </p>
             </div>
             

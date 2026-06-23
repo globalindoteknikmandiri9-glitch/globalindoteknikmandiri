@@ -29,6 +29,7 @@ const ManageUsers = lazy(() => import('./pages/admin/ManageUsers'))
 const Settings = lazy(() => import('./pages/admin/Settings'))
 const ChangePassword = lazy(() => import('./pages/admin/ChangePassword'))
 const ManageMessages = lazy(() => import('./pages/admin/ManageMessages'))
+const ManageHomePage = lazy(() => import('./pages/admin/ManageHomePage'))
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
                     <Route path="pengaturan" element={<Settings />} />
                     <Route path="ganti-password" element={<ChangePassword />} />
                     <Route path="pesan" element={<ManageMessages />} />
+                    <Route path="beranda" element={<ManageHomePage />} />
                   </Route>
                 </Routes>
               </Suspense>

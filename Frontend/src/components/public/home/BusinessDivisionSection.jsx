@@ -1,9 +1,33 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { divisionsData } from "@/data/divisions";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, HelpCircle } from "lucide-react";
+import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 
 export default function BusinessDivisionSection() {
+  const { profile } = useCompanyProfile();
+
+  // Parse divisions from profile or fallback to divisionsData
+  const divisions = (() => {
+    if (profile?.home_divisions) {
+      try {
+        const parsed = JSON.parse(profile.home_divisions);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(d => {
+            const staticDiv = divisionsData.find(sd => sd.id === d.id);
+            return {
+              ...d,
+              icon: staticDiv?.icon || HelpCircle
+            };
+          });
+        }
+      } catch (e) {
+        console.error("Gagal parse home_divisions", e);
+      }
+    }
+    return divisionsData;
+  })();
+
   return (
     <section className="bg-background py-20 border-b border-border text-foreground">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -32,7 +56,7 @@ export default function BusinessDivisionSection() {
           }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {divisionsData.map((div, idx) => {
+          {divisions.map((div, idx) => {
             const Icon = div.icon;
 
             return (

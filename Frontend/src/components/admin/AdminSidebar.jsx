@@ -11,6 +11,7 @@ import {
   KeyRound,
   Image as ImageIcon,
   MessageSquare,
+  Home,
 } from "lucide-react"
 import { cn, getAssetUrl } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
@@ -19,6 +20,7 @@ import api from "@/services/axios"
 
 const menuItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Kelola Beranda", path: "/admin/beranda", icon: Home },
   { label: "Kelola Produk", path: "/admin/produk", icon: Package },
   { label: "Kelola Kategori", path: "/admin/kategori", icon: Tags },
   { label: "Kelola Artikel", path: "/admin/artikel", icon: FileText },

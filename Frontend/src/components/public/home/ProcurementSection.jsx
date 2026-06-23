@@ -1,9 +1,39 @@
 import { motion } from "framer-motion";
 import { procurementData } from "@/data/procurement";
 import { Check } from "lucide-react";
+import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 
 export default function ProcurementSection() {
-  const { workflow, tenderSupport } = procurementData;
+  const { workflow: staticWorkflow, tenderSupport: staticTenderSupport } = procurementData;
+  const { profile } = useCompanyProfile();
+
+  const workflow = (() => {
+    if (profile?.home_procurement_workflow) {
+      try {
+        const parsed = JSON.parse(profile.home_procurement_workflow);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Gagal parse home_procurement_workflow", e);
+      }
+    }
+    return staticWorkflow;
+  })();
+
+  const tenderSupport = (() => {
+    if (profile?.home_procurement_support) {
+      try {
+        const parsed = JSON.parse(profile.home_procurement_support);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Gagal parse home_procurement_support", e);
+      }
+    }
+    return staticTenderSupport;
+  })();
 
   return (
     <section className="bg-white dark:bg-slate-900/20 py-16 lg:py-24 border-b border-slate-100 dark:border-slate-800/40">

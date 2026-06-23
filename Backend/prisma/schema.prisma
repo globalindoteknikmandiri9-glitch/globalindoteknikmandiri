@@ -39,6 +39,15 @@ model CompanyProfile {
   about_image_url String?  @db.Text
   workshop_image_url String? @db.Text
   logo_url        String?  @db.Text
+  home_divisions    String? @db.LongText
+  home_cta_title    String? @db.Text
+  home_cta_desc     String? @db.Text
+  home_credentials_desc String? @db.Text
+  home_workshop_location String? @db.Text
+  home_workshop_acreage  String? @db.Text
+  home_workshop_facilities String? @db.LongText
+  home_procurement_workflow String? @db.LongText
+  home_procurement_support  String? @db.LongText
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }

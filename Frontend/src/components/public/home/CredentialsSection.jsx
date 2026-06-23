@@ -35,7 +35,7 @@ export default function CredentialsSection() {
             </h2>
             
             <p className="text-slate-650 dark:text-slate-350 text-base leading-relaxed mb-8">
-              CV Globalindo Teknik Mandiri adalah badan usaha berbadan hukum resmi yang berkomitmen penuh mendukung kelancaran proyek konstruksi, laboratorium riset, dan permesinan sektor publik maupun swasta. Kami melengkapi setiap transaksi dengan dokumen hukum transparan untuk memudahkan audit.
+              {profile?.home_credentials_desc || "CV Globalindo Teknik Mandiri adalah badan usaha berbadan hukum resmi yang berkomitmen penuh mendukung kelancaran proyek konstruksi, laboratorium riset, dan permesinan sektor publik maupun swasta. Kami melengkapi setiap transaksi dengan dokumen hukum transparan untuk memudahkan audit."}
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">

@@ -8,6 +8,23 @@ export default function WorkshopSection() {
   const { workshop } = procurementData;
   const { profile } = useCompanyProfile();
 
+  const location = profile?.home_workshop_location || workshop.location;
+  const acreage = profile?.home_workshop_acreage || workshop.acreage;
+
+  const facilities = (() => {
+    if (profile?.home_workshop_facilities) {
+      try {
+        const parsed = JSON.parse(profile.home_workshop_facilities);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Gagal parse home_workshop_facilities", e);
+      }
+    }
+    return workshop.facilities;
+  })();
+
   return (
     <section className="bg-white dark:bg-slate-900/20 py-16 lg:py-24 border-b border-slate-100 dark:border-slate-800/40">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -27,11 +44,11 @@ export default function WorkshopSection() {
               Kapasitas Manufaktur Mandiri & Workshop Bogor
             </h2>
             <p className="text-slate-650 dark:text-slate-350 text-base leading-relaxed mb-8">
-              Pabrikasi produk teknik kami dilakukan sepenuhnya di workshop fisik kami yang berlokasi di {workshop.location}. Dengan area seluas {workshop.acreage}, kami mengendalikan kualitas secara penuh dari pemotongan baja hingga kalibrasi akhir.
+              Pabrikasi produk teknik kami dilakukan sepenuhnya di workshop fisik kami yang berlokasi di {location}. Dengan area seluas {acreage}, kami mengendalikan kualitas secara penuh dari pemotongan baja hingga kalibrasi akhir.
             </p>
 
             <div className="space-y-4">
-              {workshop.facilities.map((fac, idx) => {
+              {facilities.map((fac, idx) => {
                 // Return icons based on indices
                 let Icon = Settings2;
                 if (idx === 0) Icon = Hammer;

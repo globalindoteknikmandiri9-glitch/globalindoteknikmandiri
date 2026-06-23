@@ -36,8 +36,6 @@ export default function Settings() {
   const [loading, setLoading] = useState(true)
   const [aboutImageFile, setAboutImageFile] = useState(null)
   const [aboutImagePreview, setAboutImagePreview] = useState("")
-  const [workshopImageFile, setWorkshopImageFile] = useState(null)
-  const [workshopImagePreview, setWorkshopImagePreview] = useState("")
   const [logoFile, setLogoFile] = useState(null)
   const [logoPreview, setLogoPreview] = useState("")
 
@@ -54,16 +52,12 @@ export default function Settings() {
     api.get("/admin/profile")
       .then((res) => {
         if (res.data) {
-          // Map null fields to empty strings for form compatibility
           const mappedData = {}
           Object.keys(settingsSchema.shape).forEach((key) => {
             mappedData[key] = res.data[key] || ""
           })
           if (res.data.about_image_url) {
             setAboutImagePreview(getAssetUrl(res.data.about_image_url))
-          }
-          if (res.data.workshop_image_url) {
-            setWorkshopImagePreview(getAssetUrl(res.data.workshop_image_url))
           }
           if (res.data.logo_url) {
             setLogoPreview(getAssetUrl(res.data.logo_url))
@@ -91,9 +85,6 @@ export default function Settings() {
       if (aboutImageFile) {
         formData.append("about_image", aboutImageFile)
       }
-      if (workshopImageFile) {
-        formData.append("workshop_image", workshopImageFile)
-      }
       if (logoFile) {
         formData.append("logo", logoFile)
       }
@@ -118,18 +109,6 @@ export default function Settings() {
       const reader = new FileReader()
       reader.onloadend = () => {
         setAboutImagePreview(reader.result)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
-  const handleWorkshopImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      setWorkshopImageFile(file)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setWorkshopImagePreview(reader.result)
       }
       reader.readAsDataURL(file)
     }
@@ -166,10 +145,10 @@ export default function Settings() {
 
       <div className="max-w-4xl bg-card border border-border rounded-xl shadow-sm overflow-hidden">
         {/* Navigation Tabs */}
-        <div className="flex border-b border-border bg-muted/40">
+        <div className="flex border-b border-border bg-muted/40 overflow-x-auto">
           <button
             onClick={() => setActiveTab("info")}
-            className={`flex items-center gap-2 px-5 py-3.5 text-xs font-bold transition-all border-b-2 cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-3.5 text-xs font-bold transition-all border-b-2 whitespace-nowrap cursor-pointer ${
               activeTab === "info"
                 ? "border-primary text-primary bg-background"
                 : "border-transparent text-muted-foreground hover:text-foreground"
@@ -180,7 +159,7 @@ export default function Settings() {
           </button>
           <button
             onClick={() => setActiveTab("kontak")}
-            className={`flex items-center gap-2 px-5 py-3.5 text-xs font-bold transition-all border-b-2 cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-3.5 text-xs font-bold transition-all border-b-2 whitespace-nowrap cursor-pointer ${
               activeTab === "kontak"
                 ? "border-primary text-primary bg-background"
                 : "border-transparent text-muted-foreground hover:text-foreground"
@@ -191,18 +170,19 @@ export default function Settings() {
           </button>
           <button
             onClick={() => setActiveTab("konten")}
-            className={`flex items-center gap-2 px-5 py-3.5 text-xs font-bold transition-all border-b-2 cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-3.5 text-xs font-bold transition-all border-b-2 whitespace-nowrap cursor-pointer ${
               activeTab === "konten"
                 ? "border-primary text-primary bg-background"
                 : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
             <LayoutGrid className="h-4 w-4" />
-            Konten Halaman
+            Konten Umum & Footer
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6" noValidate>
+
           {/* TAB 1: INFO PERUSAHAAN */}
           {activeTab === "info" && (
             <div className="space-y-5 animate-page-fade">
@@ -232,58 +212,7 @@ export default function Settings() {
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-foreground block">
-                  Foto Banner Header (Halaman Tentang Kami)
-                </label>
-                <div className="flex items-center gap-4">
-                  <div className="w-24 h-16 shrink-0 bg-muted border border-border border-dashed rounded-lg flex items-center justify-center overflow-hidden">
-                    {aboutImagePreview ? (
-                      <img src={aboutImagePreview} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="text-muted-foreground">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
-                    />
-                    <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">Format: JPG, PNG. Lebar direkomendasikan min 1200px (Banner).</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-foreground block">
-                  Foto Fasilitas Workshop (Halaman Beranda)
-                </label>
-                <div className="flex items-center gap-4">
-                  <div className="w-24 h-16 shrink-0 bg-muted border border-border border-dashed rounded-lg flex items-center justify-center overflow-hidden">
-                    {workshopImagePreview ? (
-                      <img src={workshopImagePreview} alt="Preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="text-muted-foreground">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleWorkshopImageChange}
-                      className="text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
-                    />
-                    <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">Format: JPG, PNG. Rekomendasi rasio 4:3 (Landscape).</p>
-                  </div>
-                </div>
-              </div>
-
+              {/* Logo */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-foreground block">
                   Logo Perusahaan (Header / Footer / Login)
@@ -306,6 +235,33 @@ export default function Settings() {
                       className="text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
                     />
                     <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">Format: PNG, SVG, JPG. Sangat direkomendasikan berlatar transparan.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Foto About */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-foreground block">
+                  Foto Banner Header (Halaman Tentang Kami)
+                </label>
+                <div className="flex items-center gap-4">
+                  <div className="w-24 h-16 shrink-0 bg-muted border border-border border-dashed rounded-lg flex items-center justify-center overflow-hidden">
+                    {aboutImagePreview ? (
+                      <img src={aboutImagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="text-muted-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
+                    />
+                    <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">Format: JPG, PNG. Lebar direkomendasikan min 1200px (Banner).</p>
                   </div>
                 </div>
               </div>
@@ -358,7 +314,7 @@ export default function Settings() {
                     rows={4}
                     {...register("mission")}
                     className="w-full px-3 py-2 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-                    placeholder="Misi 1&#10;Misi 2&#10;Misi 3"
+                    placeholder={"Misi 1\nMisi 2\nMisi 3"}
                   />
                 </div>
               </div>
@@ -492,7 +448,7 @@ export default function Settings() {
             </div>
           )}
 
-          {/* TAB 3: KONTEN BERANDA & FOOTER */}
+          {/* TAB 3: KONTEN UMUM & FOOTER */}
           {activeTab === "konten" && (
             <div className="space-y-5 animate-page-fade">
               <div className="space-y-1.5">
