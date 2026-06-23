@@ -52,13 +52,19 @@ export default function Products() {
 
   useEffect(() => {
     const urlCat = searchParams.get("cat")
-    if (urlCat) {
-      setSelectedCategories([urlCat])
-    } else {
-      setSelectedCategories([])
+    const target = urlCat ? [urlCat] : []
+    const isDifferent = 
+      selectedCategories.length !== target.length ||
+      selectedCategories.some((cat, i) => cat !== target[i])
+
+    if (isDifferent) {
+      const timer = setTimeout(() => {
+        setSelectedCategories(target)
+        setPage(1)
+      }, 0)
+      return () => clearTimeout(timer)
     }
-    setPage(1)
-  }, [searchParams])
+  }, [searchParams, selectedCategories])
 
   const toggleFilter = (val, list, setList) => {
     setList(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])

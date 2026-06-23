@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react"
-import { Search, Trash2, ChevronLeft, ChevronRight, MessageSquare, Mail, Phone, ExternalLink, Calendar, CheckCircle2, Clock } from "lucide-react"
+import { Search, Trash2, ChevronLeft, ChevronRight, MessageSquare, Mail, Phone, Calendar, CheckCircle2, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -22,13 +22,9 @@ export default function ManageMessages() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [messageToDelete, setMessageToDelete] = useState(null)
 
-  useEffect(() => {
-    fetchMessages()
-  }, [])
-
   const fetchMessages = async () => {
     try {
-      setLoading(true)
+      Promise.resolve().then(() => setLoading(true))
       const res = await api.get("/admin/messages")
       setMessages(res.data)
     } catch (err) {
@@ -37,6 +33,10 @@ export default function ManageMessages() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchMessages()
+  }, [])
 
   const handleOpenDetail = async (msg) => {
     setSelectedMessage(msg)
@@ -105,10 +105,7 @@ export default function ManageMessages() {
     return processedMessages.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
   }, [processedMessages, page])
 
-  // Reset page when filter or search changes
-  useEffect(() => {
-    setPage(1)
-  }, [filter, search])
+
 
   const formatDate = (dateStr) => {
     const options = { 
@@ -139,7 +136,7 @@ export default function ManageMessages() {
           <Input
             placeholder="Cari pengirim atau isi pesan..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             className="pl-9 h-9 text-xs"
           />
         </div>
@@ -153,7 +150,7 @@ export default function ManageMessages() {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setFilter(tab.id)}
+              onClick={() => { setFilter(tab.id); setPage(1); }}
               className={cn(
                 "flex-1 sm:flex-initial px-4 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer",
                 filter === tab.id

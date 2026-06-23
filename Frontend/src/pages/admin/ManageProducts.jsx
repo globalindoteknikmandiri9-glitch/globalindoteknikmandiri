@@ -34,13 +34,9 @@ export default function ManageProducts() {
   const [imagePreview, setImagePreview] = useState("")
   const fileInputRef = useRef(null)
 
-  useEffect(() => {
-    fetchInitialData()
-  }, [])
-
   const fetchInitialData = async () => {
     try {
-      setLoading(true)
+      Promise.resolve().then(() => setLoading(true))
       const [prodRes, catRes] = await Promise.all([
         api.get("/admin/products"),
         api.get("/admin/categories")
@@ -48,11 +44,16 @@ export default function ManageProducts() {
       setProducts(prodRes.data)
       setCategories(catRes.data)
     } catch (err) {
+      console.error("Gagal mengambil data", err)
       toast.error("Gagal mengambil data katalog dari server.")
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchInitialData()
+  }, [])
 
   const handleOpenModal = (product = null) => {
     setImageFile(null)
@@ -152,6 +153,7 @@ export default function ManageProducts() {
       setIsDeleteOpen(false)
       fetchInitialData()
     } catch (err) {
+      console.error("Gagal menghapus produk", err)
       toast.error("Gagal menghapus produk")
     }
   }

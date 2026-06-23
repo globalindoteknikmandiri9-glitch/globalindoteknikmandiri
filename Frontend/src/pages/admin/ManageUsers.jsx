@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from "react"
 import { Plus, Search, Pencil, Trash2, ShieldAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
 import api from "@/services/axios"
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
@@ -24,13 +23,9 @@ export default function ManageUsers() {
     role: "ADMIN"
   })
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
-
   const fetchUsers = async () => {
     try {
-      setLoading(true)
+      Promise.resolve().then(() => setLoading(true))
       const res = await api.get('/admin/users')
       setUsers(res.data)
     } catch (err) {
@@ -39,6 +34,10 @@ export default function ManageUsers() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
 
   const handleOpenModal = (user = null) => {
     if (user) {

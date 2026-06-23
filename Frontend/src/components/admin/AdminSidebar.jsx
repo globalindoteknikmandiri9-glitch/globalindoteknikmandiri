@@ -76,7 +76,7 @@ export default function AdminSidebar() {
       <div className="px-5 py-5 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
           <img 
-            src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.svg"} 
+            src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.png"} 
             alt="CV Globalindo Teknik Mandiri" 
             className="h-7 w-auto object-contain" 
           />
