@@ -307,7 +307,7 @@ export default function ManageMessages() {
 
       {/* Message Detail Dialog */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="max-w-2xl bg-card text-foreground border border-border rounded-xl">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto bg-card text-foreground border border-border rounded-xl">
           {selectedMessage && (
             <>
               <DialogHeader className="text-left border-b border-border pb-4">
