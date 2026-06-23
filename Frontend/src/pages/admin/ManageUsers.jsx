@@ -108,10 +108,10 @@ export default function ManageUsers() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Manajemen User</h1>
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Kelola hak akses administrator, editor, dan staf internal.</p>
+          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Manajemen User</h1>
+          <p className="text-xs font-semibold text-muted-foreground mt-0.5">Kelola hak akses administrator, editor, dan staf internal.</p>
         </div>
-        <Button onClick={() => handleOpenModal()} className="bg-navy hover:bg-navy/90 text-white font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card">
+        <Button onClick={() => handleOpenModal()} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card">
           <Plus className="h-4 w-4" />
           Tambah User
         </Button>
@@ -120,7 +120,7 @@ export default function ManageUsers() {
       {/* Filter Bar */}
       <div className="bg-card border border-border rounded-xl p-4 shadow-card">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-550" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-400" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}

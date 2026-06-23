@@ -258,7 +258,7 @@ export default function ManageHomePage() {
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="bg-primary hover:bg-primary/90 text-white font-bold text-xs h-10 px-5 rounded-lg gap-2 cursor-pointer"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs h-10 px-5 rounded-lg gap-2 cursor-pointer"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           {saving ? "Menyimpan..." : "Simpan Semua"}
@@ -417,7 +417,7 @@ export default function ManageHomePage() {
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="bg-primary hover:bg-primary/90 text-white font-bold text-xs h-10 px-6 rounded-lg gap-2 cursor-pointer"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs h-10 px-6 rounded-lg gap-2 cursor-pointer"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           {saving ? "Menyimpan..." : "Simpan Semua Perubahan"}

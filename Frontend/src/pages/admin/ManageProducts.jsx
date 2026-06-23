@@ -172,9 +172,9 @@ export default function ManageProducts() {
 
   const getStatusBadge = (status) => {
     const config = {
-      available: { label: "Tersedia", className: "bg-emerald-50 text-emerald-800 border-emerald-250 dark:bg-emerald-500/10 dark:text-emerald-450" },
-      preorder: { label: "Pre-Order", className: "bg-amber-50 text-amber-800 border-amber-250 dark:bg-amber-500/10 dark:text-amber-450" },
-      custom: { label: "Custom Made", className: "bg-slate-50 text-slate-800 border-slate-250 dark:bg-slate-500/10 dark:text-slate-450" }
+      available: { label: "Tersedia", className: "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400" },
+      preorder: { label: "Pre-Order", className: "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400" },
+      custom: { label: "Custom Made", className: "bg-slate-50 text-slate-800 border-slate-200 dark:bg-slate-500/10 dark:text-slate-400" }
     }
     const current = config[status] || config.available
     return (
@@ -189,10 +189,10 @@ export default function ManageProducts() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Kelola Produk</h1>
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Manajemen katalog barang, mesin manufaktur, dan spesifikasi tender.</p>
+          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Kelola Produk</h1>
+          <p className="text-xs font-semibold text-muted-foreground mt-0.5">Manajemen katalog barang, mesin manufaktur, dan spesifikasi tender.</p>
         </div>
-        <Button onClick={() => handleOpenModal()} className="bg-navy hover:bg-navy/90 text-white font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card">
+        <Button onClick={() => handleOpenModal()} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card">
           <Plus className="h-4 w-4" />
           Tambah Produk
         </Button>
@@ -201,7 +201,7 @@ export default function ManageProducts() {
       {/* Filter Bar */}
       <div className="bg-card border border-border rounded-xl p-4 shadow-card">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-550" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-400" />
           <Input
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1) }}
@@ -292,14 +292,14 @@ export default function ManageProducts() {
         {/* Table Footer */}
         {totalPages > 1 && (
           <div className="px-5 py-4 border-t border-border flex items-center justify-between">
-            <p className="text-slate-500 dark:text-slate-450 text-xs font-semibold">
+            <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold">
               Menampilkan <span className="text-slate-900 dark:text-white">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, filtered.length)}</span> – <span className="text-slate-900 dark:text-white">{Math.min(page * ITEMS_PER_PAGE, filtered.length)}</span> dari <span className="text-slate-900 dark:text-white">{filtered.length}</span> produk
             </p>
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-550 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Sebelumnya"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -311,8 +311,8 @@ export default function ManageProducts() {
                   className={cn(
                     "w-9 h-9 flex items-center justify-center rounded-lg border text-xs font-bold transition-colors cursor-pointer",
                     page === i + 1
-                      ? "bg-navy border-navy text-white"
-                      : "border-border text-slate-600 dark:text-slate-400 hover:bg-background"
+                      ? "bg-primary border-primary text-primary-foreground"
+                      : "border-border text-muted-foreground hover:bg-muted"
                   )}
                 >
                   {i + 1}
@@ -321,7 +321,7 @@ export default function ManageProducts() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-550 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Selanjutnya"
               >
                 <ChevronRight className="h-4 w-4" />
