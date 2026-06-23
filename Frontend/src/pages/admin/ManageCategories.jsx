@@ -23,13 +23,9 @@ export default function ManageCategories() {
   // Form state
   const [formData, setFormData] = useState({ name: "" })
 
-  useEffect(() => {
-    fetchCategories()
-  }, [])
-
   const fetchCategories = async () => {
     try {
-      setLoading(true)
+      Promise.resolve().then(() => setLoading(true))
       const res = await api.get("/admin/categories")
       setCategories(res.data)
     } catch (err) {
@@ -38,6 +34,10 @@ export default function ManageCategories() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
 
   const handleOpenModal = (category = null) => {
     if (category) {
