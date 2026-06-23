@@ -44,13 +44,13 @@ function TrendBadge({ trend }) {
   }
   if (trend > 0) {
     return (
-      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 dark:text-emerald-450 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded font-semibold">
+      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded font-semibold">
         <TrendingUp className="h-3 w-3" /> +{trend}%
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center gap-1 text-[10px] text-rose-600 dark:text-rose-450 bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 rounded font-semibold">
+    <span className="inline-flex items-center gap-1 text-[10px] text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 rounded font-semibold">
       <TrendingDown className="h-3 w-3" /> {trend}%
     </span>
   )

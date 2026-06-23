@@ -187,7 +187,7 @@ export default function ManageArticles() {
       {/* Filter Bar */}
       <div className="bg-card border border-border rounded-xl p-4 shadow-card">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-550" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-400" />
           <Input
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1) }}
@@ -276,7 +276,7 @@ export default function ManageArticles() {
         {/* Table Footer (Pagination) */}
         {totalPages > 1 && (
           <div className="px-5 py-4 border-t border-border flex items-center justify-between">
-            <p className="text-slate-500 dark:text-slate-450 text-xs font-semibold">
+            <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold">
               Menampilkan{" "}
               <span className="text-slate-900 dark:text-white">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, filtered.length)}</span>
               {" – "}
@@ -288,7 +288,7 @@ export default function ManageArticles() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-550 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Sebelumnya"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -310,7 +310,7 @@ export default function ManageArticles() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-550 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Selanjutnya"
               >
                 <ChevronRight className="h-4 w-4" />
