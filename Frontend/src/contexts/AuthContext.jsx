@@ -1,22 +1,52 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import api from '../services/axios';
 
-// Placeholder arsitektur otentikasi
-// Didesain agar mudah diintegrasikan dengan JWT/Node.js kelak
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  // Sementara user statis null (belum login)
-  const user = null;
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Cek token di awal
+  useEffect(() => {
+    const initAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const res = await api.get('/auth/me');
+          setUser(res.data.data);
+        } catch (error) {
+          console.error("Token invalid or expired", error);
+          localStorage.removeItem('token');
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+    initAuth();
+  }, []);
 
   const login = async (credentials) => {
-    console.log("Login stub dipanggil dengan:", credentials);
-    // TODO: implementasi ke backend API Node.js
+    const res = await api.post('/auth/login', credentials);
+    const { token } = res.data;
+    
+    // Simpan token ke local storage
+    localStorage.setItem('token', token);
+    // Fetch full user data from /auth/me
+    const meRes = await api.get('/auth/me');
+    setUser(meRes.data.data);
+    return meRes.data.data;
   };
 
-  const logout = () => {
-    console.log("Logout stub dipanggil");
-    // TODO: bersihkan sesi/token
-  };
+  const logout = useCallback(() => {
+    localStorage.removeItem('token');
+    setUser(null);
+    window.location.href = '/admin/login';
+  }, []);
+
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>;
+  }
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

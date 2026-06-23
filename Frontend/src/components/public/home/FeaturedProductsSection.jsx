@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { productsData } from "@/data/products";
+import { useState, useEffect } from "react";
+import api from "@/services/axios";
 import { Button } from "@/components/ui/button";
 import { Eye, ShieldCheck } from "lucide-react";
 
@@ -49,7 +50,19 @@ const getTechnicalMeta = (product) => {
 }
 
 export default function FeaturedProductsSection() {
-  const featuredProducts = productsData.slice(0, 4);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await api.get('/public/products');
+        setFeaturedProducts(res.data.data.slice(0, 4));
+      } catch (error) {
+        console.error("Gagal memuat produk unggulan", error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   return (
     <section className="bg-muted/10 py-16 lg:py-24 border-b border-border">

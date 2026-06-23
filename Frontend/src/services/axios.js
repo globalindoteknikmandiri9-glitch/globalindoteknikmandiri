@@ -10,9 +10,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Sisipkan token authorization kelak jika dibutuhkan
-    // const token = localStorage.getItem('token');
-    // if (token) config.headers.Authorization = `Bearer ${token}`;
+    // Sisipkan token authorization
+    const token = localStorage.getItem('token');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => {

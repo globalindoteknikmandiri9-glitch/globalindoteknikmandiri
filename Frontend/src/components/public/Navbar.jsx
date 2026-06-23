@@ -3,7 +3,7 @@ import { Menu, MessageSquare, X, Sun, Moon, Monitor } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { cn } from "@/lib/utils"
+import { cn, getAssetUrl } from "@/lib/utils"
 import { useTheme } from "@/contexts/ThemeContext"
 import {
   DropdownMenu,
@@ -11,6 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import { useCompanyProfile } from "@/hooks/useCompanyProfile"
 
 const navLinks = [
   { name: "Beranda", path: "/" },
@@ -25,6 +26,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const { theme, setTheme } = useTheme()
+  const { profile, getWhatsappLink } = useCompanyProfile()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16)
@@ -50,8 +52,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center shrink-0">
-            <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-8 md:h-10 w-auto object-contain" />
+          <Link to="/" className="flex items-center gap-2.5 shrink-0">
+            <img 
+              src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.svg"} 
+              alt={profile.name} 
+              className="h-8 md:h-10 w-auto object-contain" 
+            />
+            <span className="font-bold text-warning text-xs md:text-sm tracking-tight">
+              {profile.name}
+            </span>
           </Link>
 
           {/* Desktop Nav - centered */}
@@ -175,7 +184,7 @@ export default function Navbar() {
               className="text-slate-400 hover:text-white hover:bg-white/5 gap-1.5 text-sm h-8 cursor-pointer"
               asChild
             >
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noreferrer">
+              <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
                 <MessageSquare className="h-4 w-4" />
                 WhatsApp
               </a>
@@ -202,7 +211,7 @@ export default function Navbar() {
                 {/* Mobile header */}
                 <div className="px-6 py-5 border-b border-slate-800">
                   <span className="text-white font-semibold text-sm">
-                    CV Globalindo Teknik Mandiri
+                    {profile.name}
                   </span>
                 </div>
 
@@ -272,7 +281,7 @@ export default function Navbar() {
                     className="w-full text-slate-400 border-slate-700 bg-transparent hover:bg-white/5 hover:text-white gap-2 text-sm cursor-pointer h-9 rounded-lg"
                     asChild
                   >
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noreferrer">
+                    <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
                       <MessageSquare className="h-4 w-4" />
                       WhatsApp
                     </a>

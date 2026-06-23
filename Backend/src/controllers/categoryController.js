@@ -2,7 +2,11 @@ const prisma = require('../config/db');
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await prisma.category.findMany();
+    const categories = await prisma.category.findMany({
+      include: {
+        products: true
+      }
+    });
     res.json(categories);
   } catch (err) {
     console.error(err.message);

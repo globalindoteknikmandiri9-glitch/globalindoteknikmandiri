@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { CheckCircle2, MessageSquare, FileText } from "lucide-react"
 import { Link } from "react-router-dom"
-import { companyData } from "@/data/company"
+import { useCompanyProfile } from "@/hooks/useCompanyProfile"
 
 export default function ProductInfo({ name, sku, category, stockStatus, shortDescription, description }) {
+  const { getWhatsappLink } = useCompanyProfile()
+
   const stockConfig = {
     available: {
       label: "Tersedia",
@@ -22,9 +24,8 @@ export default function ProductInfo({ name, sku, category, stockStatus, shortDes
   const currentStock = stockConfig[stockStatus] || stockConfig.available
 
   // WA Link Generation
-  const waNumber = companyData.contacts.whatsapp.replace("+", "")
   const waMessage = `Halo,\nSaya ingin konsultasi terkait produk:\n\n${name}\nSKU: ${sku}\n\nMohon informasi spesifikasi dan penawaran harga.`
-  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`
+  const waUrl = getWhatsappLink(waMessage)
 
   // RFQ Link Generation
   const rfqUrl = `/hubungi-kami?product=${encodeURIComponent(name)}&sku=${encodeURIComponent(sku)}`

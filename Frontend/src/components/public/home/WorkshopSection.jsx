@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import { procurementData } from "@/data/procurement";
 import { Hammer, Settings2, ShieldCheck, MapPin } from "lucide-react";
+import { useCompanyProfile } from "@/hooks/useCompanyProfile";
+import { getAssetUrl } from "@/lib/utils";
 
 export default function WorkshopSection() {
   const { workshop } = procurementData;
+  const { profile } = useCompanyProfile();
 
   return (
     <section className="bg-white dark:bg-slate-900/20 py-16 lg:py-24 border-b border-slate-100 dark:border-slate-800/40">
@@ -53,7 +56,7 @@ export default function WorkshopSection() {
           <div className="lg:col-span-5 relative">
             <div className="relative border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-card">
               <img
-                src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop"
+                src={profile.workshop_image_url ? getAssetUrl(profile.workshop_image_url) : "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop"}
                 alt="Fasilitas Pabrik CV Globalindo Teknik Mandiri"
                 className="w-full aspect-[4/3] object-cover"
                 loading="lazy"

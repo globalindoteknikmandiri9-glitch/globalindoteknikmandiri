@@ -9,7 +9,7 @@ import { Link, useSearchParams } from "react-router-dom"
 import { useEffect } from "react"
 import * as z from "zod"
 import { cn } from "@/lib/utils"
-import { companyData } from "@/data/company"
+import { useCompanyProfile } from "@/hooks/useCompanyProfile"
 
 const contactSchema = z.object({
   fullName: z.string().min(2, { message: "Nama harus diisi minimal 2 karakter" }),
@@ -18,17 +18,19 @@ const contactSchema = z.object({
   message: z.string().min(10, { message: "Pesan terlalu singkat, minimal 10 karakter" }),
 })
 
-const trustItems = [
-  { icon: CheckCircle, title: "Tanggapan 1x24 Jam", desc: companyData.trustStatement },
-  { icon: Shield, title: "Standar SNI & Mutu", desc: "Setiap alat uji dan rambu diproduksi mengikuti pedoman regulasi resmi." },
-  { icon: Headphones, title: "Dukungan Onsite", desc: "Teknisi internal siap membantu instalasi dan kalibrasi alat uji sipil." },
-  { icon: Truck, title: "Logistik Kargo Nasional", desc: "Jangkauan pengiriman kargo berat ke seluruh wilayah 38 provinsi." },
-]
-
 export default function Contact() {
   const [searchParams] = useSearchParams()
   const productParam = searchParams.get("product")
   const skuParam = searchParams.get("sku")
+  
+  const { profile, getWhatsappLink } = useCompanyProfile()
+
+  const trustItems = [
+    { icon: CheckCircle, title: "Tanggapan 1x24 Jam", desc: "Pesan Anda akan direspons maksimal 1x24 jam kerja oleh tim engineering & tender kami." },
+    { icon: Shield, title: "Standar SNI & Mutu", desc: "Setiap alat uji dan rambu diproduksi mengikuti pedoman regulasi resmi." },
+    { icon: Headphones, title: "Dukungan Onsite", desc: "Teknisi internal siap membantu instalasi dan kalibrasi alat uji sipil." },
+    { icon: Truck, title: "Logistik Kargo Nasional", desc: "Jangkauan pengiriman kargo berat ke seluruh wilayah 38 provinsi." },
+  ]
 
   const {
     register,
@@ -42,10 +44,10 @@ export default function Contact() {
     if (productParam && skuParam) {
       setValue(
         "message",
-        `Halo tim sales CV Globalindo Teknik Mandiri,\n\nSaya tertarik untuk mengajukan permohonan Surat Penawaran Harga Resmi (RFQ) dan/atau Surat Dukungan Pabrikator untuk produk berikut:\n\n- Nama Produk: ${productParam}\n- Kode SKU: ${skuParam}\n\nMohon lampirkan spesifikasi teknis lengkap serta estimasi waktu produksi. Terima kasih.`
+        `Halo tim sales ${profile.name || 'CV Globalindo Teknik Mandiri'},\n\nSaya tertarik untuk mengajukan permohonan Surat Penawaran Harga Resmi (RFQ) dan/atau Surat Dukungan Pabrikator untuk produk berikut:\n\n- Nama Produk: ${productParam}\n- Kode SKU: ${skuParam}\n\nMohon lampirkan spesifikasi teknis lengkap serta estimasi waktu produksi. Terima kasih.`
       )
     }
-  }, [productParam, skuParam, setValue])
+  }, [productParam, skuParam, setValue, profile.name])
 
   const onSubmit = async (data) => {
     await new Promise((r) => setTimeout(r, 1000))
@@ -57,16 +59,16 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>Hubungi Kami — CV Globalindo Teknik Mandiri</title>
+        <title>{`Hubungi Kami — ${profile.name || 'CV Globalindo Teknik Mandiri'}`}</title>
         <meta
           name="description"
-          content="Hubungi tim tender CV Globalindo Teknik Mandiri di Bogor. Ajukan surat penawaran harga resmi (RFQ) atau permohonan surat dukungan pabrikator."
+          content={`Hubungi tim tender ${profile.name || 'CV Globalindo Teknik Mandiri'} di Bogor. Ajukan surat penawaran harga resmi (RFQ) atau permohonan surat dukungan pabrikator.`}
         />
       </Helmet>
 
       {/* Page Header */}
       <div className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16 text-left">
           <nav className="text-[11px] text-muted-foreground/60 mb-3 flex items-center gap-1.5 font-bold uppercase tracking-wider">
             <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
             <ChevronRight className="h-3 w-3" />
@@ -80,7 +82,7 @@ export default function Contact() {
       </div>
 
       {/* Main Grid Area */}
-      <div className="bg-background py-16 lg:py-24 text-foreground">
+      <div className="bg-background py-16 lg:py-24 text-foreground text-left">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-14 lg:gap-20">
 
@@ -90,66 +92,95 @@ export default function Contact() {
                 <h2 className="text-xl font-bold text-foreground mb-6 tracking-tight">Informasi Kantor & Workshop</h2>
                 <div className="space-y-6">
                   {/* Address */}
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0 mt-0.5">
-                      <MapPin className="h-5 w-5 text-muted-foreground" />
+                  {profile.address && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0 mt-0.5">
+                        <MapPin className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Workshop Utama</p>
+                        <p className="text-xs text-foreground leading-relaxed font-semibold whitespace-pre-line">
+                          {profile.address}
+                        </p>
+                        {profile.map_url && (() => {
+                          let embedUrl = profile.map_url;
+                          if (embedUrl.includes('<iframe')) {
+                            const match = embedUrl.match(/src="([^"]+)"/);
+                            if (match) embedUrl = match[1];
+                          }
+                          return embedUrl ? (
+                            <div className="mt-4 rounded-xl overflow-hidden border border-border h-48 relative bg-muted shadow-sm group">
+                              <iframe
+                                src={embedUrl}
+                                className="absolute inset-0 w-full h-full border-0 group-hover:opacity-95 transition-opacity"
+                                allowFullScreen=""
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                title="Lokasi Workshop CV Globalindo"
+                              />
+                            </div>
+                          ) : null;
+                        })()}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Workshop Utama</p>
-                      <p className="text-xs text-foreground leading-relaxed font-semibold">
-                        {companyData.address.full}
-                      </p>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Email */}
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0 mt-0.5">
-                      <Mail className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Email Sales & RFQ</p>
-                      <a
-                        href={`mailto:${companyData.contacts.email}`}
-                        className="text-xs text-foreground hover:text-accent transition-colors leading-relaxed font-semibold"
-                      >
-                        {companyData.contacts.email}
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Phone */}
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0 mt-0.5">
-                      <Phone className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Telepon & WhatsApp</p>
-                      <div className="space-y-1">
-                        <p className="text-xs text-foreground leading-relaxed font-semibold">
-                          {companyData.contacts.phone} (Hubungan Kantor)
-                        </p>
+                  {profile.email && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0 mt-0.5">
+                        <Mail className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Email Sales & RFQ</p>
                         <a
-                          href={companyData.contacts.whatsappLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center gap-1.5 text-xs text-foreground hover:text-accent transition-colors font-semibold"
+                          href={`mailto:${profile.email}`}
+                          className="text-xs text-foreground hover:text-accent transition-colors leading-relaxed font-semibold"
                         >
-                          <MessageSquare className="h-3.5 w-3.5 text-accent" />
-                          Hubungi via WhatsApp
+                          {profile.email}
                         </a>
                       </div>
                     </div>
-                  </div>
+                  )}
+
+                  {/* Phone */}
+                  {(profile.phone || profile.whatsapp_number) && (
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center shrink-0 mt-0.5">
+                        <Phone className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Telepon & WhatsApp</p>
+                        <div className="space-y-1">
+                          {profile.phone && (
+                            <p className="text-xs text-foreground leading-relaxed font-semibold">
+                              {profile.phone} (Hubungan Kantor)
+                            </p>
+                          )}
+                          {profile.whatsapp_number && (
+                            <a
+                              href={getWhatsappLink()}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex items-center gap-1.5 text-xs text-foreground hover:text-accent transition-colors font-semibold"
+                            >
+                              <MessageSquare className="h-3.5 w-3.5 text-accent" />
+                              Hubungi via WhatsApp
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
               {/* Office hours */}
               <div className="surface-card p-6">
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">Jam Operasional Resmi</p>
-                <p className="text-xs text-foreground font-semibold">{companyData.hours.weekdays}</p>
-                <p className="text-xs text-foreground font-semibold mt-1">{companyData.hours.saturday}</p>
-                <p className="text-xs text-muted-foreground font-medium mt-1">{companyData.hours.sunday}</p>
+                {profile.hours_weekday && <p className="text-xs text-foreground font-semibold">{profile.hours_weekday}</p>}
+                {profile.hours_saturday && <p className="text-xs text-foreground font-semibold mt-1">{profile.hours_saturday}</p>}
+                {profile.hours_sunday && <p className="text-xs text-muted-foreground font-medium mt-1">{profile.hours_sunday}</p>}
               </div>
             </div>
 
@@ -249,7 +280,7 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl font-bold text-foreground tracking-tight">Kepatuhan Administrasi Kontrak</h2>
-            <p className="text-muted-foreground text-xs mt-2 font-bold uppercase tracking-wider">Jaminan standar mutu & respon CV Globalindo Teknik Mandiri</p>
+            <p className="text-muted-foreground text-xs mt-2 font-bold uppercase tracking-wider">Jaminan standar mutu & respon {profile.name}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {trustItems.map((item, i) => (

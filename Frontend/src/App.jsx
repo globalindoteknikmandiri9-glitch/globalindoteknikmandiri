@@ -24,8 +24,10 @@ const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
 const ManageProducts = lazy(() => import('./pages/admin/ManageProducts'))
 const ManageCategories = lazy(() => import('./pages/admin/ManageCategories'))
 const ManageArticles = lazy(() => import('./pages/admin/ManageArticles'))
+const ManageBanners = lazy(() => import('./pages/admin/ManageBanners'))
 const ManageUsers = lazy(() => import('./pages/admin/ManageUsers'))
 const Settings = lazy(() => import('./pages/admin/Settings'))
+const ChangePassword = lazy(() => import('./pages/admin/ChangePassword'))
 
 function App() {
   return (
@@ -59,8 +61,10 @@ function App() {
                     <Route path="produk" element={<ManageProducts />} />
                     <Route path="kategori" element={<ManageCategories />} />
                     <Route path="artikel" element={<ManageArticles />} />
+                    <Route path="banner" element={<ManageBanners />} />
                     <Route path="user" element={<ManageUsers />} />
                     <Route path="pengaturan" element={<Settings />} />
+                    <Route path="ganti-password" element={<ChangePassword />} />
                   </Route>
                 </Routes>
               </Suspense>

@@ -1,25 +1,22 @@
-import { useState, useMemo } from "react"
-import { Search, ChevronLeft, ChevronRight, SlidersHorizontal, Package, CheckCircle2, FileText, X } from "lucide-react"
+import { useState, useMemo, useEffect } from "react"
+import { Search, ChevronLeft, ChevronRight, SlidersHorizontal, Package, CheckCircle2, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
-import { cn } from "@/lib/utils"
-import { productsData } from "@/data/products"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"
+import { cn, getAssetUrl } from "@/lib/utils"
+import api from "@/services/axios"
+import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog"
 
-const CATEGORIES = [
-  "Alat Marka Jalan",
-  "Peralatan Safety Jalan",
-  "Laboratorium & Alat Uji",
-  "Mesin Pertanian & Sadap",
-  "Bor Tanah & Pertambangan"
-]
+const STOCK_STATUS_MAP = {
+  available: "Tersedia",
+  preorder: "Pre-Order",
+  custom: "Custom Made"
+}
 
-const STOCK_OPTIONS = ["Tersedia", "Siap Produksi", "Custom Made"]
-
+const STOCK_OPTIONS = Object.values(STOCK_STATUS_MAP)
 const ITEMS_PER_PAGE = 9
 
 export default function Products() {
@@ -30,30 +27,47 @@ export default function Products() {
   const [page, setPage] = useState(1)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
-  
-  // Simulate minor load for smooth transitions
-  const [isLoading] = useState(false)
+  const [productsData, setProductsData] = useState([])
+  const [categories, setCategories] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [prodRes, catRes] = await Promise.all([
+          api.get("/public/products"),
+          api.get("/public/categories")
+        ])
+        setProductsData(prodRes.data)
+        setCategories(catRes.data.map(c => c.name))
+      } catch (err) {
+        console.error("Gagal memuat produk", err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
 
   const toggleFilter = (val, list, setList) => {
-    setList((prev) =>
-      prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]
-    )
+    setList(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])
     setPage(1)
   }
 
   const filtered = useMemo(() => {
-    return productsData.filter((p) => {
+    return productsData.filter(p => {
+      const catName = p.category?.name || ""
+      const spec = p.specification || ""
+      const statusLabel = STOCK_STATUS_MAP[p.status] || p.status
       const matchSearch =
         p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.sku.toLowerCase().includes(search.toLowerCase()) ||
-        p.spec.toLowerCase().includes(search.toLowerCase())
-      const matchCat =
-        selectedCategories.length === 0 || selectedCategories.includes(p.category)
-      const matchStock =
-        selectedStock.length === 0 || selectedStock.includes(p.status)
+        spec.toLowerCase().includes(search.toLowerCase()) ||
+        catName.toLowerCase().includes(search.toLowerCase())
+      const matchCat = selectedCategories.length === 0 || selectedCategories.includes(catName)
+      const matchStock = selectedStock.length === 0 || selectedStock.includes(statusLabel)
       return matchSearch && matchCat && matchStock
     })
-  }, [search, selectedCategories, selectedStock])
+  }, [productsData, search, selectedCategories, selectedStock])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE))
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
@@ -71,36 +85,50 @@ export default function Products() {
     return pages
   }
 
+  const getProductImage = (product) => {
+    const img = product.images?.find(i => i.is_primary)?.image_url || product.images?.[0]?.image_url
+    return img ? getAssetUrl(img) : null
+  }
+
+  const getProductSku = (product) => `GTM-PD-${String(product.id).padStart(3, "0")}`
+
+  const getYouTubeId = (url) => {
+    if (!url) return null
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
+    ]
+    for (const pattern of patterns) {
+      const match = url.match(pattern)
+      if (match) return match[1]
+    }
+    return null
+  }
+
   const handleInquiry = (product) => {
     setSelectedProduct(null)
-    navigate(`/hubungi-kami?product=${encodeURIComponent(product.name)}&sku=${encodeURIComponent(product.sku)}`)
+    navigate(`/hubungi-kami?product=${encodeURIComponent(product.name)}&sku=${encodeURIComponent(getProductSku(product))}`)
   }
 
   const renderFilters = () => (
     <div className="space-y-6">
-      {/* Search Input */}
       <div>
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-2">
-          Cari Katalog
-        </label>
+        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-2">Cari Katalog</label>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1) }}
+            onChange={e => { setSearch(e.target.value); setPage(1) }}
             placeholder="Cari nama, spesifikasi, SKU..."
             className="pl-9 h-9 text-xs border-slate-200 bg-white"
           />
         </div>
       </div>
 
-      {/* Categories Filter */}
       <div>
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-3">
-          Kategori
-        </label>
+        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-3">Kategori</label>
         <div className="space-y-2.5">
-          {CATEGORIES.map((cat) => (
+          {categories.map(cat => (
             <label key={cat} className="flex items-center gap-2.5 cursor-pointer group">
               <Checkbox
                 id={`cat-${cat}`}
@@ -114,13 +142,10 @@ export default function Products() {
         </div>
       </div>
 
-      {/* Stock Filter */}
       <div>
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-3">
-          Status Ketersediaan
-        </label>
+        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-3">Status Ketersediaan</label>
         <div className="space-y-2.5">
-          {STOCK_OPTIONS.map((s) => (
+          {STOCK_OPTIONS.map(s => (
             <label key={s} className="flex items-center gap-2.5 cursor-pointer group">
               <Checkbox
                 id={`stock-${s}`}
@@ -134,7 +159,6 @@ export default function Products() {
         </div>
       </div>
 
-      {/* Reset Filter Button */}
       {(selectedCategories.length > 0 || selectedStock.length > 0 || search) && (
         <button
           onClick={() => { setSelectedCategories([]); setSelectedStock([]); setSearch(""); setPage(1) }}
@@ -176,7 +200,7 @@ export default function Products() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
           <div className="flex flex-col lg:flex-row gap-10">
 
-            {/* Sidebar — desktop filter */}
+            {/* Sidebar Desktop */}
             <aside className="w-60 shrink-0 hidden lg:block">
               <div className="sticky top-24 border border-slate-200/80 rounded-xl p-6 bg-slate-50/50">
                 <h2 className="text-xs font-bold text-slate-900 mb-5 pb-3 border-b border-slate-200 uppercase tracking-wider">Filter Katalog</h2>
@@ -184,7 +208,7 @@ export default function Products() {
               </div>
             </aside>
 
-            {/* Main content area */}
+            {/* Main content */}
             <div className="flex-1 min-w-0">
               {/* Toolbar */}
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
@@ -207,20 +231,18 @@ export default function Products() {
                 </div>
               </div>
 
-              {/* Mobile filter drawer panel */}
+              {/* Mobile filter drawer */}
               {sidebarOpen && (
                 <div className="lg:hidden mb-6 p-5 bg-slate-50 border border-slate-200 rounded-xl">
                   <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
                     <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Filter Pencarian</h3>
-                    <button onClick={() => setSidebarOpen(false)} className="text-xs text-slate-500 font-semibold hover:text-slate-900">
-                      Tutup
-                    </button>
+                    <button onClick={() => setSidebarOpen(false)} className="text-xs text-slate-500 font-semibold hover:text-slate-900">Tutup</button>
                   </div>
                   {renderFilters()}
                 </div>
               )}
 
-              {/* Product Grid / Loading / Empty States */}
+              {/* Product Grid */}
               {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {Array.from({ length: 6 }).map((_, i) => (
@@ -230,10 +252,6 @@ export default function Products() {
                         <Skeleton className="h-5 w-3/4 bg-slate-100 animate-pulse" />
                         <Skeleton className="h-3 w-1/3 bg-slate-100 animate-pulse" />
                         <Skeleton className="h-4 w-full bg-slate-100 animate-pulse" />
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                          <Skeleton className="h-5 w-20 bg-slate-100 animate-pulse" />
-                          <Skeleton className="h-8 w-24 bg-slate-100 animate-pulse" />
-                        </div>
                       </div>
                     </div>
                   ))}
@@ -243,7 +261,7 @@ export default function Products() {
                   <Package className="h-10 w-10 text-slate-300 mx-auto mb-4" />
                   <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Produk Tidak Ditemukan</h3>
                   <p className="text-xs text-slate-500 mb-6 leading-relaxed">
-                    Maaf, tidak ada produk aktif di katalog kami yang cocok dengan kata kunci pencarian atau filter kategori saat ini.
+                    Maaf, tidak ada produk aktif yang cocok dengan kata kunci pencarian atau filter saat ini.
                   </p>
                   <Button
                     onClick={() => { setSelectedCategories([]); setSelectedStock([]); setSearch(""); setPage(1) }}
@@ -255,51 +273,41 @@ export default function Products() {
               ) : (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {paginated.map((product) => (
+                    {paginated.map(product => (
                       <div
                         key={product.id}
                         className="group bg-white border border-slate-200/80 rounded-xl overflow-hidden flex flex-col h-full shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-300"
                       >
                         {/* Image */}
                         <div className="relative aspect-[4/3] overflow-hidden bg-slate-50 border-b border-slate-100 shrink-0">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            loading="lazy"
-                            onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=60" }}
-                            className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
-                          />
-                          
-                          {/* Stock status badge */}
-                          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs px-2 py-0.5 rounded text-[9px] font-bold tracking-wide uppercase text-slate-800 border border-slate-200 flex items-center gap-1 shadow-xs">
+                          {getProductImage(product) ? (
+                            <img
+                              src={getProductImage(product)}
+                              alt={product.name}
+                              loading="lazy"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Package className="h-12 w-12 text-slate-200" />
+                            </div>
+                          )}
+                          <div className="absolute top-3 left-3 bg-white/95 px-2 py-0.5 rounded text-[9px] font-bold tracking-wide uppercase text-slate-800 border border-slate-200 flex items-center gap-1 shadow-sm">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#059669]" />
-                            {product.status}
+                            {STOCK_STATUS_MAP[product.status] || product.status}
                           </div>
                         </div>
 
-                        {/* Content Area */}
+                        {/* Content */}
                         <div className="p-5 flex flex-col flex-1 justify-between">
                           <div>
-                            {/* Category and SKU */}
                             <div className="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">
-                              <span>{product.category}</span>
-                              <span className="text-[9px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 font-mono">
-                                {product.sku}
-                              </span>
+                              <span>{product.category?.name || "Lainnya"}</span>
+                              <span className="text-[9px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 font-mono">{getProductSku(product)}</span>
                             </div>
-
-                            {/* Product Name */}
-                            <h3 className="font-bold text-slate-900 text-sm mb-2 group-hover:text-[#059669] transition-colors line-clamp-1">
-                              {product.name}
-                            </h3>
-
-                            {/* Brief Spec */}
-                            <p className="text-xs text-slate-500 leading-relaxed mb-4 line-clamp-2">
-                              {product.spec}
-                            </p>
+                            <h3 className="font-bold text-slate-900 text-sm mb-2 group-hover:text-[#059669] transition-colors line-clamp-1">{product.name}</h3>
+                            <p className="text-xs text-slate-500 leading-relaxed mb-4 line-clamp-2">{product.specification || product.description || "-"}</p>
                           </div>
-
-                          {/* Action Button */}
                           <div className="pt-4 border-t border-slate-100">
                             <Button
                               variant="outline"
@@ -318,36 +326,30 @@ export default function Products() {
                   {totalPages > 1 && (
                     <div className="mt-12 flex items-center justify-center gap-1">
                       <button
-                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                        onClick={() => setPage(p => Math.max(1, p - 1))}
                         disabled={page === 1}
                         className="w-9 h-9 flex items-center justify-center rounded border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </button>
-
                       {paginationPages().map((p, i) =>
                         p === "..." ? (
-                          <span key={`e-${i}`} className="w-9 h-9 flex items-center justify-center text-sm text-slate-400">
-                            ···
-                          </span>
+                          <span key={`e-${i}`} className="w-9 h-9 flex items-center justify-center text-sm text-slate-400">···</span>
                         ) : (
                           <button
                             key={p}
                             onClick={() => setPage(p)}
                             className={cn(
                               "w-9 h-9 flex items-center justify-center rounded border text-xs font-bold transition-colors",
-                              page === p
-                                ? "bg-[#0f172a] border-[#0f172a] text-white"
-                                : "border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
+                              page === p ? "bg-[#0f172a] border-[#0f172a] text-white" : "border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
                             )}
                           >
                             {p}
                           </button>
                         )
                       )}
-
                       <button
-                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                         disabled={page === totalPages}
                         className="w-9 h-9 flex items-center justify-center rounded border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                       >
@@ -362,75 +364,91 @@ export default function Products() {
         </div>
       </div>
 
-      {/* Specifications Details Dialog Modal */}
+      {/* Product Detail Dialog */}
       {selectedProduct && (
-        <Dialog open={!!selectedProduct} onOpenChange={(open) => !open && setSelectedProduct(null)}>
-          <DialogContent className="max-w-2xl bg-white border border-slate-200 rounded-xl p-0 overflow-hidden shadow-lg">
-            <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
-              <img
-                src={selectedProduct.image}
-                alt={selectedProduct.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              
-              <div className="absolute bottom-5 left-6 right-6 text-white">
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-[#059669] px-2 py-0.5 rounded shadow-xs mb-2 inline-block">
-                  {selectedProduct.category}
+        <Dialog open={!!selectedProduct} onOpenChange={open => !open && setSelectedProduct(null)}>
+          <DialogContent className="max-w-lg bg-white border border-slate-200 rounded-xl p-0 overflow-hidden shadow-lg max-h-[90vh] flex flex-col">
+
+            {/* Header: full image, no crop, capped height */}
+            <div className="relative w-full shrink-0 bg-slate-900 border-b border-slate-100 overflow-hidden">
+              {getProductImage(selectedProduct) ? (
+                <div className="w-full aspect-[4/3] max-h-48">
+                  <img
+                    src={getProductImage(selectedProduct)}
+                    alt={selectedProduct.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-32 flex items-center justify-center bg-slate-100">
+                  <Package className="h-14 w-14 text-slate-200" />
+                </div>
+              )}
+              {/* Gradient overlay + title */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-[#059669] text-white px-2 py-0.5 rounded inline-block mb-1.5">
+                  {selectedProduct.category?.name || "Lainnya"}
                 </span>
-                <DialogTitle className="text-xl font-bold text-white leading-tight">
+                <DialogTitle className="text-base font-bold text-white leading-snug line-clamp-2 drop-shadow">
                   {selectedProduct.name}
                 </DialogTitle>
-                <div className="text-[10px] text-slate-300 font-mono mt-1">
-                  SKU: {selectedProduct.sku} | Status: {selectedProduct.status}
+                <div className="text-[10px] text-slate-300 font-mono mt-0.5">
+                  {getProductSku(selectedProduct)} · {STOCK_STATUS_MAP[selectedProduct.status] || selectedProduct.status}
                 </div>
               </div>
             </div>
 
-            <div className="p-6">
-              <DialogHeader className="mb-4">
-                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Spesifikasi Teknis</h4>
-              </DialogHeader>
+            {/* Scrollable body */}
+            <div className="p-5 overflow-y-auto flex-1 space-y-4">
 
-              <div className="space-y-4">
-                <div className="bg-slate-50 border border-slate-100 p-4 rounded-lg">
-                  <p className="text-xs text-slate-700 leading-relaxed font-mono whitespace-pre-line">
-                    {selectedProduct.spec}
-                  </p>
+              {/* YouTube embed — fluid 16:9 */}
+              {getYouTubeId(selectedProduct.youtube_url) && (
+                <div className="rounded-lg overflow-hidden border border-slate-100 bg-black">
+                  <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                    <iframe
+                      className="absolute inset-0 w-full h-full"
+                      src={`https://www.youtube.com/embed/${getYouTubeId(selectedProduct.youtube_url)}?rel=0&modestbranding=1`}
+                      title={selectedProduct.name}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
                 </div>
+              )}
 
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Deskripsi Produk</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed">
-                    {selectedProduct.description}
-                  </p>
+              {selectedProduct.specification && (
+                <div className="bg-slate-50 border border-slate-100 p-3 rounded-lg">
+                  <h4 className="text-[10px] font-bold text-slate-900 uppercase tracking-wider mb-1.5">Spesifikasi Teknis</h4>
+                  <p className="text-xs text-slate-700 leading-relaxed font-mono whitespace-pre-line">{selectedProduct.specification}</p>
                 </div>
+              )}
 
-                <div className="flex items-center gap-6 text-xs text-slate-400 pt-4 border-t border-slate-100">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="h-4 w-4 text-[#059669]" /> Dukungan Surat Dukungan
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="h-4 w-4 text-[#059669]" /> Sertifikasi TKDN
-                  </span>
-                </div>
+              <div>
+                <h4 className="text-[10px] font-bold text-slate-900 uppercase tracking-wider mb-1.5">Deskripsi Produk</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">{selectedProduct.description || "-"}</p>
               </div>
 
-              <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-slate-100">
-                <DialogClose asChild>
-                  <Button variant="ghost" className="text-xs text-slate-500 hover:text-slate-900 h-9">
-                    Tutup
-                  </Button>
-                </DialogClose>
-                <Button
-                  className="bg-[#059669] hover:bg-[#059669]/90 text-white text-xs h-9 px-4 font-semibold rounded gap-1.5"
-                  onClick={() => handleInquiry(selectedProduct)}
-                >
-                  <FileText className="h-4 w-4" />
-                  Minta Surat Penawaran Resmi (RFQ)
-                </Button>
+              <div className="flex items-center gap-4 text-xs text-slate-400 pt-3 border-t border-slate-100">
+                <span className="flex items-center gap-1"><CheckCircle2 className="h-3.5 w-3.5 text-[#059669]" /> Surat Dukungan</span>
+                <span className="flex items-center gap-1"><CheckCircle2 className="h-3.5 w-3.5 text-[#059669]" /> Sertifikasi TKDN</span>
               </div>
             </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-slate-100 shrink-0">
+              <DialogClose asChild>
+                <Button variant="ghost" className="text-xs text-slate-500 hover:text-slate-900 h-8">Tutup</Button>
+              </DialogClose>
+              <Button
+                className="bg-[#059669] hover:bg-[#059669]/90 text-white text-xs h-8 px-3 font-semibold rounded gap-1.5"
+                onClick={() => handleInquiry(selectedProduct)}
+              >
+                <FileText className="h-3.5 w-3.5" />
+                Minta Penawaran (RFQ)
+              </Button>
+            </div>
+
           </DialogContent>
         </Dialog>
       )}

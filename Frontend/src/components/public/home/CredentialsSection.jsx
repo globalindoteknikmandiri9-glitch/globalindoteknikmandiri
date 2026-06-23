@@ -1,8 +1,20 @@
 import { motion } from "framer-motion";
-import { companyData } from "@/data/company";
+import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 import { FileCheck, ShieldCheck, Scale, Award } from "lucide-react";
 
 export default function CredentialsSection() {
+  const { profile } = useCompanyProfile();
+  const establishedYear = parseInt(profile.established || '2009', 10);
+  const currentYear = new Date().getFullYear();
+  const experienceYears = currentYear - establishedYear;
+
+  const stats = [
+    { value: `${establishedYear}`, label: "Tahun Didirikan" },
+    { value: `${experienceYears}+ Tahun`, label: "Pengalaman Industri" },
+    { value: "50+ BUMN & Swasta", label: "Mitra Aktif B2B" },
+    { value: "500+ SKU", label: "Katalog Produk Aktif" }
+  ];
+
   return (
     <section className="bg-background py-16 lg:py-24 border-b border-border">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -11,10 +23,10 @@ export default function CredentialsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.25 }}
-          className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start"
+          className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start animate-fade-in"
         >
           {/* Left Column - History and Legals */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 text-left">
             <span className="text-xs font-semibold text-accent uppercase tracking-widest block mb-3">
               Kredibilitas Hukum & Legalitas
             </span>
@@ -70,13 +82,13 @@ export default function CredentialsSection() {
           </div>
 
           {/* Right Column - Stats Grid */}
-          <div className="bg-muted/30 border border-border rounded-2xl p-8 shadow-card lg:col-span-5">
+          <div className="bg-muted/30 border border-border rounded-2xl p-8 shadow-card lg:col-span-5 text-left">
             <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border">
               Fakta & Rekam Jejak Operasional
             </h3>
             
             <div className="grid grid-cols-2 gap-6">
-              {companyData.stats.map((stat, idx) => (
+              {stats.map((stat, idx) => (
                 <div key={idx} className="surface-card p-5 hover:shadow-card-hover transition-all duration-300 cursor-default">
                   <div className="text-2xl lg:text-3xl font-extrabold text-foreground leading-tight">
                     {stat.value}
@@ -89,7 +101,7 @@ export default function CredentialsSection() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-border text-xs text-muted-foreground leading-relaxed">
-              * Seluruh statistik di atas merujuk pada rekam jejak riil pengiriman alat dan pabrikasi unit kami sejak tahun 2009.
+              * Seluruh statistik di atas merujuk pada rekam jejak riil pengiriman alat dan pabrikasi unit kami sejak tahun {establishedYear}.
             </div>
           </div>
         </motion.div>

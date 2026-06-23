@@ -12,6 +12,8 @@ import {
   Pie,
   Cell,
 } from "recharts"
+import { useState, useEffect } from "react"
+import api from "@/services/axios"
 
 const areaData = [
   { month: "Jan", value: 62 },
@@ -86,6 +88,56 @@ function TrendBadge({ trend }) {
 export default function Dashboard() {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
+  
+  const [dashboardStats, setDashboardStats] = useState({
+    totalProducts: 0,
+    totalCategories: 0,
+    totalArticles: 0,
+    totalBanners: 0
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await api.get('/admin/dashboard');
+        setDashboardStats(res.data);
+      } catch (err) {
+        console.error("Gagal memuat statistik", err);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  const dynamicStats = [
+    {
+      title: "Total Produk",
+      value: dashboardStats.totalProducts,
+      icon: Package,
+      trend: null,
+      sub: "item tersedia",
+    },
+    {
+      title: "Kategori",
+      value: dashboardStats.totalCategories,
+      icon: Tags,
+      trend: null,
+      sub: "kategori terdaftar",
+    },
+    {
+      title: "Artikel",
+      value: dashboardStats.totalArticles,
+      icon: FileText,
+      trend: null,
+      sub: "artikel/berita",
+    },
+    {
+      title: "Total Banner",
+      value: dashboardStats.totalBanners,
+      icon: Users,
+      trend: null,
+      sub: "banner slider",
+    },
+  ];
 
   // Dark-mode specific values for Recharts
   const gridColor = isDark ? "#1e293b" : "#f1f5f9"
@@ -118,7 +170,7 @@ export default function Dashboard() {
 
       {/* Summary Metrics - Glassmorphism is permitted here */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, i) => (
+        {dynamicStats.map((stat, i) => (
           <div
             key={i}
             className="bg-card/60 backdrop-blur-md border border-border/30 rounded-xl p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300"

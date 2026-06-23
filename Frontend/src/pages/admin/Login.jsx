@@ -3,27 +3,40 @@ import { Input } from "@/components/ui/input"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { cn } from "@/lib/utils"
+import { cn, getAssetUrl } from "@/lib/utils"
 import * as z from "zod"
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Alamat email tidak valid" }),
+  username: z.string().min(1, { message: "Username harus diisi" }),
   password: z.string().min(6, { message: "Password minimal 6 karakter" }),
 })
 
+import { toast } from "sonner"
+import { useAuth } from "@/contexts/AuthContext"
+import { useCompanyProfile } from "@/hooks/useCompanyProfile"
+
 export default function Login() {
   const navigate = useNavigate()
+  const { login } = useAuth()
+  const { profile } = useCompanyProfile()
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(loginSchema) })
 
   const onSubmit = async (data) => {
-    await new Promise((r) => setTimeout(r, 900))
-    console.log("Login:", data)
-    navigate("/admin/dashboard")
+    try {
+      await login(data)
+      toast.success("Login Berhasil", { description: "Selamat datang di Dashboard Admin" })
+      navigate("/admin/dashboard")
+    } catch (err) {
+      console.error(err)
+      toast.error("Login Gagal", { description: err.response?.data?.message || "Username atau password salah" })
+      setError("password", { message: err.response?.data?.message || "Username atau password salah" })
+    }
   }
 
   return (
@@ -41,7 +54,16 @@ export default function Login() {
           <p className="text-warning text-xs font-bold tracking-widest uppercase mb-4">
             Portal Administrasi
           </p>
-          <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-12 w-auto object-contain mb-6" />
+          <div className="flex items-center gap-3 mb-6">
+            <img 
+              src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.svg"} 
+              alt="CV Globalindo Teknik Mandiri" 
+              className="h-12 w-auto object-contain" 
+            />
+            <span className="font-bold text-warning text-base md:text-lg tracking-tight">
+              {profile.name}
+            </span>
+          </div>
           <p className="text-muted-foreground/80 text-sm max-w-xs leading-relaxed font-semibold">
             Sistem manajemen internal untuk pengelolaan katalog produk, artikel, dan data perusahaan.
           </p>
@@ -55,9 +77,17 @@ export default function Login() {
       {/* Right panel: form */}
       <div className="flex-1 flex items-center justify-center bg-background p-8">
         <div className="w-full max-w-sm">
-          {/* Mobile logo */}
-          <div className="lg:hidden mb-8 flex flex-col items-center">
-            <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-10 w-auto object-contain mb-2" />
+          <div className="lg:hidden mb-8 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2.5">
+              <img 
+                src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.svg"} 
+                alt="CV Globalindo Teknik Mandiri" 
+                className="h-10 w-auto object-contain" 
+              />
+              <span className="font-bold text-warning text-sm tracking-tight">
+                {profile.name}
+              </span>
+            </div>
             <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider">Admin Panel</p>
           </div>
 
@@ -69,21 +99,21 @@ export default function Login() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
               <div className="space-y-1.5">
-                <label htmlFor="email" className="text-sm font-semibold text-foreground block">
-                  Email
+                <label htmlFor="username" className="text-sm font-semibold text-foreground block">
+                  Username
                 </label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="admin@globalindoteknik.com"
-                  {...register("email")}
+                  id="username"
+                  type="text"
+                  placeholder="admin"
+                  {...register("username")}
                   className={cn(
                     "h-10 text-xs border-border bg-background focus-visible:ring-accent",
-                    errors.email && "border-red-400 focus-visible:ring-red-400"
+                    errors.username && "border-red-400 focus-visible:ring-red-400"
                   )}
                 />
-                {errors.email && (
-                  <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+                {errors.username && (
+                  <p className="text-xs text-red-500 mt-1">{errors.username.message}</p>
                 )}
               </div>
 

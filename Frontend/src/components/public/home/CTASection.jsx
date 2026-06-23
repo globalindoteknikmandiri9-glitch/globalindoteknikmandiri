@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { companyData } from "@/data/company";
+import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 import { Mail, MessageSquare } from "lucide-react";
 
 export default function CTASection() {
+  const { getWhatsappLink } = useCompanyProfile();
+
   return (
     <section className="bg-navy py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -31,7 +33,7 @@ export default function CTASection() {
                 className="gap-2 h-11 px-6 text-sm font-semibold rounded-lg w-full sm:w-auto justify-center"
                 asChild
               >
-                <a href={companyData.contacts.whatsappLink} target="_blank" rel="noreferrer">
+                <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
                   <MessageSquare className="h-4.5 w-4.5" />
                   Hubungi via WhatsApp
                 </a>
