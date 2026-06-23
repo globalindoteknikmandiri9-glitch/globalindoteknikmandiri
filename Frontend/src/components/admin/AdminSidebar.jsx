@@ -80,9 +80,6 @@ export default function AdminSidebar() {
             alt="CV Globalindo Teknik Mandiri" 
             className="h-7 w-auto object-contain" 
           />
-          <span className="font-bold text-warning text-xs tracking-tight">
-            {profile.name}
-          </span>
         </div>
       </div>
 

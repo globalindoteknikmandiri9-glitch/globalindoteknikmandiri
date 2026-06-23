@@ -74,7 +74,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav - centered */}
-          <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          <nav className="hidden lg:flex items-center gap-1 ml-auto mr-6">
             {navLinks.map((link) => {
               if (link.name === "Produk") {
                 return (
@@ -198,16 +198,16 @@ export default function Navbar() {
                   {theme === 'system' && <Monitor className="h-4 w-4 transition-all text-warning" />}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-navy border border-border text-slate-300 w-32 shadow-dropdown">
-                <DropdownMenuItem onClick={() => setTheme('light')} className="focus:bg-white/5 focus:text-white gap-2 cursor-pointer text-xs py-2">
+              <DropdownMenuContent align="end" className="bg-popover border border-border text-popover-foreground w-32 shadow-dropdown">
+                <DropdownMenuItem onClick={() => setTheme('light')} className="focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2">
                   <Sun className="h-3.5 w-3.5" />
                   <span>Terang</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')} className="focus:bg-white/5 focus:text-white gap-2 cursor-pointer text-xs py-2">
+                <DropdownMenuItem onClick={() => setTheme('dark')} className="focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2">
                   <Moon className="h-3.5 w-3.5" />
                   <span>Gelap</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')} className="focus:bg-white/5 focus:text-white gap-2 cursor-pointer text-xs py-2">
+                <DropdownMenuItem onClick={() => setTheme('system')} className="focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2">
                   <Monitor className="h-3.5 w-3.5" />
                   <span>Sistem</span>
                 </DropdownMenuItem>
@@ -242,11 +242,11 @@ export default function Navbar() {
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-navy border-l border-slate-800 p-0 shadow-modal">
-              <div className="flex flex-col h-full text-left">
+            <SheetContent side="right" className="w-72 bg-background border-l border-border p-0 shadow-modal">
+              <div className="flex flex-col h-full text-left text-foreground">
                 {/* Mobile header */}
-                <div className="px-6 py-5 border-b border-slate-800">
-                  <span className="text-white font-semibold text-sm">
+                <div className="px-6 py-5 border-b border-border">
+                  <span className="font-semibold text-sm">
                     {profile.name}
                   </span>
                 </div>
@@ -260,8 +260,8 @@ export default function Navbar() {
                       className={cn(
                         "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors",
                         isActive(link.path)
-                          ? "bg-white/5 text-warning"
-                          : "text-slate-400 hover:text-white hover:bg-white/5"
+                          ? "bg-accent text-warning"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
                       )}
                     >
                       {link.name}
@@ -275,7 +275,7 @@ export default function Navbar() {
                         <Link
                           key={cat.id}
                           to={`/produk?cat=${encodeURIComponent(cat.name)}`}
-                          className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg text-muted-foreground/80 hover:text-foreground hover:bg-muted transition-colors"
                         >
                           <Package className="h-3 w-3 shrink-0" />
                           {cat.name}
@@ -286,9 +286,9 @@ export default function Navbar() {
                 </nav>
 
                 {/* Mobile CTA */}
-                <div className="px-4 pb-6 space-y-3 border-t border-slate-800 pt-4">
-                  <div className="space-y-2 px-4 py-3 bg-white/5 rounded-lg">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Pilihan Tema</span>
+                <div className="px-4 pb-6 space-y-3 border-t border-border pt-4">
+                  <div className="space-y-2 px-4 py-3 bg-muted/50 rounded-lg">
+                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider block">Pilihan Tema</span>
                     <div className="grid grid-cols-3 gap-1">
                       <Button
                         variant={theme === 'light' ? 'secondary' : 'ghost'}
@@ -296,7 +296,7 @@ export default function Navbar() {
                         onClick={() => setTheme('light')}
                         className={cn(
                           "h-8 text-[11px] font-semibold rounded-md cursor-pointer",
-                          theme === 'light' ? "bg-white/10 text-white hover:bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"
+                          theme === 'light' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
                         <Sun className="h-3.5 w-3.5 mr-1" />
@@ -308,7 +308,7 @@ export default function Navbar() {
                         onClick={() => setTheme('dark')}
                         className={cn(
                           "h-8 text-[11px] font-semibold rounded-md cursor-pointer",
-                          theme === 'dark' ? "bg-white/10 text-white hover:bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"
+                          theme === 'dark' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
                         <Moon className="h-3.5 w-3.5 mr-1" />
@@ -320,7 +320,7 @@ export default function Navbar() {
                         onClick={() => setTheme('system')}
                         className={cn(
                           "h-8 text-[11px] font-semibold rounded-md cursor-pointer",
-                          theme === 'system' ? "bg-white/10 text-white hover:bg-white/10" : "text-slate-400 hover:text-white hover:bg-white/5"
+                          theme === 'system' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
                         <Monitor className="h-3.5 w-3.5 mr-1" />
@@ -330,7 +330,7 @@ export default function Navbar() {
                   </div>
                   <Button
                     variant="outline"
-                    className="w-full text-slate-400 border-slate-700 bg-transparent hover:bg-white/5 hover:text-white gap-2 text-sm cursor-pointer h-9 rounded-lg"
+                    className="w-full text-muted-foreground border-border bg-transparent hover:bg-muted hover:text-foreground gap-2 text-sm cursor-pointer h-9 rounded-lg"
                     asChild
                   >
                     <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
