@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Helmet } from "react-helmet-async"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { cn, getAssetUrl } from "@/lib/utils"
 import api from "@/services/axios"
 import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog"
@@ -21,6 +21,7 @@ const ITEMS_PER_PAGE = 9
 
 export default function Products() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState("")
   const [selectedCategories, setSelectedCategories] = useState([])
   const [selectedStock, setSelectedStock] = useState([])
@@ -49,9 +50,29 @@ export default function Products() {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const urlCat = searchParams.get("cat")
+    if (urlCat) {
+      setSelectedCategories([urlCat])
+    } else {
+      setSelectedCategories([])
+    }
+    setPage(1)
+  }, [searchParams])
+
   const toggleFilter = (val, list, setList) => {
     setList(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])
     setPage(1)
+  }
+
+  const toggleCategoryFilter = (val) => {
+    const catParam = searchParams.get("cat")
+    if (catParam === val) {
+      searchParams.delete("cat")
+    } else {
+      searchParams.set("cat", val)
+    }
+    setSearchParams(searchParams)
   }
 
   const filtered = useMemo(() => {
@@ -133,7 +154,7 @@ export default function Products() {
               <Checkbox
                 id={`cat-${cat}`}
                 checked={selectedCategories.includes(cat)}
-                onCheckedChange={() => toggleFilter(cat, selectedCategories, setSelectedCategories)}
+                onCheckedChange={() => toggleCategoryFilter(cat)}
                 className="border-slate-300 data-[state=checked]:bg-[#059669] data-[state=checked]:border-[#059669] rounded h-4 w-4"
               />
               <span className="text-xs text-slate-600 group-hover:text-slate-900 transition-colors">{cat}</span>

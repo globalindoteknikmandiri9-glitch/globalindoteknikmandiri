@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from "react-router-dom"
@@ -17,8 +18,14 @@ import { useCompanyProfile } from "@/hooks/useCompanyProfile"
 
 export default function Login() {
   const navigate = useNavigate()
-  const { login } = useAuth()
+  const { user, login } = useAuth()
   const { profile } = useCompanyProfile()
+
+  useEffect(() => {
+    if (user) {
+      navigate("/admin/dashboard", { replace: true })
+    }
+  }, [user, navigate])
 
   const {
     register,
