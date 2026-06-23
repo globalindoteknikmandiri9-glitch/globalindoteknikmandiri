@@ -30,21 +30,22 @@ export default function ManageArticles() {
   const [imagePreview, setImagePreview] = useState("")
   const fileInputRef = useRef(null)
 
-  useEffect(() => {
-    fetchArticles()
-  }, [])
-
   const fetchArticles = async () => {
     try {
-      setLoading(true)
+      Promise.resolve().then(() => setLoading(true))
       const res = await api.get("/admin/articles")
       setArticles(res.data)
     } catch (err) {
+      console.error("Gagal mengambil data", err)
       toast.error("Gagal mengambil data artikel dari server.")
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchArticles()
+  }, [])
 
   const handleOpenModal = (article = null) => {
     setImageFile(null)
@@ -129,6 +130,7 @@ export default function ManageArticles() {
       setEditingArticle(null)
       fetchArticles()
     } catch (err) {
+      console.error("Gagal menghapus artikel", err)
       toast.error("Gagal menghapus artikel")
     }
   }

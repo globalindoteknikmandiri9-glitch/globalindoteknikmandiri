@@ -25,13 +25,9 @@ export default function ManageBanners() {
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState("")
 
-  useEffect(() => {
-    fetchBanners()
-  }, [])
-
   const fetchBanners = async () => {
     try {
-      setLoading(true)
+      Promise.resolve().then(() => setLoading(true))
       const res = await api.get("/admin/banners")
       setBanners(res.data)
     } catch (err) {
@@ -40,6 +36,10 @@ export default function ManageBanners() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchBanners()
+  }, [])
 
   const handleOpenModal = (banner = null) => {
     if (banner) {

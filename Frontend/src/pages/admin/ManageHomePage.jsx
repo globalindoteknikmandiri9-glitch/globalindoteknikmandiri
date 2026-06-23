@@ -76,6 +76,18 @@ function TextArea({ value, onChange, placeholder, rows = 3 }) {
   )
 }
 
+// ── Parse Helper ────────────────────────────────────────────────────────────
+function parseOrFallback(jsonStr, fallback) {
+  if (!jsonStr) return fallback
+  try {
+    const parsed = JSON.parse(jsonStr)
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed
+  } catch {
+    // ignore
+  }
+  return fallback
+}
+
 // ── Main Page ───────────────────────────────────────────────────────────────
 export default function ManageHomePage() {
   const [loading, setLoading] = useState(true)
@@ -147,16 +159,7 @@ export default function ManageHomePage() {
       .finally(() => setLoading(false))
   }, [])
 
-  function parseOrFallback(jsonStr, fallback) {
-    if (!jsonStr) return fallback
-    try {
-      const parsed = JSON.parse(jsonStr)
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed
-    } catch (e) {
-      // ignore
-    }
-    return fallback
-  }
+
 
   // ── Save handler ────────────────────────────────────────────────────────
   const handleSave = async () => {
