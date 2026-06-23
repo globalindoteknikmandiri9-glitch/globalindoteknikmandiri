@@ -28,9 +28,6 @@ export default function Footer() {
                   alt={profile.name} 
                   className="h-8 md:h-10 w-auto object-contain" 
                 />
-                <span className="font-bold text-warning text-xs md:text-sm tracking-tight">
-                  {profile.name}
-                </span>
               </div>
               <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
                 {profile.footer_tagline}
