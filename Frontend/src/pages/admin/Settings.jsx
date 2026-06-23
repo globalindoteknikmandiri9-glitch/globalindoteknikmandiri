@@ -497,7 +497,7 @@ export default function Settings() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-navy hover:bg-navy/90 text-white font-bold text-xs h-10 px-6 rounded-lg cursor-pointer"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs h-10 px-6 rounded-lg cursor-pointer"
             >
               {isSubmitting ? (
                 <>
