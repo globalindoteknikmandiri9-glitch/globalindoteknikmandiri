@@ -67,7 +67,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0">
             <img
-              src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.svg"}
+              src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.png"}
               alt={profile.name}
               className="h-8 md:h-10 w-auto object-contain"
             />

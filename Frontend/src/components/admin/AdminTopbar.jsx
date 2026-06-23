@@ -23,7 +23,23 @@ export default function AdminTopbar() {
         api.get("/admin/messages"),
         api.get("/admin/messages/unread-count")
       ])
-      setRecentMessages(msgRes.data.slice(0, 5))
+      
+      const now = Date.now()
+      const formatBrief = (dateStr) => {
+        const date = new Date(dateStr)
+        const diffMs = now - date.getTime()
+        const diffMins = Math.floor(diffMs / 60000)
+        if (diffMins < 1) return `Baru saja`
+        if (diffMins < 60) return `${diffMins}m lalu`
+        const diffHours = Math.floor(diffMins / 60)
+        if (diffHours < 24) return `${diffHours}j lalu`
+        return date.toLocaleDateString("id-ID", { day: "numeric", month: "short" })
+      }
+
+      setRecentMessages(msgRes.data.slice(0, 5).map(msg => ({
+        ...msg,
+        timeBrief: formatBrief(msg.createdAt)
+      })))
       setUnreadCount(countRes.data.unreadCount)
     } catch (err) {
       console.error("Failed to fetch notification data:", err)
@@ -31,7 +47,10 @@ export default function AdminTopbar() {
   }
 
   useEffect(() => {
-    fetchNotifications()
+    const init = async () => {
+      await fetchNotifications()
+    }
+    init()
 
     // Poll every 30 seconds
     const interval = setInterval(fetchNotifications, 30000)
@@ -54,18 +73,6 @@ export default function AdminTopbar() {
         console.error("Gagal mengubah status baca:", err)
       }
     }
-  }
-
-  const formatDateBrief = (dateStr) => {
-    const date = new Date(dateStr)
-    const diffMs = Date.now() - date.getTime()
-    const diffMins = Math.floor(diffMs / 60000)
-    
-    if (diffMins < 1) return `Baru saja`
-    if (diffMins < 60) return `${diffMins}m lalu`
-    const diffHours = Math.floor(diffMins / 60)
-    if (diffHours < 24) return `${diffHours}j lalu`
-    return date.toLocaleDateString("id-ID", { day: "numeric", month: "short" })
   }
 
   return (
@@ -153,7 +160,7 @@ export default function AdminTopbar() {
                       <div className="space-y-0.5 min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-1">
                           <span className="font-bold text-foreground text-xs truncate">{msg.fullName}</span>
-                          <span className="text-[9px] text-muted-foreground/60 shrink-0 font-semibold">{formatDateBrief(msg.createdAt)}</span>
+                          <span className="text-[9px] text-muted-foreground/60 shrink-0 font-semibold">{msg.timeBrief}</span>
                         </div>
                         <p className="text-[11px] text-muted-foreground line-clamp-2 leading-normal font-medium">{msg.message}</p>
                       </div>
