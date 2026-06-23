@@ -6,6 +6,7 @@ import ProductBreadcrumb from "@/components/product/ProductBreadcrumb"
 import ProductGallery from "@/components/product/ProductGallery"
 import ProductInfo from "@/components/product/ProductInfo"
 import ProductSpecs from "@/components/product/ProductSpecs"
+import ProductDocuments from "@/components/product/ProductDocuments"
 import RelatedProducts from "@/components/product/RelatedProducts"
 
 export default function ProductDetail() {
@@ -52,6 +53,9 @@ export default function ProductDetail() {
           <div className="mt-16 space-y-16">
             {/* 4. Technical Specifications */}
             <ProductSpecs specifications={product.specifications} />
+
+            {/* Documents Section */}
+            <ProductDocuments documents={product.documents} />
 
             {/* 5. Related Products */}
             <RelatedProducts currentId={product.id} category={product.category} />

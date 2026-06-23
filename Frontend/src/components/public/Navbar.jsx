@@ -17,7 +17,6 @@ const navLinks = [
   { name: "Profil", path: "/tentang-kami" },
   { name: "Produk", path: "/produk" },
   { name: "Artikel", path: "/artikel" },
-  { name: "Hubungi Kami", path: "/hubungi-kami" },
 ]
 
 export default function Navbar() {
@@ -54,8 +53,8 @@ export default function Navbar() {
             <img src="/logo.png" alt="CV Globalindo Teknik Mandiri" className="h-8 md:h-10 w-auto object-contain" />
           </Link>
 
-          {/* Desktop Nav - centered */}
-          <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1 ml-auto mr-6">
             {navLinks.map((link) => {
               if (link.name === "Produk") {
                 return (
