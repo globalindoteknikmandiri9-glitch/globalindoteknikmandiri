@@ -28,6 +28,7 @@ const ManageBanners = lazy(() => import('./pages/admin/ManageBanners'))
 const ManageUsers = lazy(() => import('./pages/admin/ManageUsers'))
 const Settings = lazy(() => import('./pages/admin/Settings'))
 const ChangePassword = lazy(() => import('./pages/admin/ChangePassword'))
+const ManageMessages = lazy(() => import('./pages/admin/ManageMessages'))
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
                     <Route path="user" element={<ManageUsers />} />
                     <Route path="pengaturan" element={<Settings />} />
                     <Route path="ganti-password" element={<ChangePassword />} />
+                    <Route path="pesan" element={<ManageMessages />} />
                   </Route>
                 </Routes>
               </Suspense>

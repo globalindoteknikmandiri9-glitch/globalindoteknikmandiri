@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import {
   LayoutDashboard,
@@ -9,10 +10,12 @@ import {
   LogOut,
   KeyRound,
   Image as ImageIcon,
+  MessageSquare,
 } from "lucide-react"
 import { cn, getAssetUrl } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { useCompanyProfile } from "@/hooks/useCompanyProfile"
+import api from "@/services/axios"
 
 const menuItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
@@ -20,6 +23,7 @@ const menuItems = [
   { label: "Kelola Kategori", path: "/admin/kategori", icon: Tags },
   { label: "Kelola Artikel", path: "/admin/artikel", icon: FileText },
   { label: "Kelola Banner", path: "/admin/banner", icon: ImageIcon },
+  { label: "Pesan Masuk", path: "/admin/pesan", icon: MessageSquare },
   { label: "Manajemen User", path: "/admin/user", icon: Users },
   { label: "Pengaturan", path: "/admin/pengaturan", icon: Settings },
 ]
@@ -28,7 +32,33 @@ export default function AdminSidebar() {
   const { pathname } = useLocation()
   const { user, logout } = useAuth()
   const { profile } = useCompanyProfile()
+  const [unreadCount, setUnreadCount] = useState(0)
+
   const isActive = (path) => pathname === path || pathname.startsWith(path + "/")
+
+  const fetchUnreadCount = async () => {
+    try {
+      const res = await api.get('/admin/messages/unread-count')
+      setUnreadCount(res.data.unreadCount)
+    } catch (err) {
+      console.error('Failed to fetch unread count:', err)
+    }
+  }
+
+  useEffect(() => {
+    fetchUnreadCount()
+    
+    // Poll every 30 seconds
+    const interval = setInterval(fetchUnreadCount, 30000)
+
+    // Listen to custom event
+    window.addEventListener("unread-messages-updated", fetchUnreadCount)
+
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener("unread-messages-updated", fetchUnreadCount)
+    }
+  }, [])
 
   // Filter menus based on user role
   const visibleMenuItems = menuItems.filter(item => {
@@ -65,14 +95,21 @@ export default function AdminSidebar() {
               <Link
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
+                  "flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-colors w-full",
                   isActive(item.path)
                     ? "bg-accent/15 text-accent"
                     : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
                 )}
               >
-                <item.icon className="h-4 w-4 shrink-0" />
-                {item.label}
+                <div className="flex items-center gap-3">
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span>{item.label}</span>
+                </div>
+                {item.path === "/admin/pesan" && unreadCount > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-extrabold tracking-tight">
+                    {unreadCount}
+                  </span>
+                )}
               </Link>
             </li>
           ))}

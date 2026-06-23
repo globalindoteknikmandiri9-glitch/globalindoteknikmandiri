@@ -10,6 +10,7 @@ import { useEffect } from "react"
 import * as z from "zod"
 import { cn } from "@/lib/utils"
 import { useCompanyProfile } from "@/hooks/useCompanyProfile"
+import api from "@/services/axios"
 
 const contactSchema = z.object({
   fullName: z.string().min(2, { message: "Nama harus diisi minimal 2 karakter" }),
@@ -50,10 +51,14 @@ export default function Contact() {
   }, [productParam, skuParam, setValue, profile.name])
 
   const onSubmit = async (data) => {
-    await new Promise((r) => setTimeout(r, 1000))
-    console.log("Contact form:", data)
-    toast.success("Pesan RFQ berhasil dikirim. Tim tender kami akan segera menghubungi Anda.")
-    reset()
+    try {
+      await api.post('/public/contact', data)
+      toast.success("Pesan RFQ berhasil dikirim. Tim tender kami akan segera menghubungi Anda.")
+      reset()
+    } catch (error) {
+      console.error("Error submitting contact form:", error)
+      toast.error("Gagal mengirim pesan. Silakan coba kembali beberapa saat lagi.")
+    }
   }
 
   return (

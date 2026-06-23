@@ -1,7 +1,10 @@
-import { Bell, Menu, Search, User, Sun, Moon, Monitor } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { Bell, Menu, Search, User, Sun, Moon, Monitor, MessageSquare } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/contexts/ThemeContext"
+import api from "@/services/axios"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -11,6 +14,59 @@ import {
 
 export default function AdminTopbar() {
   const { theme, setTheme } = useTheme()
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [recentMessages, setRecentMessages] = useState([])
+
+  const fetchNotifications = async () => {
+    try {
+      const [msgRes, countRes] = await Promise.all([
+        api.get("/admin/messages"),
+        api.get("/admin/messages/unread-count")
+      ])
+      setRecentMessages(msgRes.data.slice(0, 5))
+      setUnreadCount(countRes.data.unreadCount)
+    } catch (err) {
+      console.error("Failed to fetch notification data:", err)
+    }
+  }
+
+  useEffect(() => {
+    fetchNotifications()
+
+    // Poll every 30 seconds
+    const interval = setInterval(fetchNotifications, 30000)
+
+    // Listen to custom event
+    window.addEventListener("unread-messages-updated", fetchNotifications)
+
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener("unread-messages-updated", fetchNotifications)
+    }
+  }, [])
+
+  const handleMarkAsRead = async (msg) => {
+    if (!msg.isRead) {
+      try {
+        await api.patch(`/admin/messages/${msg.id}/read`)
+        window.dispatchEvent(new Event("unread-messages-updated"))
+      } catch (err) {
+        console.error("Gagal mengubah status baca:", err)
+      }
+    }
+  }
+
+  const formatDateBrief = (dateStr) => {
+    const date = new Date(dateStr)
+    const diffMs = Date.now() - date.getTime()
+    const diffMins = Math.floor(diffMs / 60000)
+    
+    if (diffMins < 1) return `Baru saja`
+    if (diffMins < 60) return `${diffMins}m lalu`
+    const diffHours = Math.floor(diffMins / 60)
+    if (diffHours < 24) return `${diffHours}j lalu`
+    return date.toLocaleDateString("id-ID", { day: "numeric", month: "short" })
+  }
 
   return (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 sticky top-0 z-10 text-foreground">
@@ -58,10 +114,65 @@ export default function AdminTopbar() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button variant="ghost" size="icon" className="relative text-muted-foreground">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-2 right-2 h-2 w-2 bg-rose-500 rounded-full border border-card"></span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="relative text-muted-foreground cursor-pointer rounded-lg">
+              <Bell className="h-5 w-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-extrabold text-white border border-card">
+                  {unreadCount}
+                </span>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-card border border-border text-foreground w-80 shadow-dropdown p-0 rounded-xl overflow-hidden">
+            <div className="px-4 py-3 border-b border-border bg-muted/20 flex items-center justify-between">
+              <span className="font-bold text-xs">Pesan Masuk</span>
+              {unreadCount > 0 && (
+                <span className="text-[10px] bg-rose-500/10 text-rose-600 dark:text-rose-400 font-extrabold px-2 py-0.5 rounded-full">
+                  {unreadCount} Baru
+                </span>
+              )}
+            </div>
+            
+            <div className="max-h-72 overflow-y-auto divide-y divide-border/60">
+              {recentMessages.length === 0 ? (
+                <div className="py-8 text-center text-xs text-muted-foreground font-semibold flex flex-col items-center gap-1.5">
+                  <MessageSquare className="h-6 w-6 text-slate-300 dark:text-slate-700" />
+                  Tidak ada pesan masuk
+                </div>
+              ) : (
+                recentMessages.map((msg) => (
+                  <DropdownMenuItem
+                    key={msg.id}
+                    asChild
+                    className="focus:bg-muted focus:text-foreground cursor-pointer text-xs p-3.5 flex items-start gap-2.5 outline-none transition-colors"
+                  >
+                    <Link to="/admin/pesan" onClick={() => handleMarkAsRead(msg)}>
+                      <div className="h-2 w-2 rounded-full bg-accent shrink-0 mt-1.5 opacity-100 font-bold" style={{ opacity: msg.isRead ? 0 : 1 }} />
+                      <div className="space-y-0.5 min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-bold text-foreground text-xs truncate">{msg.fullName}</span>
+                          <span className="text-[9px] text-muted-foreground/60 shrink-0 font-semibold">{formatDateBrief(msg.createdAt)}</span>
+                        </div>
+                        <p className="text-[11px] text-muted-foreground line-clamp-2 leading-normal font-medium">{msg.message}</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                ))
+              )}
+            </div>
+
+            <div className="border-t border-border bg-muted/10">
+              <Link
+                to="/admin/pesan"
+                className="flex items-center justify-center h-10 text-xs font-bold text-accent hover:text-accent/90 transition-colors w-full"
+              >
+                Lihat Semua Pesan
+              </Link>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
         
         <div className="flex items-center gap-3 border-l pl-4 border-border">
           <div className="text-right hidden sm:block">
