@@ -202,10 +202,10 @@ export default function ManageMessages() {
 
                 <div className="space-y-1.5 max-w-2xl flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                    <span className="text-sm font-bold text-foreground">
                       {msg.fullName}
                     </span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full border bg-muted text-muted-foreground">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full border bg-muted text-muted-foreground truncate max-w-[150px] sm:max-w-none">
                       {msg.email}
                     </span>
                     {!msg.isRead ? (
@@ -283,7 +283,7 @@ export default function ManageMessages() {
                 key={i}
                 variant={page === i + 1 ? "default" : "outline"}
                 size="sm"
-                className={cn("h-8 w-8 text-xs cursor-pointer", page === i + 1 ? "bg-navy hover:bg-navy text-white font-bold" : "hover:bg-muted")}
+                className={cn("h-8 w-8 text-xs cursor-pointer", page === i + 1 ? "bg-primary text-primary-foreground font-bold" : "hover:bg-muted")}
                 onClick={() => setPage(i + 1)}
               >
                 {i + 1}
@@ -309,7 +309,7 @@ export default function ManageMessages() {
             <>
               <DialogHeader className="text-left border-b border-border pb-4">
                 <div className="flex items-center gap-2.5 mb-1.5">
-                  <div className="h-9 w-9 rounded-lg bg-navy/10 text-navy flex items-center justify-center shrink-0">
+                  <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                     <MessageSquare className="h-5 w-5" />
                   </div>
                   <div>
@@ -346,7 +346,7 @@ export default function ManageMessages() {
                 {/* Content Message */}
                 <div className="space-y-2">
                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Isi Pesan / Spesifikasi Pengajuan</p>
-                  <div className="bg-muted/20 border border-border p-4 rounded-xl whitespace-pre-line leading-relaxed text-xs text-foreground font-medium overflow-y-auto max-h-60">
+                  <div className="bg-muted/20 border border-border p-4 rounded-xl whitespace-pre-line leading-relaxed text-xs text-foreground font-medium overflow-y-auto max-h-60 custom-scrollbar">
                     {selectedMessage.message}
                   </div>
                 </div>
@@ -371,7 +371,7 @@ export default function ManageMessages() {
                     {/* Reply Email */}
                     <a
                       href={`mailto:${selectedMessage.email}?subject=Balasan Kontak - CV Globalindo Teknik Mandiri`}
-                      className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg text-xs font-bold bg-navy hover:bg-navy/90 text-white transition-colors"
+                      className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg text-xs font-bold bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
                     >
                       <Mail className="h-4 w-4" />
                       Balas Email

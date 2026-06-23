@@ -172,12 +172,12 @@ export default function ManageArticles() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Kelola Artikel</h1>
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">Manajemen konten knowledge center dan panduan teknis perusahaan.</p>
+          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Kelola Artikel</h1>
+          <p className="text-xs font-semibold text-muted-foreground mt-0.5">Manajemen konten knowledge center dan panduan teknis perusahaan.</p>
         </div>
         <Button
           onClick={() => handleOpenModal()}
-          className="bg-navy hover:bg-navy/90 text-white font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card"
         >
           <Plus className="h-4 w-4" />
           Tulis Artikel
@@ -300,8 +300,8 @@ export default function ManageArticles() {
                   className={cn(
                     "w-9 h-9 flex items-center justify-center rounded-lg border text-xs font-bold transition-colors cursor-pointer",
                     page === i + 1
-                      ? "bg-navy border-navy text-white"
-                      : "border-border text-slate-600 dark:text-slate-400 hover:bg-background"
+                      ? "bg-primary border-primary text-primary-foreground"
+                      : "border-border text-muted-foreground hover:bg-muted"
                   )}
                 >
                   {i + 1}
