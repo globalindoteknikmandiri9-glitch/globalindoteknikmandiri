@@ -65,14 +65,14 @@ export default function FeaturedProductsSection() {
   }, []);
 
   return (
-    <section className="bg-muted/10 py-16 lg:py-24 border-b border-border">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="bg-muted/10 py-12 md:py-16 lg:py-24 border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
             <span className="text-xs font-semibold text-warning uppercase tracking-widest block mb-2">
               Katalog Unggulan (Tender Ready)
             </span>
-            <h2 className="text-3xl font-bold text-foreground tracking-tight text-left">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight text-left">
               Peralatan Konstruksi & Laboratorium Terpopuler
             </h2>
             <p className="text-muted-foreground mt-2 text-base max-w-xl text-left">
@@ -101,7 +101,7 @@ export default function FeaturedProductsSection() {
             return (
               <div
                 key={prod.id}
-                className="bg-card border border-border rounded-xl overflow-hidden flex flex-col h-full shadow-card hover:shadow-card-hover hover:border-border/80 hover:-translate-y-0.5 transition-all duration-300 group cursor-default"
+                className="bg-card border border-border rounded-xl overflow-hidden flex flex-col h-full shadow-card hover:shadow-card-hover hover:border-border/80 hover:-translate-y-1 transition-all duration-300 group cursor-default"
               >
                 {/* Product Image */}
                 <div className="aspect-[4/3] w-full overflow-hidden bg-muted/30 relative">

@@ -29,14 +29,14 @@ export default function BusinessDivisionSection() {
   })();
 
   return (
-    <section className="bg-background py-20 border-b border-border text-foreground">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="bg-background py-12 md:py-16 lg:py-24 border-b border-border text-foreground">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="mb-12">
           <span className="text-xs font-semibold text-accent uppercase tracking-widest block mb-2">
             Spesialisasi Teknik
           </span>
-          <h2 className="text-3xl font-bold text-foreground tracking-tight">
-            Divisi Unit Bisnis Manufaktur & Suplai Utama
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+            Divisi Unit Bisnas Manufaktur & Suplai Utama
           </h2>
           <p className="text-muted-foreground mt-2 text-base max-w-2xl">
             CV Globalindo Teknik Mandiri mengelompokkan spesialisasi produksinya menjadi 6 divisi teknik terstruktur guna memenuhi kebutuhan tender khusus.
@@ -54,7 +54,7 @@ export default function BusinessDivisionSection() {
               transition: { staggerChildren: 0.05 }
             }
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
         >
           {divisions.map((div, idx) => {
             const Icon = div.icon;
