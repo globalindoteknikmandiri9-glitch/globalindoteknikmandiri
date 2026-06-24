@@ -172,7 +172,7 @@ export default function ChangePassword() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="bg-navy hover:bg-navy/90 text-white font-bold text-sm h-10 px-6 rounded-lg cursor-pointer"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm h-10 px-6 rounded-lg cursor-pointer"
               >
                 {loading ? "Menyimpan..." : "Simpan Password"}
               </Button>

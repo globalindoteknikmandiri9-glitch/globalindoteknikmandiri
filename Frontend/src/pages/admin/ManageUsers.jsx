@@ -137,8 +137,8 @@ export default function ManageUsers() {
             <thead>
               <tr className="bg-slate-50/50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 border-b border-border">
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Username</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Peran Akses</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Dibuat Pada</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Peran Akses</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden md:table-cell">Dibuat Pada</th>
                 <th className="text-center px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Aksi</th>
               </tr>
             </thead>
@@ -167,22 +167,22 @@ export default function ManageUsers() {
                       <span className="font-bold text-slate-900 dark:text-slate-100">{u.username}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-slate-700 dark:text-slate-300 font-semibold">{u.role}</td>
-                  <td className="px-5 py-3.5 text-slate-600 dark:text-slate-400 font-medium text-xs">
+                  <td className="px-5 py-3.5 text-slate-700 dark:text-slate-350 font-semibold hidden sm:table-cell">{u.role}</td>
+                  <td className="px-5 py-3.5 text-slate-600 dark:text-slate-400 font-medium text-xs hidden md:table-cell">
                     {new Date(u.createdAt).toLocaleDateString('id-ID')}
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center justify-center gap-1.5">
                       <button
                         onClick={() => handleOpenModal(u)}
-                        className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                        className="p-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                         aria-label="Edit User"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDeleteClick(u)}
-                        className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer"
+                        className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer"
                         aria-label="Hapus User"
                       >
                         <Trash2 className="h-4 w-4" />

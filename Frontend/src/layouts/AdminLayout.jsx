@@ -14,9 +14,9 @@ export default function AdminLayout() {
   return (
     <div className="flex min-h-screen bg-background dark:bg-slate-950 text-foreground">
       <AdminSidebar className="hidden lg:flex" />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col min-w-0">
         <AdminTopbar />
-        <main key={location.pathname} className="flex-1 p-6 overflow-y-auto animate-page-fade">
+        <main key={location.pathname} className="flex-1 p-6 overflow-y-auto overflow-x-hidden min-w-0 animate-page-fade">
           <Outlet />
         </main>
       </div>

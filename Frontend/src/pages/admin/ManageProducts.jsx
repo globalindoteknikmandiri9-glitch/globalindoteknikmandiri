@@ -219,9 +219,9 @@ export default function ManageProducts() {
               <tr className="bg-slate-50/50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 border-b border-border">
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Gambar</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Nama Produk</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Kategori</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Kategori</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Status</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Tgl Dibuat</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden md:table-cell">Tgl Dibuat</th>
                 <th className="text-center px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Aksi</th>
               </tr>
             </thead>
@@ -259,23 +259,23 @@ export default function ManageProducts() {
                         <div className="text-[10px] text-slate-400 font-mono mt-0.5">SKU: GTM-PD-{product.id.toString().padStart(2, '0')}</div>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-600 dark:text-slate-350 font-semibold">{product.category?.name || "Lainnya"}</td>
+                    <td className="px-5 py-3.5 text-slate-600 dark:text-slate-350 font-semibold hidden sm:table-cell">{product.category?.name || "Lainnya"}</td>
                     <td className="px-5 py-3.5">{getStatusBadge(product.status)}</td>
-                    <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 text-xs font-semibold">
+                    <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 text-xs font-semibold hidden md:table-cell">
                       {new Date(product.createdAt).toLocaleDateString("id-ID")}
                     </td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center justify-center gap-1.5">
                         <button
                           onClick={() => handleOpenModal(product)}
-                          className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                          className="p-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                           aria-label="Edit Produk"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteClick(product)}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer"
+                          className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer"
                           aria-label="Hapus Produk"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -299,7 +299,7 @@ export default function ManageProducts() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-11 h-11 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Sebelumnya"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -309,7 +309,7 @@ export default function ManageProducts() {
                   key={i}
                   onClick={() => setPage(i + 1)}
                   className={cn(
-                    "w-9 h-9 flex items-center justify-center rounded-lg border text-xs font-bold transition-colors cursor-pointer",
+                    "w-11 h-11 flex items-center justify-center rounded-lg border text-xs font-bold transition-colors cursor-pointer",
                     page === i + 1
                       ? "bg-primary border-primary text-primary-foreground"
                       : "border-border text-muted-foreground hover:bg-muted"
@@ -321,7 +321,7 @@ export default function ManageProducts() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-11 h-11 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Selanjutnya"
               >
                 <ChevronRight className="h-4 w-4" />

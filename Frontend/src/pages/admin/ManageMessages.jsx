@@ -239,7 +239,7 @@ export default function ManageMessages() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 text-xs font-bold gap-1 cursor-pointer border-border hover:bg-muted"
+                    className="h-11 text-xs font-bold gap-1 cursor-pointer border-border hover:bg-muted"
                     onClick={(e) => {
                       e.stopPropagation()
                       handleOpenDetail(msg)
@@ -250,7 +250,7 @@ export default function ManageMessages() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 cursor-pointer rounded-lg"
+                    className="h-11 w-11 text-muted-foreground hover:text-rose-600 hover:bg-rose-500/10 cursor-pointer rounded-lg flex items-center justify-center"
                     onClick={(e) => handleDeleteClick(msg, e)}
                   >
                     <Trash2 className="h-4 w-4" />
@@ -272,7 +272,7 @@ export default function ManageMessages() {
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8 cursor-pointer"
+              className="h-11 w-11 cursor-pointer flex items-center justify-center"
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
             >
@@ -283,7 +283,7 @@ export default function ManageMessages() {
                 key={i}
                 variant={page === i + 1 ? "default" : "outline"}
                 size="sm"
-                className={cn("h-8 w-8 text-xs cursor-pointer", page === i + 1 ? "bg-primary text-primary-foreground font-bold" : "hover:bg-muted")}
+                className={cn("h-11 w-11 text-xs cursor-pointer flex items-center justify-center", page === i + 1 ? "bg-primary text-primary-foreground font-bold" : "hover:bg-muted")}
                 onClick={() => setPage(i + 1)}
               >
                 {i + 1}
@@ -292,7 +292,7 @@ export default function ManageMessages() {
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8 cursor-pointer"
+              className="h-11 w-11 cursor-pointer flex items-center justify-center"
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
             >

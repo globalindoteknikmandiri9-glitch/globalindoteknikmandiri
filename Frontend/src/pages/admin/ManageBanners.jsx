@@ -220,11 +220,11 @@ export default function ManageBanners() {
                       {new Date(b.createdAt).toLocaleDateString("id-ID", { year: "numeric", month: "short", day: "numeric" })}
                     </td>
                     <td className="px-5 py-4">
-                      <div className="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => handleOpenModal(b)} className="p-1.5 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded transition-colors cursor-pointer" title="Edit">
+                      <div className="flex items-center justify-center gap-2">
+                        <button onClick={() => handleOpenModal(b)} className="p-2.5 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded transition-colors cursor-pointer" title="Edit">
                           <Pencil className="h-4 w-4" />
                         </button>
-                        <button onClick={() => handleDeleteClick(b)} className="p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-500/10 rounded transition-colors cursor-pointer" title="Hapus">
+                        <button onClick={() => handleDeleteClick(b)} className="p-2.5 text-muted-foreground hover:text-red-600 hover:bg-red-500/10 rounded transition-colors cursor-pointer" title="Hapus">
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -248,7 +248,7 @@ export default function ManageBanners() {
                 size="sm"
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="h-8 w-8 p-0 border-border cursor-pointer"
+                className="h-11 w-11 p-0 border-border cursor-pointer flex items-center justify-center"
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -257,7 +257,7 @@ export default function ManageBanners() {
                 size="sm"
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="h-8 w-8 p-0 border-border cursor-pointer"
+                className="h-11 w-11 p-0 border-border cursor-pointer flex items-center justify-center"
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>

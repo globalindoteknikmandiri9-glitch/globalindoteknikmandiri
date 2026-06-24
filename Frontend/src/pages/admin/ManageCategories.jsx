@@ -136,11 +136,11 @@ export default function ManageCategories() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-slate-50/50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 border-b border-border">
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-16">ID</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-16 hidden md:table-cell">ID</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Nama Kategori</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Slug URL</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden md:table-cell">Slug URL</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Jumlah Produk</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Tanggal Dibuat</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Tanggal Dibuat</th>
                 <th className="text-center px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Aksi</th>
               </tr>
             </thead>
@@ -161,27 +161,27 @@ export default function ManageCategories() {
                 </tr>
               ) : paginated.map((category) => (
                 <tr key={category.id} className="hover:bg-muted/50 transition-colors">
-                  <td className="px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400">{category.id}</td>
+                  <td className="px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 hidden md:table-cell">{category.id}</td>
                   <td className="px-5 py-3.5 font-bold text-slate-900 dark:text-slate-100">{category.name}</td>
-                  <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 font-mono text-xs">{category.slug}</td>
-                  <td className="px-5 py-3.5 text-slate-700 dark:text-slate-300 font-semibold">
+                  <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 font-mono text-xs hidden md:table-cell">{category.slug}</td>
+                  <td className="px-5 py-3.5 text-slate-700 dark:text-slate-350 font-semibold">
                     {category.products ? category.products.length : 0} Produk
                   </td>
-                  <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 text-xs font-semibold">
+                  <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 text-xs font-semibold hidden sm:table-cell">
                     {new Date(category.createdAt).toLocaleDateString("id-ID")}
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center justify-center gap-1.5">
                       <button
                         onClick={() => handleOpenModal(category)}
-                        className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                        className="p-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                         aria-label="Edit Kategori"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDeleteClick(category)}
-                        className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer"
+                        className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer"
                         aria-label="Hapus Kategori"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -204,7 +204,7 @@ export default function ManageCategories() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-11 h-11 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Sebelumnya"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -214,7 +214,7 @@ export default function ManageCategories() {
                   key={i}
                   onClick={() => setPage(i + 1)}
                   className={cn(
-                    "w-9 h-9 flex items-center justify-center rounded-lg border text-xs font-bold transition-colors cursor-pointer",
+                    "w-11 h-11 flex items-center justify-center rounded-lg border text-xs font-bold transition-colors cursor-pointer",
                     page === i + 1
                       ? "bg-primary border-primary text-primary-foreground"
                       : "border-border text-muted-foreground hover:bg-muted"
@@ -226,7 +226,7 @@ export default function ManageCategories() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-11 h-11 flex items-center justify-center rounded-lg border border-border text-slate-500 dark:text-slate-400 hover:bg-background disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 aria-label="Halaman Selanjutnya"
               >
                 <ChevronRight className="h-4 w-4" />
