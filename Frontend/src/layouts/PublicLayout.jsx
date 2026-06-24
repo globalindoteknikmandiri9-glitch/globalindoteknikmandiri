@@ -15,7 +15,7 @@ export default function PublicLayout() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15, ease: "easeOut" }}
-          className="flex-1"
+          className="flex-1 min-w-0 w-full"
         >
           <Outlet />
         </motion.main>

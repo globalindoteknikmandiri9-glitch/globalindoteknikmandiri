@@ -153,7 +153,7 @@ export default function Articles() {
                     onClick={() => setSelectedArticle(featuredArticle)}
                     className="group surface-panel overflow-hidden grid lg:grid-cols-12 hover:shadow-card-hover hover:border-border/80 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                   >
-                    <div className="lg:col-span-7 relative aspect-video lg:aspect-auto min-h-[280px] bg-muted/30 overflow-hidden">
+                    <div className="relative w-full aspect-video min-h-0 lg:col-span-7 lg:aspect-auto lg:min-h-[280px] bg-muted/30 overflow-hidden">
                       {getImageUrl(featuredArticle.image_url) ? (
                         <img
                           src={getImageUrl(featuredArticle.image_url)}
