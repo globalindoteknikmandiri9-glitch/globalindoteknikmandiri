@@ -26,21 +26,21 @@ export default function WorkshopSection() {
   })();
 
   return (
-    <section className="bg-white dark:bg-slate-900/20 py-16 lg:py-24 border-b border-slate-100 dark:border-slate-800/40">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="bg-white dark:bg-slate-900/20 py-12 md:py-16 lg:py-24 border-b border-slate-100 dark:border-slate-800/40">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.25 }}
-          className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center"
+          className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center"
         >
           {/* Left Column: Workshop Details */}
           <div className="lg:col-span-7">
             <span className="text-xs font-semibold text-accent uppercase tracking-widest block mb-3">
               Fasilitas Produksi
             </span>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight">
               Kapasitas Manufaktur Mandiri & Workshop Bogor
             </h2>
             <p className="text-slate-650 dark:text-slate-350 text-base leading-relaxed mb-8">

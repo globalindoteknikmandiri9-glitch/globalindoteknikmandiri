@@ -174,7 +174,7 @@ export default function ProductGallery({ media = [] }) {
                 e.stopPropagation()
                 scrollPrev()
               }}
-              className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl flex items-center justify-center transition-all duration-200 active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 z-10 cursor-pointer"
+              className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl hidden sm:flex items-center justify-center transition-all duration-200 active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 z-10 cursor-pointer"
               aria-label="Previous image"
             >
               <ChevronLeft className="w-6 h-6" />
@@ -184,7 +184,7 @@ export default function ProductGallery({ media = [] }) {
                 e.stopPropagation()
                 scrollNext()
               }}
-              className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl flex items-center justify-center transition-all duration-200 active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 z-10 cursor-pointer"
+              className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl hidden sm:flex items-center justify-center transition-all duration-200 active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 z-10 cursor-pointer"
               aria-label="Next image"
             >
               <ChevronRight className="w-6 h-6" />

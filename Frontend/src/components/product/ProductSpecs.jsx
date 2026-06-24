@@ -9,10 +9,10 @@ export default function ProductSpecs({ specifications = [] }) {
           <table className="w-full text-xs text-left border-collapse">
             <thead>
               <tr className="bg-muted/40 border-b border-border">
-                <th className="px-6 py-3.5 font-bold text-foreground uppercase tracking-wider w-1/3">
+                <th className="px-4 sm:px-6 py-3 sm:py-3.5 font-bold text-foreground uppercase tracking-wider w-1/3">
                   Parameter
                 </th>
-                <th className="px-6 py-3.5 font-bold text-foreground uppercase tracking-wider">
+                <th className="px-4 sm:px-6 py-3 sm:py-3.5 font-bold text-foreground uppercase tracking-wider">
                   Nilai Spesifikasi
                 </th>
               </tr>
@@ -23,10 +23,10 @@ export default function ProductSpecs({ specifications = [] }) {
                   key={idx}
                   className="even:bg-muted/10 odd:bg-card hover:bg-muted/5 transition-colors"
                 >
-                  <td className="px-6 py-3.5 font-bold text-foreground/90 whitespace-nowrap">
+                  <td className="px-4 sm:px-6 py-3 sm:py-3.5 font-bold text-foreground/90 whitespace-nowrap">
                     {spec.label}
                   </td>
-                  <td className="px-6 py-3.5 text-muted-foreground font-medium">
+                  <td className="px-4 sm:px-6 py-3 sm:py-3.5 text-muted-foreground font-medium">
                     {spec.value}
                   </td>
                 </tr>
