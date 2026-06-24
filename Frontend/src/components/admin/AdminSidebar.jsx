@@ -30,7 +30,7 @@ const menuItems = [
   { label: "Pengaturan", path: "/admin/pengaturan", icon: Settings },
 ]
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ className }) {
   const { pathname } = useLocation()
   const { user, logout } = useAuth()
   const { profile } = useCompanyProfile()
@@ -71,7 +71,7 @@ export default function AdminSidebar() {
   });
 
   return (
-    <aside className="w-60 bg-navy text-slate-400 flex flex-col hidden md:flex shrink-0 h-screen sticky top-0 overflow-y-auto sidebar-scrollbar">
+    <aside className={cn("w-60 bg-navy text-slate-400 flex flex-col shrink-0 h-screen sticky top-0 overflow-y-auto sidebar-scrollbar", className)}>
       {/* Brand */}
       <div className="px-5 py-5 border-b border-slate-800">
         <div className="flex items-center gap-2.5">

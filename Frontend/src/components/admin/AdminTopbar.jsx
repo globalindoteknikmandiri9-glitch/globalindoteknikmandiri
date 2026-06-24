@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import AdminSidebar from "./AdminSidebar"
 import { Bell, Menu, Search, User, Sun, Moon, Monitor, MessageSquare } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -15,6 +17,13 @@ import {
 
 export default function AdminTopbar() {
   const { theme, setTheme, resolvedTheme } = useTheme()
+  const location = useLocation()
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setIsSheetOpen(false)
+  }, [location.pathname])
   const [unreadCount, setUnreadCount] = useState(0)
   const [recentMessages, setRecentMessages] = useState([])
 
@@ -79,13 +88,20 @@ export default function AdminTopbar() {
   return (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 sticky top-0 z-10 text-foreground">
       <div className="flex items-center gap-4">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="md:hidden text-muted-foreground h-10 w-10 rounded-xl border border-border bg-card hover:bg-accent hover:text-foreground transition-all duration-200 focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="lg:hidden text-muted-foreground h-10 w-10 rounded-xl border border-border bg-card hover:bg-accent hover:text-foreground transition-all duration-200 focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 cursor-pointer"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-60 border-none bg-navy text-slate-400">
+            <AdminSidebar className="h-full w-full border-none" />
+          </SheetContent>
+        </Sheet>
         <div className="relative hidden sm:block w-64">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
           <Input 
