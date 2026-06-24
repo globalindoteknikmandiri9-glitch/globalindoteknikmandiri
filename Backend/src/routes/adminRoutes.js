@@ -6,7 +6,6 @@ const upload = require('../middlewares/uploadMiddleware');
 const compressImages = require('../middlewares/compressionMiddleware');
 
 const { getDashboardStats } = require('../controllers/dashboardController');
-const { getAllBanners, createBanner, updateBanner, deleteBanner } = require('../controllers/bannerController');
 const { getProfile, updateProfile } = require('../controllers/profileController');
 const { getAllUsers, createUser, updateUser, deleteUser } = require('../controllers/userController');
 const { getAllMessages, getUnreadCount, markAsRead, deleteMessage } = require('../controllers/messageController');
@@ -27,11 +26,7 @@ router.post('/users', superAdminMiddleware, createUser);
 router.put('/users/:id', superAdminMiddleware, updateUser);
 router.delete('/users/:id', superAdminMiddleware, deleteUser);
 
-// Banners
-router.get('/banners', getAllBanners);
-router.post('/banners', upload.single('image'), compressImages, createBanner);
-router.put('/banners/:id', upload.single('image'), compressImages, updateBanner);
-router.delete('/banners/:id', deleteBanner);
+
 
 const { getAllCategories, createCategory, updateCategory, deleteCategory } = require('../controllers/categoryController');
 const { getAllProducts, createProduct, updateProduct, deleteProduct } = require('../controllers/productController');

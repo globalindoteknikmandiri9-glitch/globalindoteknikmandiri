@@ -9,7 +9,7 @@ import {
   Settings,
   LogOut,
   KeyRound,
-  Image as ImageIcon,
+  Info,
   MessageSquare,
   Home,
 } from "lucide-react"
@@ -21,10 +21,10 @@ import api from "@/services/axios"
 const menuItems = [
   { label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Kelola Beranda", path: "/admin/beranda", icon: Home },
+  { label: "Kelola Tentang Kami", path: "/admin/tentang", icon: Info },
   { label: "Kelola Produk", path: "/admin/produk", icon: Package },
   { label: "Kelola Kategori", path: "/admin/kategori", icon: Tags },
   { label: "Kelola Artikel", path: "/admin/artikel", icon: FileText },
-  { label: "Kelola Banner", path: "/admin/banner", icon: ImageIcon },
   { label: "Pesan Masuk", path: "/admin/pesan", icon: MessageSquare },
   { label: "Manajemen User", path: "/admin/user", icon: Users },
   { label: "Pengaturan", path: "/admin/pengaturan", icon: Settings },

@@ -235,7 +235,7 @@ export default function Contact() {
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="+62 812 3456 7890"
+                      placeholder="pastikan mengisi dengan awal 62 lalu nomor telp tanpa 0 cth: 6281234567890"
                       {...register("phone")}
                       className={cn(
                         "h-10 text-xs border-border bg-background text-foreground rounded-lg focus-visible:ring-accent focus-visible:border-accent",
