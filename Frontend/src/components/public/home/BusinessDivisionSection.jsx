@@ -66,7 +66,7 @@ export default function BusinessDivisionSection() {
                   hidden: { opacity: 0, y: 8 },
                   show: { opacity: 1, y: 0, transition: { duration: 0.25 } }
                 }}
-                className="surface-card p-8 flex flex-col justify-between group cursor-default"
+                className="surface-card p-8 flex flex-col h-full justify-between group cursor-default"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">

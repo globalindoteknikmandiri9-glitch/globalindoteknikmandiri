@@ -6,7 +6,7 @@ import Footer from "@/components/public/Footer"
 export default function PublicLayout() {
   const location = useLocation()
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <div className="flex min-h-screen flex-col bg-background text-foreground overflow-x-hidden w-full max-w-full">
       <Navbar />
       <AnimatePresence mode="wait">
         <motion.main

@@ -73,13 +73,13 @@ export default function Contact() {
 
       {/* Page Header */}
       <div className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16 text-left">
+        <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-24 text-left">
           <nav className="text-[11px] text-muted-foreground/60 mb-3 flex items-center gap-1.5 font-bold uppercase tracking-wider">
             <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
             <ChevronRight className="h-3 w-3" />
             <span className="text-muted-foreground">Hubungi Kami</span>
           </nav>
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">Hubungi Kami</h1>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">Hubungi Kami</h1>
           <p className="text-muted-foreground text-sm leading-relaxed mt-2 max-w-xl">
             Hubungi tim tender dan sales kami untuk permintaan penawaran harga resmi (RFQ), konsultasi spesifikasi teknis, atau pengajuan surat dukungan keagenan proyek.
           </p>
@@ -87,9 +87,9 @@ export default function Contact() {
       </div>
 
       {/* Main Grid Area */}
-      <div className="bg-background py-16 lg:py-24 text-foreground text-left">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-14 lg:gap-20">
+      <div className="bg-background py-12 md:py-16 lg:py-24 text-foreground text-left">
+        <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
 
             {/* Left: Contact Info */}
             <div className="lg:col-span-4 space-y-8">
@@ -191,7 +191,7 @@ export default function Contact() {
 
             {/* Right: Form Form Column */}
             <div className="lg:col-span-8">
-              <div className="surface-panel p-10">
+              <div className="surface-panel p-6 sm:p-8 lg:p-10">
                 <h2 className="text-xl font-bold text-foreground mb-6 tracking-tight">Kirim Pengajuan RFQ / Penawaran</h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
                   <div className="grid sm:grid-cols-2 gap-5">
@@ -265,7 +265,7 @@ export default function Contact() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-10 bg-navy hover:bg-navy/90 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                    className="w-full h-11 bg-navy hover:bg-navy/90 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
                   >
                     {isSubmitting ? "Mengirim RFQ..." : "Kirim Formulir RFQ"}
                   </Button>
@@ -281,10 +281,10 @@ export default function Contact() {
       </div>
 
       {/* Commitments list */}
-      <section className="bg-muted/20 border-t border-border py-20 text-foreground">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <section className="bg-muted/20 border-t border-border py-12 md:py-16 lg:py-24 text-foreground">
+        <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold text-foreground tracking-tight">Kepatuhan Administrasi Kontrak</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">Kepatuhan Administrasi Kontrak</h2>
             <p className="text-muted-foreground text-xs mt-2 font-bold uppercase tracking-wider">Jaminan standar mutu & respon {profile.name}</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

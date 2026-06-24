@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet-async"
 import { Link, useSearchParams } from "react-router-dom"
 import { cn, getAssetUrl } from "@/lib/utils"
 import api from "@/services/axios"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 
 const STOCK_STATUS_MAP = {
@@ -195,13 +196,13 @@ export default function Products() {
       <div className="bg-background text-foreground min-h-screen">
         {/* Page Header */}
         <div className="border-b border-border bg-card">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-24">
             <nav className="text-[11px] text-muted-foreground mb-3 flex items-center gap-1.5 font-bold uppercase tracking-wider">
               <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
               <ChevronRight className="h-3 w-3" />
               <span className="text-foreground">Produk</span>
             </nav>
-            <h1 className="text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">Katalog Produk B2B</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">Katalog Produk B2B</h1>
             <p className="text-muted-foreground text-sm leading-relaxed mt-2 max-w-xl">
               Spesifikasi peralatan industri resmi siap suplai untuk tender kementerian, proyek konstruksi nasional, BUMN, dan laboratorium riset universitas.
             </p>
@@ -209,7 +210,7 @@ export default function Products() {
         </div>
 
         {/* Content Area */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12">
           <div className="flex flex-col lg:flex-row gap-10">
 
             {/* Sidebar Desktop */}
@@ -230,29 +231,25 @@ export default function Products() {
                   )}
                 </p>
                 <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    className="lg:hidden flex items-center gap-2 text-xs font-semibold text-foreground border border-border rounded-lg px-3 py-2 hover:bg-muted/50 transition-colors h-9"
-                  >
-                    <SlidersHorizontal className="h-4 w-4" />
-                    Filter
-                  </button>
+                  <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+                    <SheetTrigger asChild>
+                      <button
+                        className="lg:hidden flex items-center gap-2 text-xs font-semibold text-foreground border border-border rounded-lg px-3 py-2 hover:bg-muted/50 transition-colors h-9 cursor-pointer"
+                      >
+                        <SlidersHorizontal className="h-4 w-4" />
+                        Filter
+                      </button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-80 bg-card border-r border-border p-6 shadow-modal overflow-y-auto text-left">
+                      <h2 className="text-sm font-bold text-foreground mb-6 pb-3 border-b border-border uppercase tracking-wider">Filter Katalog</h2>
+                      {renderFilters()}
+                    </SheetContent>
+                  </Sheet>
                   <div className="text-xs text-muted-foreground font-medium border border-border rounded-lg px-3 py-2 bg-card select-none">
                     Status: Siap Tender
                   </div>
                 </div>
               </div>
-
-              {/* Mobile filter drawer */}
-              {sidebarOpen && (
-                <div className="lg:hidden mb-6 p-5 bg-card border border-border rounded-xl">
-                  <div className="flex items-center justify-between mb-4 pb-2 border-b border-border">
-                    <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">Filter Pencarian</h3>
-                    <button onClick={() => setSidebarOpen(false)} className="text-xs text-muted-foreground font-semibold hover:text-foreground">Tutup</button>
-                  </div>
-                  {renderFilters()}
-                </div>
-              )}
 
               {/* Product Grid */}
               {isLoading ? (
@@ -289,7 +286,7 @@ export default function Products() {
                       <Link
                         key={product.id}
                         to={`/products/${product.slug}`}
-                        className="group bg-card border border-border rounded-xl overflow-hidden flex flex-col h-full shadow-sm hover:shadow-md hover:border-border/80 transition-all duration-300"
+                        className="group bg-card border border-border rounded-xl overflow-hidden flex flex-col h-full shadow-sm hover:shadow-md hover:border-border/80 hover:-translate-y-1 transition-all duration-300"
                       >
                         {/* Image */}
                         <div className="relative aspect-[4/3] overflow-hidden bg-muted/30 border-b border-border shrink-0">
@@ -337,19 +334,19 @@ export default function Products() {
                       <button
                         onClick={() => setPage(p => Math.max(1, p - 1))}
                         disabled={page === 1}
-                        className="w-9 h-9 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                        className="w-11 h-11 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </button>
                       {paginationPages().map((p, i) =>
                         p === "..." ? (
-                          <span key={`e-${i}`} className="w-9 h-9 flex items-center justify-center text-sm text-muted-foreground/50">···</span>
+                          <span key={`e-${i}`} className="w-11 h-11 flex items-center justify-center text-sm text-muted-foreground/50">···</span>
                         ) : (
                           <button
                             key={p}
                             onClick={() => setPage(p)}
                             className={cn(
-                              "w-9 h-9 flex items-center justify-center rounded border text-xs font-bold transition-colors cursor-pointer",
+                              "w-11 h-11 flex items-center justify-center rounded border text-xs font-bold transition-colors cursor-pointer",
                               page === p ? "bg-primary border-primary text-primary-foreground" : "border-border text-muted-foreground hover:bg-muted hover:border-border"
                             )}
                           >
@@ -360,7 +357,7 @@ export default function Products() {
                       <button
                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                         disabled={page === totalPages}
-                        className="w-9 h-9 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                        className="w-11 h-11 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                       >
                         <ChevronRight className="h-4 w-4" />
                       </button>

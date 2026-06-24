@@ -73,7 +73,7 @@ export default function About() {
           <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/80" />
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16 text-left w-full">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 text-left w-full">
           <nav className="text-[11px] text-slate-300/80 mb-3 flex items-center gap-1.5 font-bold uppercase tracking-wider">
             <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
             <ChevronRight className="h-3 w-3" />
@@ -87,14 +87,14 @@ export default function About() {
       </div>
 
       {/* Sejarah & Latar Belakang - Editorial 2 Column */}
-      <section className="bg-background py-20 text-foreground text-left">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="bg-background py-12 md:py-16 lg:py-24 text-foreground text-left">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div>
               <span className="text-xs font-semibold text-accent uppercase tracking-widest block mb-2">
                 Rekam Jejak {profile.established ? (new Date().getFullYear() - parseInt(profile.established, 10)) + '+ Tahun' : '15+ Tahun'}
               </span>
-              <h2 className="text-2xl lg:text-3xl font-bold text-foreground tracking-tight mb-5">Sejarah & Komitmen Manufaktur</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-5">Sejarah & Komitmen Manufaktur</h2>
               <div className="space-y-4 text-muted-foreground text-sm leading-relaxed">
                 {historyParagraphs.map((p, i) => (
                   <p key={i}>{p}</p>
@@ -123,11 +123,11 @@ export default function About() {
       </section>
 
       {/* Credentials / Stats */}
-      <section className="bg-muted/30 border-y border-border py-20 text-foreground">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="bg-muted/30 border-y border-border py-12 md:py-16 lg:py-24 text-foreground">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {credentials.map((c, i) => (
-              <div key={i} className="surface-card p-8 flex flex-col items-center text-center hover:-translate-y-0.5">
+              <div key={i} className="surface-card p-4 sm:p-6 lg:p-8 flex flex-col h-full items-center text-center hover:-translate-y-1 transition-all duration-300">
                 <div className="w-10 h-10 bg-muted/30 border border-border/40 rounded-xl flex items-center justify-center mb-4">
                   <c.icon className="h-5 w-5 text-muted-foreground" />
                 </div>
@@ -140,21 +140,23 @@ export default function About() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="bg-background py-20 text-foreground text-left">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-2xl lg:text-3xl font-bold text-foreground tracking-tight mb-8">Visi & Misi Perusahaan</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-card border border-border rounded-2xl p-10 shadow-md hover:-translate-y-0.5 hover:shadow-card-hover transition-all duration-300">
-              <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Visi Utama</p>
-              <h3 className="font-semibold text-foreground text-sm mb-3 leading-normal">
-                {profile.vision || "Menjadi pabrikator alat teknik nasional terkemuka yang tepercaya dalam kualitas dan integritas."}
-              </h3>
+      <section className="bg-background py-12 md:py-16 lg:py-24 text-foreground text-left">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-8">Visi & Misi Perusahaan</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <div className="bg-card border border-border rounded-2xl p-6 sm:p-10 shadow-md hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 flex flex-col h-full justify-between">
+              <div>
+                <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Visi Utama</p>
+                <h3 className="font-semibold text-foreground text-sm mb-3 leading-normal">
+                  {profile.vision || "Menjadi pabrikator alat teknik nasional terkemuka yang tepercaya dalam kualitas dan integritas."}
+                </h3>
+              </div>
               <p className="text-xs text-muted-foreground leading-relaxed mt-4">
                 Kami berkomitmen menjadi pemimpin pasar industri permesinan sipil skala nasional dengan mengedepankan standardisasi mutu dan kemudahan proses administrasi B2B pemerintah maupun swasta.
               </p>
             </div>
 
-            <div className="bg-card border border-border rounded-2xl p-10 shadow-md hover:-translate-y-0.5 hover:shadow-card-hover transition-all duration-300">
+            <div className="bg-card border border-border rounded-2xl p-6 sm:p-10 shadow-md hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 flex flex-col h-full">
               <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-3">Misi Operasional</p>
               <ul className="space-y-4">
                 {missionList.map((m, i) => (
@@ -170,17 +172,19 @@ export default function About() {
       </section>
 
       {/* Core Values */}
-      <section className="bg-muted/30 border-t border-border py-20 text-foreground">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-left">
-          <h2 className="text-2xl lg:text-3xl font-bold text-foreground tracking-tight mb-8">Nilai Inti Perusahaan</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <section className="bg-muted/30 border-t border-border py-12 md:py-16 lg:py-24 text-foreground">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 text-left">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-8">Nilai Inti Perusahaan</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
             {values.map((v, i) => (
-              <div key={i} className="surface-card p-8 hover:-translate-y-0.5">
-                <div className="w-8 h-8 rounded-xl bg-background border border-border flex items-center justify-center mb-4">
-                  <span className="text-muted-foreground font-bold text-xs">{i + 1}</span>
+              <div key={i} className="surface-card p-5 sm:p-8 hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 flex flex-col h-full justify-between">
+                <div>
+                  <div className="w-8 h-8 rounded-xl bg-background border border-border flex items-center justify-center mb-4">
+                    <span className="text-muted-foreground font-bold text-xs">{i + 1}</span>
+                  </div>
+                  <h3 className="font-bold text-foreground text-sm mb-2">{v.title}</h3>
                 </div>
-                <h3 className="font-bold text-foreground text-sm mb-2">{v.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{v.desc}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-2">{v.desc}</p>
               </div>
             ))}
           </div>

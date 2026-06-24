@@ -4,6 +4,20 @@ import { useState, useEffect } from "react";
 import api from "@/services/axios";
 import { Button } from "@/components/ui/button";
 import { Eye, ShieldCheck } from "lucide-react";
+import { getAssetUrl } from "@/lib/utils";
+
+const STOCK_STATUS_MAP = {
+  available: "Tersedia",
+  preorder: "Pre-Order",
+  custom: "Custom Made"
+};
+
+const getProductImage = (product) => {
+  const img = product.images?.find(i => i.is_primary)?.image_url || product.images?.[0]?.image_url;
+  return img ? getAssetUrl(img) : null;
+};
+
+const getProductSku = (product) => `GTM-PD-${String(product.id).padStart(3, "0")}`;
 
 const getTechnicalMeta = (product) => {
   const meta = {
@@ -104,18 +118,22 @@ export default function FeaturedProductsSection() {
                 className="bg-card border border-border rounded-xl overflow-hidden flex flex-col h-full shadow-card hover:shadow-card-hover hover:border-border/80 hover:-translate-y-1 transition-all duration-300 group cursor-default"
               >
                 {/* Product Image */}
-                <div className="aspect-[4/3] w-full overflow-hidden bg-muted/30 relative">
-                  <img
-                    src={prod.image}
-                    alt={prod.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
-                    loading="lazy"
-                  />
-                  
-                  {/* Stock/Availability badge */}
-                  <div className="absolute top-3 left-3 bg-card/95 backdrop-blur-xs px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase text-foreground border border-border flex items-center gap-1 shadow-card">
-                    <span className="w-1.5 h-1.5 rounded-full bg-warning" />
-                    {prod.status}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/30 border-b border-border shrink-0">
+                  {getProductImage(prod) ? (
+                    <img
+                      src={getProductImage(prod)}
+                      alt={prod.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-muted/20">
+                      <span className="text-xs text-muted-foreground">Tidak Ada Foto</span>
+                    </div>
+                  )}
+                  <div className="absolute top-3 left-3 bg-background/95 px-2 py-0.5 rounded text-[9px] font-bold tracking-wide uppercase text-foreground border border-border flex items-center gap-1 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-500" />
+                    {STOCK_STATUS_MAP[prod.status] || prod.status}
                   </div>
                 </div>
 
@@ -130,11 +148,11 @@ export default function FeaturedProductsSection() {
                     <div className="space-y-1.5 text-[11px] border-t border-border pt-3">
                       <div className="flex justify-between items-center">
                         <span className="text-muted-foreground/80 font-bold uppercase tracking-wide text-[9px]">SKU</span>
-                        <span className="font-mono text-foreground font-semibold">{prod.sku}</span>
+                        <span className="font-mono text-foreground font-semibold">{getProductSku(prod)}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-muted-foreground/80 font-bold uppercase tracking-wide text-[9px]">Kategori</span>
-                        <span className="text-muted-foreground font-medium truncate max-w-[140px]">{prod.category}</span>
+                        <span className="text-muted-foreground font-medium truncate max-w-[140px]">{prod.category?.name || "Lainnya"}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-muted-foreground/80 font-bold uppercase tracking-wide text-[9px]">Kapasitas</span>

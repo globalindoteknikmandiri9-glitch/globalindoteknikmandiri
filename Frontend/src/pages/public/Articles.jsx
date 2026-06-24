@@ -106,13 +106,13 @@ export default function Articles() {
       <div className="bg-background min-h-screen text-foreground">
         {/* Page Header */}
         <div className="border-b border-border bg-card">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+          <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-24">
             <nav className="text-[11px] text-muted-foreground/60 mb-3 flex items-center gap-1.5 font-bold uppercase tracking-wider">
               <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
               <ChevronRightIcon className="h-3 w-3" />
               <span className="text-muted-foreground">Knowledge Center</span>
             </nav>
-            <h1 className="text-3xl lg:text-4xl font-extrabold text-foreground tracking-tight">Knowledge Center</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">Knowledge Center</h1>
             <p className="text-muted-foreground text-sm leading-relaxed mt-2 max-w-xl">
               Dokumentasi teknis, panduan kalibrasi alat uji sipil, dan regulasi marka jalan dari tim engineering CV Globalindo Teknik Mandiri.
             </p>
@@ -120,10 +120,10 @@ export default function Articles() {
         </div>
 
         {/* Content Area */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-24">
           {/* Search bar */}
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-10 pb-6 border-b border-border">
-            <div className="relative w-full md:w-80">
+            <div className="relative w-full md:max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
               <input
                 type="text"
@@ -274,20 +274,20 @@ export default function Articles() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="w-9 h-9 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
 
                   {paginationPages().map((p, i) =>
                     p === "..." ? (
-                      <span key={`e-${i}`} className="w-9 h-9 flex items-center justify-center text-sm text-slate-400">···</span>
+                      <span key={`e-${i}`} className="w-11 h-11 flex items-center justify-center text-sm text-slate-400">···</span>
                     ) : (
                       <button
                         key={p}
                         onClick={() => setPage(p)}
                         className={cn(
-                          "w-9 h-9 flex items-center justify-center rounded border text-xs font-bold transition-colors",
+                          "w-11 h-11 flex items-center justify-center rounded border text-xs font-bold transition-colors",
                           page === p
                             ? "bg-navy border-navy text-white"
                             : "border-border text-muted-foreground hover:bg-muted/50 hover:border-border/80"
@@ -301,7 +301,7 @@ export default function Articles() {
                   <button
                     onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     disabled={page === totalPages}
-                    className="w-9 h-9 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="w-11 h-11 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronRight className="h-4 w-4" />
                   </button>

@@ -87,7 +87,7 @@ export default function CredentialsSection() {
               Fakta & Rekam Jejak Operasional
             </h3>
             
-            <div className="grid grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {stats.map((stat, idx) => (
                 <div key={idx} className="surface-card p-4 sm:p-5 hover:shadow-card-hover transition-all duration-300 cursor-default">
                   <div className="text-2xl lg:text-3xl font-extrabold text-foreground leading-tight">
