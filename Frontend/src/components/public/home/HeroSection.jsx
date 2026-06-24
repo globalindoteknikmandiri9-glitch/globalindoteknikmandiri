@@ -1,32 +1,15 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import api from "@/services/axios";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 import { getAssetUrl } from "@/lib/utils";
 
 export default function HeroSection() {
-  const [activeBanner, setActiveBanner] = useState(null);
   const { profile } = useCompanyProfile();
 
-  useEffect(() => {
-    const fetchBanners = async () => {
-      try {
-        const res = await api.get('/public/banners');
-        if (res.data && res.data.length > 0) {
-          setActiveBanner(res.data[0]);
-        }
-      } catch (error) {
-        console.error("Gagal memuat banner", error);
-      }
-    };
-    fetchBanners();
-  }, []);
-
-  const bgImage = activeBanner?.image_url 
-    ? getAssetUrl(activeBanner.image_url)
+  const bgImage = profile.workshop_image_url
+    ? getAssetUrl(profile.workshop_image_url)
     : "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop";
 
   return (
@@ -68,18 +51,6 @@ export default function HeroSection() {
 
           {/* Action CTAs */}
           <div className="flex flex-wrap gap-4">
-            {activeBanner?.link && (
-              <Button
-                size="lg"
-                className="bg-accent hover:bg-accent/90 text-white px-6 h-11 text-sm font-bold rounded-lg shadow-lg shadow-accent/20 animate-pulse-soft"
-                asChild
-              >
-                <a href={activeBanner.link} target={activeBanner.link.startsWith('http') ? '_blank' : '_self'} rel="noreferrer">
-                  {activeBanner.title || "Pelajari Lebih Lanjut"}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            )}
             <Button
               size="lg"
               className="bg-warning hover:bg-warning/90 text-warning-foreground px-6 h-11 text-sm font-semibold rounded-lg"

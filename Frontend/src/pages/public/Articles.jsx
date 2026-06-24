@@ -315,9 +315,9 @@ export default function Articles() {
       {/* Article Detail Dialog Modal */}
       {selectedArticle && (
         <Dialog open={!!selectedArticle} onOpenChange={(open) => !open && setSelectedArticle(null)}>
-          <DialogContent className="max-w-2xl bg-card border border-border rounded-2xl p-0 overflow-hidden shadow-modal">
+          <DialogContent className="max-w-2xl bg-card border border-border rounded-2xl p-0 overflow-hidden shadow-modal max-h-[90vh] flex flex-col">
             {getImageUrl(selectedArticle.image_url) ? (
-              <div className="relative aspect-video w-full overflow-hidden bg-muted">
+              <div className="relative aspect-video w-full overflow-hidden bg-muted shrink-0">
                 <img
                   src={getImageUrl(selectedArticle.image_url)}
                   alt={selectedArticle.title}
@@ -334,7 +334,7 @@ export default function Articles() {
                 </div>
               </div>
             ) : (
-              <div className="px-6 pt-6">
+              <div className="px-6 pt-6 shrink-0 text-left">
                 <DialogHeader>
                   <DialogTitle className="text-xl font-bold leading-snug">{selectedArticle.title}</DialogTitle>
                   <p className="text-[10px] text-muted-foreground mt-1">
@@ -344,7 +344,8 @@ export default function Articles() {
               </div>
             )}
 
-            <div className="p-6 overflow-y-auto max-h-[50vh] text-left animate-page-fade">
+            {/* Scrollable content body */}
+            <div className="p-6 overflow-y-auto flex-1 text-left animate-page-fade">
               {/* Render content — support both plain text and simple HTML */}
               {selectedArticle.content ? (
                 <div
@@ -354,15 +355,16 @@ export default function Articles() {
               ) : (
                 <p className="text-xs text-muted-foreground italic">Konten artikel belum tersedia.</p>
               )}
+            </div>
 
-              <div className="mt-6 pt-4 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-muted-foreground">
-                <span>CV Globalindo Teknik Mandiri — Engineering & Quality Assurance</span>
-                <DialogClose asChild>
-                  <Button variant="outline" className="text-xs h-9 rounded-lg shadow-soft-sm self-end sm:self-auto">
-                    Selesai Membaca
-                  </Button>
-                </DialogClose>
-              </div>
+            {/* Fixed footer */}
+            <div className="px-6 py-4 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-muted-foreground bg-card shrink-0 text-left">
+              <span className="text-[11px] font-medium">CV Globalindo Teknik Mandiri — Engineering & Quality Assurance</span>
+              <DialogClose asChild>
+                <Button variant="outline" className="text-xs h-9 rounded-lg shadow-soft-sm shrink-0 cursor-pointer self-end sm:self-auto">
+                  Selesai Membaca
+                </Button>
+              </DialogClose>
             </div>
           </DialogContent>
         </Dialog>

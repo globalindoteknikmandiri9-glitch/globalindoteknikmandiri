@@ -1,17 +1,5 @@
 const prisma = require('../config/db');
 
-const getPublicBanners = async (req, res) => {
-  try {
-    const banners = await prisma.banner.findMany({
-      where: { is_active: true },
-      orderBy: { createdAt: 'desc' }
-    });
-    res.json(banners);
-  } catch (err) {
-    res.status(500).send('Server Error');
-  }
-};
-
 const getPublicProfile = async (req, res) => {
   try {
     const profile = await prisma.companyProfile.findFirst();
@@ -97,7 +85,6 @@ const getPublicArticleDetail = async (req, res) => {
 };
 
 module.exports = {
-  getPublicBanners,
   getPublicProfile,
   getPublicCategories,
   getPublicProducts,

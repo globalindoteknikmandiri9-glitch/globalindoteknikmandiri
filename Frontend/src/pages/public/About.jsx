@@ -112,7 +112,7 @@ export default function About() {
 
             <div className="relative border border-border rounded-2xl overflow-hidden shadow-md">
               <img
-                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80"
+                src={profile.workshop_image_url ? getAssetUrl(profile.workshop_image_url) : "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80"}
                 alt={`Proses Perakitan Mesin di Workshop ${profile.name || 'Bogor'}`}
                 className="w-full aspect-[4/3] object-cover"
                 loading="lazy"

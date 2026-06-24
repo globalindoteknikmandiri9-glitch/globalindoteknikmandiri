@@ -1,4 +1,4 @@
-import { Package, Tags, FileText, Users, TrendingUp, TrendingDown, Minus } from "lucide-react"
+import { Package, Tags, FileText, MessageSquare, TrendingUp, TrendingDown, Minus } from "lucide-react"
 import { useTheme } from "@/contexts/ThemeContext"
 import {
   AreaChart,
@@ -15,23 +15,21 @@ import {
 import { useState, useEffect } from "react"
 import api from "@/services/axios"
 
-const areaData = [
-  { month: "Jan", value: 62 },
-  { month: "Feb", value: 58 },
-  { month: "Mar", value: 75 },
-  { month: "Apr", value: 80 },
-  { month: "Mei", value: 58 },
-  { month: "Jun", value: 120 },
-]
+function formatRelativeTime(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
 
-const recentActivity = [
-  { user: "Budi Santoso", initials: "BS", activity: 'Menambahkan produk baru: "Heavy Duty Valve X-100"', time: "10 menit lalu" },
-  { user: "Ani Rahmawati", initials: "AR", activity: "Memperbarui stok kategori: Pipe Fittings", time: "1 jam lalu" },
-  { user: "Dedi Mulyadi", initials: "DM", activity: 'Menerbitkan artikel: "Panduan Pemeliharaan Pompa Industri"', time: "3 jam lalu" },
-  { user: "Siti Aminah", initials: "SA", activity: "Menyetujui pesanan #ORD-88214", time: "Kemarin" },
-]
-
-
+  if (diffMins < 1) return "Baru saja";
+  if (diffMins < 60) return `${diffMins} menit lalu`;
+  if (diffHours < 24) return `${diffHours} jam lalu`;
+  if (diffDays === 1) return "Kemarin";
+  return date.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+}
 
 function TrendBadge({ trend }) {
   if (trend === null || trend === undefined) return null
@@ -64,7 +62,10 @@ export default function Dashboard() {
     totalProducts: 0,
     totalCategories: 0,
     totalArticles: 0,
-    totalBanners: 0
+    totalMessages: 0,
+    productTrend: [],
+    categoryDistribution: [],
+    recentActivity: []
   });
 
   useEffect(() => {
@@ -102,11 +103,11 @@ export default function Dashboard() {
       sub: "artikel/berita",
     },
     {
-      title: "Total Banner",
-      value: dashboardStats.totalBanners,
-      icon: Users,
+      title: "Pesan Masuk",
+      value: dashboardStats.totalMessages,
+      icon: MessageSquare,
       trend: null,
-      sub: "banner slider",
+      sub: "pesan dari pengunjung",
     },
   ];
 
@@ -117,12 +118,27 @@ export default function Dashboard() {
   const tooltipBorder = isDark ? "#334155" : "#e2e8f0"
   const chartLineColor = isDark ? "#60a5fa" : "#2563EB"
 
-  const pieData = [
-    { name: "Alat Marka", value: 35, color: isDark ? "#38bdf8" : "#0F172A" },
-    { name: "Safety Jalan", value: 30, color: isDark ? "#60a5fa" : "#2563EB" },
-    { name: "Alat Laboratorium", value: 20, color: isDark ? "#34d399" : "#10b981" },
-    { name: "Mesin Tani", value: 15, color: isDark ? "#cbd5e1" : "#94a3b8" },
-  ]
+  const areaData = dashboardStats.productTrend || [];
+
+  const baseColors = [
+    { dark: "#38bdf8", light: "#0F172A" },
+    { dark: "#60a5fa", light: "#2563EB" },
+    { dark: "#34d399", light: "#10b981" },
+    { dark: "#a78bfa", light: "#7c3aed" },
+    { dark: "#fb7185", light: "#e11d48" },
+    { dark: "#cbd5e1", light: "#94a3b8" },
+  ];
+
+  const pieData = (dashboardStats.categoryDistribution || []).map((item, index) => {
+    const colorObj = baseColors[index % baseColors.length];
+    return {
+      name: item.name,
+      value: item.value,
+      color: isDark ? colorObj.dark : colorObj.light
+    };
+  });
+
+  const totalCategoryProducts = pieData.reduce((acc, curr) => acc + curr.value, 0);
 
   return (
     <div className="space-y-6 text-left">
@@ -221,34 +237,40 @@ export default function Dashboard() {
               <h2 className="font-bold text-foreground text-sm">Distribusi Kategori</h2>
               <p className="text-xs text-muted-foreground font-medium mt-0.5">Komposisi inventaris berdasarkan kategori</p>
             </div>
-            <div className="h-[160px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={70}
-                    paddingAngle={3}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={index} fill={entry.color} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="h-[160px] flex items-center justify-center">
+              {totalCategoryProducts > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={pieData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={70}
+                      paddingAngle={3}
+                      dataKey="value"
+                    >
+                      {pieData.map((entry, index) => (
+                        <Cell key={index} fill={entry.color} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <span className="text-xs text-muted-foreground text-center">Belum ada data distribusi kategori</span>
+              )}
             </div>
           </div>
-          <div className="mt-4 space-y-1.5 text-left">
+          <div className="mt-4 space-y-1.5 text-left max-h-[120px] overflow-y-auto pr-1">
             {pieData.map((item, i) => (
               <div key={i} className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: item.color }} />
                   <span className="text-muted-foreground font-semibold">{item.name}</span>
                 </div>
-                <span className="font-bold text-foreground">{item.value}%</span>
+                <span className="font-bold text-foreground">
+                  {item.value} ({totalCategoryProducts > 0 ? Math.round((item.value / totalCategoryProducts) * 100) : 0}%)
+                </span>
               </div>
             ))}
           </div>
@@ -273,22 +295,32 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {recentActivity.map((row, i) => (
-                <tr key={i} className="hover:bg-muted/50 transition-colors">
-                  <td className="px-6 py-3.5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center text-[10px] font-bold text-muted-foreground shrink-0 select-none">
-                        {row.initials}
+              {(dashboardStats.recentActivity || []).length > 0 ? (
+                (dashboardStats.recentActivity || []).map((row, i) => (
+                  <tr key={i} className="hover:bg-muted/50 transition-colors">
+                    <td className="px-6 py-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center text-[10px] font-bold text-muted-foreground shrink-0 select-none">
+                          {row.initials}
+                        </div>
+                        <span className="font-semibold text-foreground text-sm whitespace-nowrap">{row.user}</span>
                       </div>
-                      <span className="font-semibold text-foreground text-sm whitespace-nowrap">{row.user}</span>
-                    </div>
+                    </td>
+                    <td className="px-6 py-3.5 text-muted-foreground text-sm max-w-xs md:max-w-md">
+                      <p className="line-clamp-1">{row.activity}</p>
+                    </td>
+                    <td className="px-6 py-3.5 text-right text-muted-foreground/60 text-xs font-semibold whitespace-nowrap">
+                      {formatRelativeTime(row.time)}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-6 py-8 text-center text-muted-foreground text-xs font-medium">
+                    Belum ada aktivitas tercatat
                   </td>
-                  <td className="px-6 py-3.5 text-muted-foreground text-sm max-w-xs md:max-w-md">
-                    <p className="line-clamp-1">{row.activity}</p>
-                  </td>
-                  <td className="px-6 py-3.5 text-right text-muted-foreground/60 text-xs font-semibold whitespace-nowrap">{row.time}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

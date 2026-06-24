@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const { 
-  getPublicBanners, 
   getPublicProfile, 
   getPublicCategories, 
   getPublicProducts, 
@@ -13,7 +12,6 @@ const {
 
 const { createMessage } = require('../controllers/messageController');
 
-router.get('/banners', getPublicBanners);
 router.get('/profile', getPublicProfile);
 router.get('/categories', getPublicCategories);
 router.get('/products', getPublicProducts);
