@@ -13,7 +13,7 @@ export default function AdminLayout() {
 
   return (
     <div className="flex min-h-screen bg-background dark:bg-slate-950 text-foreground">
-      <AdminSidebar />
+      <AdminSidebar className="hidden lg:flex" />
       <div className="flex flex-1 flex-col">
         <AdminTopbar />
         <main key={location.pathname} className="flex-1 p-6 overflow-y-auto animate-page-fade">

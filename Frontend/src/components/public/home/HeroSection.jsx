@@ -42,7 +42,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/70" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
+      <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-24">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -57,21 +57,21 @@ export default function HeroSection() {
           )}
 
           {/* Headline */}
-          <h1 className="text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight tracking-tight">
             {profile.hero_title}
           </h1>
 
           {/* Subheadline */}
-          <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-2xl">
+          <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-10 max-w-2xl">
             {profile.hero_subtitle}
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             {activeBanner?.link && (
               <Button
                 size="lg"
-                className="bg-accent hover:bg-accent/90 text-white px-6 h-11 text-sm font-bold rounded-lg shadow-lg shadow-accent/20 animate-pulse-soft"
+                className="bg-accent hover:bg-accent/90 text-white px-6 h-11 text-sm font-bold rounded-lg shadow-lg shadow-accent/20 animate-pulse-soft w-full sm:w-auto justify-center"
                 asChild
               >
                 <a href={activeBanner.link} target={activeBanner.link.startsWith('http') ? '_blank' : '_self'} rel="noreferrer">
@@ -82,7 +82,7 @@ export default function HeroSection() {
             )}
             <Button
               size="lg"
-              className="bg-warning hover:bg-warning/90 text-warning-foreground px-6 h-11 text-sm font-semibold rounded-lg"
+              className="bg-warning hover:bg-warning/90 text-warning-foreground px-6 h-11 text-sm font-semibold rounded-lg w-full sm:w-auto justify-center"
               asChild
             >
               <Link to="/produk">
@@ -93,7 +93,7 @@ export default function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="border-slate-700 text-slate-300 bg-transparent hover:bg-white/5 hover:text-white px-6 h-11 text-sm rounded-lg"
+              className="border-slate-700 text-slate-300 bg-transparent hover:bg-white/5 hover:text-white px-6 h-11 text-sm rounded-lg w-full sm:w-auto justify-center"
               asChild
             >
               <Link to="/hubungi-kami">

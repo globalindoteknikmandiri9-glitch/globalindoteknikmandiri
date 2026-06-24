@@ -162,7 +162,7 @@ export default function Login() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-10 bg-navy hover:bg-navy/90 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                className="w-full h-10 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs rounded-lg transition-colors cursor-pointer"
               >
                 {isSubmitting ? "Memverifikasi..." : "Masuk ke Dashboard →"}
               </Button>
