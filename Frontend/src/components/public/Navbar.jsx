@@ -310,7 +310,7 @@ export default function Navbar() {
                         size="sm"
                         onClick={() => setTheme('light')}
                         className={cn(
-                          "h-8 text-[11px] font-semibold rounded-md cursor-pointer",
+                          "h-11 text-xs font-semibold rounded-md cursor-pointer",
                           theme === 'light' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
@@ -322,7 +322,7 @@ export default function Navbar() {
                         size="sm"
                         onClick={() => setTheme('dark')}
                         className={cn(
-                          "h-8 text-[11px] font-semibold rounded-md cursor-pointer",
+                          "h-11 text-xs font-semibold rounded-md cursor-pointer",
                           theme === 'dark' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
@@ -334,7 +334,7 @@ export default function Navbar() {
                         size="sm"
                         onClick={() => setTheme('system')}
                         className={cn(
-                          "h-8 text-[11px] font-semibold rounded-md cursor-pointer",
+                          "h-11 text-xs font-semibold rounded-md cursor-pointer",
                           theme === 'system' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
                         )}
                       >
@@ -345,7 +345,7 @@ export default function Navbar() {
                   </div>
                   <Button
                     variant="outline"
-                    className="w-full text-muted-foreground border-border bg-transparent hover:bg-muted hover:text-foreground gap-2 text-sm cursor-pointer h-9 rounded-lg"
+                    className="w-full text-muted-foreground border-border bg-transparent hover:bg-muted hover:text-foreground gap-2 text-sm cursor-pointer h-11 rounded-lg"
                     asChild
                   >
                     <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
@@ -353,7 +353,7 @@ export default function Navbar() {
                       WhatsApp
                     </a>
                   </Button>
-                  <Button variant="warning" className="w-full font-semibold text-sm h-9 rounded-lg cursor-pointer" asChild>
+                  <Button variant="warning" className="w-full font-semibold text-sm h-11 rounded-lg cursor-pointer" asChild>
                     <Link to="/hubungi-kami">Hubungi Kami</Link>
                   </Button>
                 </div>

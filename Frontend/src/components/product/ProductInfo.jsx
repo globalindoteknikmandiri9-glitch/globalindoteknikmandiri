@@ -75,7 +75,7 @@ export default function ProductInfo({ name, sku, category, stockStatus, shortDes
       </div>
 
       {/* Trust Checklist */}
-      <div className="grid grid-cols-2 gap-3.5 pt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
         {trustIndicators.map((t, idx) => (
           <div key={idx} className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
             <CheckCircle2 className="h-4.5 w-4.5 text-accent shrink-0" />
