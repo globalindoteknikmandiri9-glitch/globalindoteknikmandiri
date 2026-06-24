@@ -97,11 +97,12 @@ export default function Navbar() {
                       )}
                     >
                       {link.name}
-                      {isActive(link.path) && (
-                        <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-warning rounded-full" />
-                      )}
+                      <span className={cn(
+                        "absolute bottom-0 left-4 right-4 h-[2px] bg-warning rounded-full transition-all duration-300 transform origin-center",
+                        isActive(link.path) ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+                      )} />
                     </Link>
-
+                    
                     {/* Mega Menu Dropdown - dynamic from API */}
                     {categories.length > 0 && (
                       <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200 z-50">
@@ -184,9 +185,10 @@ export default function Navbar() {
                   )}
                 >
                   {link.name}
-                  {isActive(link.path) && (
-                    <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-warning rounded-full" />
-                  )}
+                  <span className={cn(
+                    "absolute bottom-0 left-4 right-4 h-[2px] bg-warning rounded-full transition-all duration-300 transform origin-center",
+                    isActive(link.path) ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+                  )} />
                 </Link>
               )
             })}
@@ -247,7 +249,7 @@ export default function Navbar() {
           {/* Mobile: Sheet trigger */}
           <Sheet key={mobileMenuKey} open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button className="lg:hidden text-slate-400 hover:text-white p-2 rounded-md transition-colors cursor-pointer">
+              <button className="lg:hidden text-slate-400 hover:text-white p-3 rounded-md transition-colors cursor-pointer">
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </SheetTrigger>
@@ -271,7 +273,7 @@ export default function Navbar() {
                         setMobileOpen(false)
                       }}
                       className={cn(
-                        "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors",
+                        "flex items-center px-4 py-3.5 text-sm font-medium rounded-lg transition-colors",
                         isActive(link.path)
                           ? "bg-accent text-warning"
                           : "text-muted-foreground hover:text-foreground hover:bg-muted"

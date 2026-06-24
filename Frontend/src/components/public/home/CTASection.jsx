@@ -8,14 +8,14 @@ export default function CTASection() {
   const { getWhatsappLink, profile } = useCompanyProfile();
 
   return (
-    <section className="bg-navy py-16 lg:py-20">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="bg-navy py-12 md:py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.25 }}
-          className="max-w-4xl mx-auto bg-slate-900 dark:bg-slate-950 border border-slate-800 dark:border-slate-900 rounded-2xl p-8 lg:p-12 text-center lg:text-left shadow-modal"
+          className="max-w-4xl mx-auto bg-slate-900 dark:bg-slate-950 border border-slate-800 dark:border-slate-900 rounded-2xl p-6 sm:p-8 lg:p-12 text-center lg:text-left shadow-modal"
         >
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">

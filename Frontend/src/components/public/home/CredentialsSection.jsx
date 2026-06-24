@@ -16,25 +16,25 @@ export default function CredentialsSection() {
   ];
 
   return (
-    <section className="bg-background py-16 lg:py-24 border-b border-border">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="bg-background py-12 md:py-16 lg:py-24 border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.25 }}
-          className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start animate-fade-in"
+          className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start"
         >
           {/* Left Column - History and Legals */}
           <div className="lg:col-span-7 text-left">
             <span className="text-xs font-semibold text-accent uppercase tracking-widest block mb-3">
               Kredibilitas Hukum & Legalitas
             </span>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight">
               Menjamin Kepatuhan Administrasi dan Keamanan Pengadaan B2B Nasional
             </h2>
             
-            <p className="text-slate-650 dark:text-slate-350 text-base leading-relaxed mb-8">
+            <p className="text-slate-650 dark:text-slate-350 text-sm md:text-base leading-relaxed mb-8">
               {profile?.home_credentials_desc || "CV Globalindo Teknik Mandiri adalah badan usaha berbadan hukum resmi yang berkomitmen penuh mendukung kelancaran proyek konstruksi, laboratorium riset, dan permesinan sektor publik maupun swasta. Kami melengkapi setiap transaksi dengan dokumen hukum transparan untuk memudahkan audit."}
             </p>
 
@@ -82,14 +82,14 @@ export default function CredentialsSection() {
           </div>
 
           {/* Right Column - Stats Grid */}
-          <div className="bg-muted/30 border border-border rounded-2xl p-8 shadow-card lg:col-span-5 text-left">
+          <div className="bg-muted/30 border border-border rounded-2xl p-6 sm:p-8 shadow-card lg:col-span-5 text-left">
             <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-6 pb-4 border-b border-border">
               Fakta & Rekam Jejak Operasional
             </h3>
             
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6">
               {stats.map((stat, idx) => (
-                <div key={idx} className="surface-card p-5 hover:shadow-card-hover transition-all duration-300 cursor-default">
+                <div key={idx} className="surface-card p-4 sm:p-5 hover:shadow-card-hover transition-all duration-300 cursor-default">
                   <div className="text-2xl lg:text-3xl font-extrabold text-foreground leading-tight">
                     {stat.value}
                   </div>

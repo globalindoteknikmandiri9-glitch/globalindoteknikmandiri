@@ -4,6 +4,7 @@ import { Bell, Menu, Search, User, Sun, Moon, Monitor, MessageSquare } from "luc
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/contexts/ThemeContext"
+import { cn } from "@/lib/utils"
 import api from "@/services/axios"
 import {
   DropdownMenu,
@@ -13,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export default function AdminTopbar() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const [unreadCount, setUnreadCount] = useState(0)
   const [recentMessages, setRecentMessages] = useState([])
 
@@ -78,14 +79,18 @@ export default function AdminTopbar() {
   return (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 sticky top-0 z-10 text-foreground">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="md:hidden text-muted-foreground">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="md:hidden text-muted-foreground h-10 w-10 rounded-xl border border-border bg-card hover:bg-accent hover:text-foreground transition-all duration-200 focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2"
+        >
           <Menu className="h-5 w-5" />
         </Button>
         <div className="relative hidden sm:block w-64">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground/60" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
           <Input 
             placeholder="Cari data..." 
-            className="pl-9 bg-muted border-transparent focus-visible:bg-background text-xs text-foreground"
+            className="pl-9 bg-muted/50 border border-transparent hover:border-border/50 focus-visible:border-border focus-visible:bg-background text-xs text-foreground h-10 rounded-xl transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-0"
           />
         </div>
       </div>
@@ -97,24 +102,38 @@ export default function AdminTopbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-muted-foreground h-9 w-9 rounded-lg shrink-0 cursor-pointer"
+              className={cn(
+                "h-10 w-10 rounded-xl border transition-all duration-200 shrink-0 cursor-pointer focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2",
+                resolvedTheme === 'dark'
+                  ? "bg-slate-800 text-yellow-400 border-slate-700 hover:bg-slate-700/80"
+                  : "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-100/80"
+              )}
               aria-label="Pilih Tema"
             >
-              {theme === 'dark' && <Moon className="h-4.5 w-4.5 text-warning" />}
-              {theme === 'light' && <Sun className="h-4.5 w-4.5 text-warning" />}
-              {theme === 'system' && <Monitor className="h-4.5 w-4.5 text-warning" />}
+              {theme === 'dark' && <Moon className="h-4.5 w-4.5" />}
+              {theme === 'light' && <Sun className="h-4.5 w-4.5" />}
+              {theme === 'system' && <Monitor className="h-4.5 w-4.5" />}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-card border border-border text-foreground w-32 shadow-dropdown">
-            <DropdownMenuItem onClick={() => setTheme('light')} className="focus:bg-muted focus:text-foreground gap-2 cursor-pointer text-xs py-2">
+          <DropdownMenuContent align="end" className="bg-popover text-popover-foreground border border-border w-32 shadow-soft-md rounded-xl p-1">
+            <DropdownMenuItem onClick={() => setTheme('light')} className={cn(
+              "focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2 px-2.5 rounded-lg transition-colors",
+              theme === 'light' ? "bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400 font-medium" : "text-muted-foreground"
+            )}>
               <Sun className="h-3.5 w-3.5" />
               <span>Terang</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')} className="focus:bg-muted focus:text-foreground gap-2 cursor-pointer text-xs py-2">
+            <DropdownMenuItem onClick={() => setTheme('dark')} className={cn(
+              "focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2 px-2.5 rounded-lg transition-colors",
+              theme === 'dark' ? "bg-slate-800 text-yellow-400 dark:bg-slate-800 dark:text-yellow-400 font-medium" : "text-muted-foreground"
+            )}>
               <Moon className="h-3.5 w-3.5" />
               <span>Gelap</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')} className="focus:bg-muted focus:text-foreground gap-2 cursor-pointer text-xs py-2">
+            <DropdownMenuItem onClick={() => setTheme('system')} className={cn(
+              "focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2 px-2.5 rounded-lg transition-colors",
+              theme === 'system' ? "bg-accent/10 text-accent font-medium" : "text-muted-foreground"
+            )}>
               <Monitor className="h-3.5 w-3.5" />
               <span>Sistem</span>
             </DropdownMenuItem>
@@ -123,16 +142,20 @@ export default function AdminTopbar() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative text-muted-foreground cursor-pointer rounded-lg">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative text-muted-foreground h-10 w-10 rounded-xl border border-border bg-card hover:bg-accent hover:text-foreground transition-all duration-200 focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 cursor-pointer"
+            >
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[9px] font-extrabold text-white border border-card">
+                <span className="absolute -top-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-rose-500 text-[9px] font-extrabold text-white border-2 border-card">
                   {unreadCount}
                 </span>
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-card border border-border text-foreground w-80 shadow-dropdown p-0 rounded-xl overflow-hidden">
+          <DropdownMenuContent align="end" className="bg-popover border border-border text-popover-foreground w-80 shadow-soft-md p-0 rounded-xl overflow-hidden">
             <div className="px-4 py-3 border-b border-border bg-muted/20 flex items-center justify-between">
               <span className="font-bold text-xs">Pesan Masuk</span>
               {unreadCount > 0 && (
@@ -186,7 +209,7 @@ export default function AdminTopbar() {
             <p className="text-sm font-medium text-muted-foreground">Admin Utama</p>
             <p className="text-xs text-muted-foreground/60">Superadmin</p>
           </div>
-          <div className="h-9 w-9 rounded-full bg-muted border border-border flex items-center justify-center text-muted-foreground">
+          <div className="h-10 w-10 rounded-xl bg-muted border border-border flex items-center justify-center text-muted-foreground shrink-0">
             <User className="h-5 w-5" />
           </div>
         </div>
