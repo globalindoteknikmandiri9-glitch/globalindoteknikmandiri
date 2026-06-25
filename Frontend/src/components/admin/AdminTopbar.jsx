@@ -112,49 +112,21 @@ export default function AdminTopbar() {
       </div>
 
       <div className="flex items-center gap-4">
-        {/* Subtle Theme Toggle Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn(
-                "h-10 w-10 rounded-xl border transition-all duration-200 shrink-0 cursor-pointer focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2",
-                resolvedTheme === 'dark'
-                  ? "bg-slate-800 text-yellow-400 border-slate-700 hover:bg-slate-700/80"
-                  : "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-100/80"
-              )}
-              aria-label="Pilih Tema"
-            >
-              {theme === 'dark' && <Moon className="h-4.5 w-4.5" />}
-              {theme === 'light' && <Sun className="h-4.5 w-4.5" />}
-              {theme === 'system' && <Monitor className="h-4.5 w-4.5" />}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-popover text-popover-foreground border border-border w-32 shadow-soft-md rounded-xl p-1">
-            <DropdownMenuItem onClick={() => setTheme('light')} className={cn(
-              "focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2 px-2.5 rounded-lg transition-colors",
-              theme === 'light' ? "bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400 font-medium" : "text-muted-foreground"
-            )}>
-              <Sun className="h-3.5 w-3.5" />
-              <span>Terang</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')} className={cn(
-              "focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2 px-2.5 rounded-lg transition-colors",
-              theme === 'dark' ? "bg-slate-800 text-yellow-400 dark:bg-slate-800 dark:text-yellow-400 font-medium" : "text-muted-foreground"
-            )}>
-              <Moon className="h-3.5 w-3.5" />
-              <span>Gelap</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')} className={cn(
-              "focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2 px-2.5 rounded-lg transition-colors",
-              theme === 'system' ? "bg-accent/10 text-accent font-medium" : "text-muted-foreground"
-            )}>
-              <Monitor className="h-3.5 w-3.5" />
-              <span>Sistem</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Simple Theme Toggle Button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+          className={cn(
+            "h-10 w-10 rounded-xl border transition-all duration-200 shrink-0 cursor-pointer focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2",
+            resolvedTheme === 'dark'
+              ? "bg-slate-800 text-yellow-400 border-slate-700 hover:bg-slate-700/80"
+              : "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-100/80"
+          )}
+          aria-label="Toggle Theme"
+        >
+          {resolvedTheme === 'dark' ? <Moon className="h-4.5 w-4.5" /> : <Sun className="h-4.5 w-4.5" />}
+        </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
