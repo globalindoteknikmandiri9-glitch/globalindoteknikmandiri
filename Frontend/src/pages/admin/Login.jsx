@@ -1,10 +1,11 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { cn, getAssetUrl } from "@/lib/utils"
+import { Eye, EyeOff } from "lucide-react"
 import * as z from "zod"
 
 const loginSchema = z.object({
@@ -20,6 +21,7 @@ export default function Login() {
   const navigate = useNavigate()
   const { user, login } = useAuth()
   const { profile } = useCompanyProfile()
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -67,9 +69,6 @@ export default function Login() {
               alt="CV Globalindo Teknik Mandiri" 
               className="h-12 w-auto object-contain" 
             />
-            <span className="font-bold text-warning text-base md:text-lg tracking-tight">
-              {profile.name}
-            </span>
           </div>
           <p className="text-muted-foreground/80 text-sm max-w-xs leading-relaxed font-semibold">
             Sistem manajemen internal untuk pengelolaan katalog produk, artikel, dan data perusahaan.
@@ -82,8 +81,8 @@ export default function Login() {
       </div>
 
       {/* Right panel: form */}
-      <div className="flex-1 flex items-center justify-center bg-background p-8">
-        <div className="w-full max-w-sm">
+      <div className="flex-1 flex flex-col bg-background p-6 sm:p-8 overflow-y-auto">
+        <div className="w-full max-w-sm m-auto py-6 sm:py-8">
           <div className="lg:hidden mb-8 flex flex-col items-center gap-2">
             <div className="flex items-center gap-2.5">
               <img 
@@ -91,9 +90,6 @@ export default function Login() {
                 alt="CV Globalindo Teknik Mandiri" 
                 className="h-10 w-auto object-contain" 
               />
-              <span className="font-bold text-warning text-sm tracking-tight">
-                {profile.name}
-              </span>
             </div>
             <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider">Admin Panel</p>
           </div>
@@ -133,16 +129,30 @@ export default function Login() {
                     Lupa Password?
                   </a>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  {...register("password")}
-                  className={cn(
-                    "h-10 text-xs border-border bg-background focus-visible:ring-accent",
-                    errors.password && "border-red-400 focus-visible:ring-red-400"
-                  )}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    {...register("password")}
+                    className={cn(
+                      "h-10 text-xs border-border bg-background focus-visible:ring-accent pr-10",
+                      errors.password && "border-red-400 focus-visible:ring-red-400"
+                    )}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center justify-center"
+                    aria-label={showPassword ? "Sembunyikan sandi" : "Tampilkan sandi"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
                 )}
@@ -162,7 +172,7 @@ export default function Login() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-10 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs rounded-lg transition-colors cursor-pointer"
               >
                 {isSubmitting ? "Memverifikasi..." : "Masuk ke Dashboard →"}
               </Button>
