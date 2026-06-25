@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect } from "react"
-import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, Tags, Loader2 } from "lucide-react"
+import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, Tags } from "lucide-react"
+import TableSkeleton from "../../components/admin/TableSkeleton"
+import EmptyState from "../../components/admin/EmptyState"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -108,7 +110,7 @@ export default function ManageCategories() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Kelola Kategori</h1>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Kelola Kategori</h1>
           <p className="text-xs font-semibold text-muted-foreground mt-0.5">Manajemen kategori produk untuk klasifikasi katalog.</p>
         </div>
         <Button onClick={() => handleOpenModal()} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card">
@@ -118,7 +120,7 @@ export default function ManageCategories() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-card border border-border rounded-xl p-4 shadow-card">
+      <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-card">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-400" />
           <Input
@@ -131,7 +133,7 @@ export default function ManageCategories() {
       </div>
 
       {/* Table Card */}
-      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-card">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -139,32 +141,35 @@ export default function ManageCategories() {
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-16 hidden md:table-cell">ID</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Nama Kategori</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden md:table-cell">Slug URL</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Jumlah Produk</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Jumlah Produk</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Tanggal Dibuat</th>
                 <th className="text-center px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {loading ? (
-                <tr>
-                  <td colSpan={6} className="text-center py-16 text-slate-500">
-                    <Loader2 className="h-8 w-8 text-primary animate-spin mx-auto mb-3" />
-                    <p className="font-bold text-slate-700 dark:text-slate-350">Memuat data kategori...</p>
-                  </td>
-                </tr>
+                <TableSkeleton columns={6} rows={5} />
               ) : paginated.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-16 text-slate-500">
-                    <Tags className="h-10 w-10 text-slate-300 mx-auto mb-3" />
-                    <p className="font-bold text-slate-700 dark:text-slate-350">Kategori tidak ditemukan</p>
+                  <td colSpan={6} className="p-0 border-0">
+                    <EmptyState 
+                      icon={<Tags />} 
+                      title="Kategori tidak ditemukan" 
+                      description="Belum ada data kategori atau pencarian tidak cocok." 
+                    />
                   </td>
                 </tr>
               ) : paginated.map((category) => (
                 <tr key={category.id} className="hover:bg-muted/50 transition-colors">
                   <td className="px-5 py-3.5 font-semibold text-slate-500 dark:text-slate-400 hidden md:table-cell">{category.id}</td>
-                  <td className="px-5 py-3.5 font-bold text-slate-900 dark:text-slate-100">{category.name}</td>
+                  <td className="px-5 py-3.5">
+                    <div className="font-bold text-slate-900 dark:text-slate-100">{category.name}</div>
+                    <div className="text-[10px] text-slate-500 font-medium mt-0.5 sm:hidden">
+                      {category.products ? category.products.length : 0} Produk
+                    </div>
+                  </td>
                   <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 font-mono text-xs hidden md:table-cell">{category.slug}</td>
-                  <td className="px-5 py-3.5 text-slate-700 dark:text-slate-350 font-semibold">
+                  <td className="px-5 py-3.5 text-slate-700 dark:text-slate-350 font-semibold hidden sm:table-cell">
                     {category.products ? category.products.length : 0} Produk
                   </td>
                   <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 text-xs font-semibold hidden sm:table-cell">
@@ -242,7 +247,7 @@ export default function ManageCategories() {
           <DialogHeader>
             <DialogTitle>{editingCategory ? "Edit Kategori" : "Tambah Kategori"}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
+          <form onSubmit={handleSubmit} className="space-y-6 text-left">
             <div>
               <label className="text-sm font-semibold mb-1 block">Nama Kategori</label>
               <Input

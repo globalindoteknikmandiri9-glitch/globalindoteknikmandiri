@@ -1,5 +1,8 @@
+import { AutosizeTextarea } from "@/components/ui/autosize-textarea"
 import { useState, useMemo, useEffect, useRef } from "react"
-import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, BookOpen, Loader2, Image as ImageIcon, FileText, Eye, EyeOff } from "lucide-react"
+import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, BookOpen, Image as ImageIcon, FileText, Eye, EyeOff } from "lucide-react"
+import TableSkeleton from "../../components/admin/TableSkeleton"
+import EmptyState from "../../components/admin/EmptyState"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn, getAssetUrl } from "@/lib/utils"
@@ -172,7 +175,7 @@ export default function ManageArticles() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Kelola Artikel</h1>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Kelola Artikel</h1>
           <p className="text-xs font-semibold text-muted-foreground mt-0.5">Manajemen konten knowledge center dan panduan teknis perusahaan.</p>
         </div>
         <Button
@@ -185,7 +188,7 @@ export default function ManageArticles() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-card border border-border rounded-xl p-4 shadow-card">
+      <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-card">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-400" />
           <Input
@@ -198,32 +201,29 @@ export default function ManageArticles() {
       </div>
 
       {/* Table Card */}
-      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-card">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-slate-50/50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 border-b border-border">
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-20 hidden sm:table-cell">Gambar</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Judul & Cuplikan</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Status</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Status</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden md:table-cell">Tgl Dibuat</th>
                 <th className="text-center px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {loading ? (
-                <tr>
-                  <td colSpan={5} className="text-center py-16 text-slate-500">
-                    <Loader2 className="h-8 w-8 text-primary animate-spin mx-auto mb-3" />
-                    <p className="font-bold text-slate-700 dark:text-slate-350">Memuat data artikel...</p>
-                  </td>
-                </tr>
+                <TableSkeleton columns={5} rows={5} />
               ) : paginated.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-16 text-slate-500">
-                    <BookOpen className="h-10 w-10 text-slate-300 mx-auto mb-3" />
-                    <p className="font-bold text-slate-700 dark:text-slate-350">Artikel tidak ditemukan</p>
-                    <p className="text-xs text-slate-400 mt-1">Klik "Tulis Artikel" untuk membuat konten baru.</p>
+                  <td colSpan={5} className="p-0 border-0">
+                    <EmptyState 
+                      icon={<BookOpen />} 
+                      title="Artikel tidak ditemukan" 
+                      description="Klik 'Tulis Artikel' untuk membuat konten baru." 
+                    />
                   </td>
                 </tr>
               ) : paginated.map((article) => (
@@ -244,8 +244,11 @@ export default function ManageArticles() {
                   <td className="px-5 py-3.5 max-w-xs">
                     <div className="font-bold text-slate-900 dark:text-slate-100 line-clamp-1">{article.title}</div>
                     <div className="text-[10px] text-slate-400 mt-0.5 line-clamp-2 leading-relaxed">{getSnippet(article.content)}</div>
+                    <div className="mt-1.5 sm:hidden">
+                      {getStatusBadge(article.status)}
+                    </div>
                   </td>
-                  <td className="px-5 py-3.5">{getStatusBadge(article.status)}</td>
+                  <td className="px-5 py-3.5 hidden sm:table-cell">{getStatusBadge(article.status)}</td>
                   <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 text-xs font-semibold hidden md:table-cell">
                     {new Date(article.createdAt).toLocaleDateString("id-ID")}
                   </td>
@@ -326,7 +329,7 @@ export default function ManageArticles() {
           <DialogHeader>
             <DialogTitle>{editingArticle ? "Edit Artikel" : "Tulis Artikel Baru"}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
+          <form onSubmit={handleSubmit} className="space-y-6 text-left">
 
             {/* Title */}
             <div>
@@ -398,13 +401,13 @@ export default function ManageArticles() {
                 <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                 Konten Artikel <span className="text-red-500">*</span>
               </label>
-              <textarea
+              <AutosizeTextarea
                 required
                 rows={10}
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 placeholder="Tulis konten artikel di sini. Anda bisa menggunakan format teks biasa atau HTML sederhana..."
-                className="w-full px-3 py-2 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-accent resize-y"
+                className="w-full px-3 py-2 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-accent "
               />
               <p className="text-[10px] text-muted-foreground mt-1">
                 Konten ini akan ditampilkan di halaman detail artikel publik.

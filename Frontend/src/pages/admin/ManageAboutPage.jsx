@@ -1,3 +1,4 @@
+import { AutosizeTextarea } from "@/components/ui/autosize-textarea"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -63,7 +64,7 @@ function TextInput({ value, onChange, placeholder, className = "" }) {
 
 function TextArea({ value, onChange, placeholder, rows = 3 }) {
   return (
-    <textarea
+    <AutosizeTextarea
       value={value || ""}
       onChange={e => onChange(e.target.value)}
       rows={rows}
@@ -159,7 +160,7 @@ export default function ManageAboutPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Kelola Halaman Tentang Kami</h1>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Kelola Halaman Tentang Kami</h1>
           <p className="text-xs font-semibold text-muted-foreground mt-0.5">
             Edit konten halaman /tentang-kami. Klik seksi untuk membuka editor.
           </p>
@@ -167,7 +168,7 @@ export default function ManageAboutPage() {
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="bg-primary hover:bg-primary/90 text-white font-bold text-xs h-10 px-5 rounded-lg gap-2 cursor-pointer"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs h-10 px-5 rounded-lg gap-2 cursor-pointer"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           {saving ? "Menyimpan..." : "Simpan Semua"}
@@ -195,7 +196,7 @@ export default function ManageAboutPage() {
           label="Upload Foto Header"
           hint="Foto ini digunakan sebagai background transparan di bagian atas halaman Tentang Kami. Rekomendasi: landscape, min. 1920px lebar."
         >
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-start sm:flex-row sm:items-center gap-4">
             <div className="w-40 h-20 shrink-0 bg-muted border border-border border-dashed rounded-lg overflow-hidden flex items-center justify-center">
               {aboutImagePreview
                 ? <img src={aboutImagePreview} alt="Preview" className="w-full h-full object-cover" />
@@ -214,7 +215,7 @@ export default function ManageAboutPage() {
                   reader.readAsDataURL(file)
                 }
               }}
-              className="text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
+              className="flex-1 min-w-0 w-full text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
             />
           </div>
         </Field>
@@ -266,7 +267,7 @@ export default function ManageAboutPage() {
         <Button
           onClick={handleSave}
           disabled={saving}
-          className="bg-primary hover:bg-primary/90 text-white font-bold text-xs h-10 px-6 rounded-lg gap-2 cursor-pointer"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs h-10 px-6 rounded-lg gap-2 cursor-pointer"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           {saving ? "Menyimpan..." : "Simpan Semua Perubahan"}

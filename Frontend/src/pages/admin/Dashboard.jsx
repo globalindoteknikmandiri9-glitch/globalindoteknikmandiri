@@ -145,7 +145,7 @@ export default function Dashboard() {
       {/* Page Heading */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Dashboard Overview</h1>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Dashboard Overview</h1>
           <p className="text-xs font-semibold text-muted-foreground mt-0.5">
             CV Globalindo Teknik Mandiri · Sistem Administrasi
           </p>
@@ -160,7 +160,7 @@ export default function Dashboard() {
         {dynamicStats.map((stat, i) => (
           <div
             key={i}
-            className="bg-card/60 backdrop-blur-md border border-border/30 rounded-xl p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300"
+            className="bg-card/60 backdrop-blur-md border border-border/30 rounded-2xl p-4 sm:p-6 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300"
           >
             <div className="flex items-start justify-between mb-3">
               <div className="w-10 h-10 bg-background/80 border border-border rounded-lg flex items-center justify-center shrink-0 shadow-card">
@@ -179,7 +179,7 @@ export default function Dashboard() {
       <div className="grid lg:grid-cols-3 gap-4">
         
         {/* Area Chart - Solid bg */}
-        <div className="lg:col-span-2 bg-card border border-border rounded-xl p-6 shadow-card">
+        <div className="lg:col-span-2 bg-card border border-border rounded-2xl p-6 shadow-card">
           <div className="flex items-center justify-between mb-5 text-left">
             <div>
               <h2 className="font-bold text-foreground text-sm">Penambahan Produk (6 Bulan)</h2>
@@ -231,7 +231,7 @@ export default function Dashboard() {
         </div>
 
         {/* Pie Chart - Solid bg */}
-        <div className="bg-card border border-border rounded-xl p-6 shadow-card flex flex-col justify-between">
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-card flex flex-col justify-between">
           <div>
             <div className="mb-5 text-left">
               <h2 className="font-bold text-foreground text-sm">Distribusi Kategori</h2>
@@ -278,7 +278,7 @@ export default function Dashboard() {
       </div>
 
       {/* Activity Table - Solid Container */}
-      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-card">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-card">
         <div className="px-6 py-4 border-b border-border flex items-center justify-between">
           <h2 className="font-bold text-foreground text-sm">Aktivitas Terkini</h2>
           <button className="text-xs text-muted-foreground hover:text-accent font-bold transition-colors cursor-pointer">

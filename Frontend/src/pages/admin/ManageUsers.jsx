@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect } from "react"
-import { Plus, Search, Pencil, Trash2, ShieldAlert } from "lucide-react"
+import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, ShieldAlert } from "lucide-react"
+import TableSkeleton from "../../components/admin/TableSkeleton"
+import EmptyState from "../../components/admin/EmptyState"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import api from "@/services/axios"
@@ -108,7 +110,7 @@ export default function ManageUsers() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Manajemen User</h1>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Manajemen User</h1>
           <p className="text-xs font-semibold text-muted-foreground mt-0.5">Kelola hak akses administrator, editor, dan staf internal.</p>
         </div>
         <Button onClick={() => handleOpenModal()} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card">
@@ -118,7 +120,7 @@ export default function ManageUsers() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-card border border-border rounded-xl p-4 shadow-card">
+      <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-card">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-400" />
           <Input
@@ -131,7 +133,7 @@ export default function ManageUsers() {
       </div>
 
       {/* Table Card */}
-      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-card">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -144,17 +146,15 @@ export default function ManageUsers() {
             </thead>
             <tbody className="divide-y divide-border">
               {loading ? (
-                <tr>
-                  <td colSpan={4} className="text-center py-16 text-slate-500">
-                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-                    <p className="font-bold text-slate-700 dark:text-slate-350">Memuat data...</p>
-                  </td>
-                </tr>
+                <TableSkeleton columns={4} rows={5} />
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="text-center py-16 text-slate-500">
-                    <ShieldAlert className="h-10 w-10 text-slate-300 mx-auto mb-3" />
-                    <p className="font-bold text-slate-700 dark:text-slate-350">User tidak ditemukan</p>
+                  <td colSpan={4} className="p-0 border-0">
+                    <EmptyState 
+                      icon={<ShieldAlert />} 
+                      title="User tidak ditemukan" 
+                      description="Belum ada data user atau pencarian tidak cocok." 
+                    />
                   </td>
                 </tr>
               ) : filtered.map((u) => (
@@ -164,7 +164,14 @@ export default function ManageUsers() {
                       <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-300 shrink-0 uppercase">
                         {u.username.substring(0, 2)}
                       </div>
-                      <span className="font-bold text-slate-900 dark:text-slate-100">{u.username}</span>
+                      <div>
+                        <div className="font-bold text-slate-900 dark:text-slate-100">{u.username}</div>
+                        <div className="mt-1 sm:hidden">
+                          <span className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                            {u.role}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </td>
                   <td className="px-5 py-3.5 text-slate-700 dark:text-slate-350 font-semibold hidden sm:table-cell">{u.role}</td>
@@ -202,7 +209,7 @@ export default function ManageUsers() {
           <DialogHeader>
             <DialogTitle>{editingUser ? "Edit User" : "Tambah User"}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="text-sm font-semibold mb-1 block">Username</label>
               <Input
