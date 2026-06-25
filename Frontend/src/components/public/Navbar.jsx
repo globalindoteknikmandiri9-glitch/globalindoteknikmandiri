@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
-import { Menu, MessageSquare, X, Sun, Moon, Monitor, Package } from "lucide-react"
+import { Menu, MessageSquare, X, Sun, Moon, Monitor, Package, ChevronDown } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -26,6 +26,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [categories, setCategories] = useState([])
+  const [productOpen, setProductOpen] = useState(false)
+  const [themeOpen, setThemeOpen] = useState(true)
   const location = useLocation()
   const { theme, setTheme } = useTheme()
   const { profile, getWhatsappLink } = useCompanyProfile()
@@ -78,11 +80,6 @@ export default function Navbar() {
               alt={profile.name}
               className="h-8 md:h-10 w-auto object-contain"
             />
-            {profile.name && (
-              <span className="font-bold text-warning text-xs md:text-sm tracking-tight leading-tight text-left max-w-[150px] md:max-w-none">
-                {profile.name}
-              </span>
-            )}
           </Link>
 
           {/* Desktop Nav - centered */}
@@ -269,84 +266,139 @@ export default function Navbar() {
 
                 {/* Mobile nav links */}
                 <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      onClick={() => {
-                        handleNavClick(link.path)
-                        setMobileOpen(false)
-                      }}
-                      className={cn(
-                        "flex items-center px-4 py-3.5 text-sm font-medium rounded-lg transition-colors",
-                        isActive(link.path)
-                          ? "bg-accent text-warning"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                      )}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
+                  {navLinks.map((link) => {
+                    if (link.name === "Produk") {
+                      return (
+                        <div key={link.path} className="space-y-1">
+                          <button
+                            onClick={() => setProductOpen(!productOpen)}
+                            className={cn(
+                              "flex items-center justify-between w-full px-4 py-3.5 text-sm font-medium rounded-lg transition-colors cursor-pointer",
+                              isActive(link.path)
+                                ? "bg-accent text-warning"
+                                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                            )}
+                          >
+                            <span className="flex items-center gap-2">
+                              {link.name}
+                            </span>
+                            <ChevronDown
+                              className={cn(
+                                "h-4 w-4 transition-transform duration-200",
+                                productOpen && "transform rotate-180"
+                              )}
+                            />
+                          </button>
+                          
+                          {/* Accordion Content */}
+                          {productOpen && (
+                            <div className="pl-6 space-y-1 py-1 border-l border-border/50 ml-6 animate-in slide-in-from-top-2 duration-200">
+                              <Link
+                                to="/produk"
+                                onClick={() => setMobileOpen(false)}
+                                className="flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg text-warning hover:text-yellow-300 transition-colors text-left"
+                              >
+                                Lihat Semua Produk →
+                              </Link>
+                              {categories.map((cat) => (
+                                <Link
+                                  key={cat.id}
+                                  to={`/produk?cat=${encodeURIComponent(cat.name)}`}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg text-muted-foreground/80 hover:text-foreground hover:bg-muted transition-colors text-left"
+                                >
+                                  <Package className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+                                  {cat.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    }
 
-                  {/* Mobile Category sub-list under Produk */}
-                  {categories.length > 0 && (
-                    <div className="pl-4 space-y-0.5 pt-1">
-                      {categories.map(cat => (
-                        <Link
-                          key={cat.id}
-                          to={`/produk?cat=${encodeURIComponent(cat.name)}`}
-                          className="flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-lg text-muted-foreground/80 hover:text-foreground hover:bg-muted transition-colors"
-                        >
-                          <Package className="h-3 w-3 shrink-0" />
-                          {cat.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                    return (
+                      <Link
+                        key={link.path}
+                        to={link.path}
+                        onClick={() => {
+                          handleNavClick(link.path)
+                          setMobileOpen(false)
+                        }}
+                        className={cn(
+                          "flex items-center px-4 py-3.5 text-sm font-medium rounded-lg transition-colors",
+                          isActive(link.path)
+                            ? "bg-accent text-warning"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                        )}
+                      >
+                        {link.name}
+                      </Link>
+                    )
+                  })}
                 </nav>
 
                 {/* Mobile CTA */}
                 <div className="px-4 pb-6 space-y-3 border-t border-border pt-4">
-                  <div className="space-y-2 px-4 py-3 bg-muted/50 rounded-lg">
-                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider block">Pilihan Tema</span>
-                    <div className="grid grid-cols-3 gap-1">
-                      <Button
-                        variant={theme === 'light' ? 'secondary' : 'ghost'}
-                        size="sm"
-                        onClick={() => setTheme('light')}
+                  <div className="space-y-1">
+                    <button
+                      onClick={() => setThemeOpen(!themeOpen)}
+                      className="flex items-center justify-between w-full px-4 py-3.5 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
+                    >
+                      <span className="flex items-center gap-2">
+                        {theme === 'dark' && <Moon className="h-4 w-4 text-warning" />}
+                        {theme === 'light' && <Sun className="h-4 w-4 text-warning" />}
+                        {theme === 'system' && <Monitor className="h-4 w-4 text-warning" />}
+                        Pilihan Tema
+                      </span>
+                      <ChevronDown
                         className={cn(
-                          "h-11 text-xs font-semibold rounded-md cursor-pointer",
-                          theme === 'light' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                          "h-4 w-4 transition-transform duration-200",
+                          themeOpen && "transform rotate-180"
                         )}
-                      >
-                        <Sun className="h-3.5 w-3.5 mr-1" />
-                        Terang
-                      </Button>
-                      <Button
-                        variant={theme === 'dark' ? 'secondary' : 'ghost'}
-                        size="sm"
-                        onClick={() => setTheme('dark')}
-                        className={cn(
-                          "h-11 text-xs font-semibold rounded-md cursor-pointer",
-                          theme === 'dark' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                        )}
-                      >
-                        <Moon className="h-3.5 w-3.5 mr-1" />
-                        Gelap
-                      </Button>
-                      <Button
-                        variant={theme === 'system' ? 'secondary' : 'ghost'}
-                        size="sm"
-                        onClick={() => setTheme('system')}
-                        className={cn(
-                          "h-11 text-xs font-semibold rounded-md cursor-pointer",
-                          theme === 'system' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                        )}
-                      >
-                        <Monitor className="h-3.5 w-3.5 mr-1" />
-                        Sistem
-                      </Button>
-                    </div>
+                      />
+                    </button>
+
+                    {themeOpen && (
+                      <div className="pl-6 space-y-1 py-1 border-l border-border/50 ml-6 grid grid-cols-3 gap-1 animate-in slide-in-from-top-2 duration-200">
+                        <Button
+                          variant={theme === 'light' ? 'secondary' : 'ghost'}
+                          size="sm"
+                          onClick={() => setTheme('light')}
+                          className={cn(
+                            "h-11 text-xs font-semibold rounded-md cursor-pointer",
+                            theme === 'light' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                          )}
+                        >
+                          <Sun className="h-3.5 w-3.5 mr-1" />
+                          Terang
+                        </Button>
+                        <Button
+                          variant={theme === 'dark' ? 'secondary' : 'ghost'}
+                          size="sm"
+                          onClick={() => setTheme('dark')}
+                          className={cn(
+                            "h-11 text-xs font-semibold rounded-md cursor-pointer",
+                            theme === 'dark' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                          )}
+                        >
+                          <Moon className="h-3.5 w-3.5 mr-1" />
+                          Gelap
+                        </Button>
+                        <Button
+                          variant={theme === 'system' ? 'secondary' : 'ghost'}
+                          size="sm"
+                          onClick={() => setTheme('system')}
+                          className={cn(
+                            "h-11 text-xs font-semibold rounded-md cursor-pointer",
+                            theme === 'system' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                          )}
+                        >
+                          <Monitor className="h-3.5 w-3.5 mr-1" />
+                          Sistem
+                        </Button>
+                      </div>
+                    )}
                   </div>
                   <Button
                     variant="outline"
