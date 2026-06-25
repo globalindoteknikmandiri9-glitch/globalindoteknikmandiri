@@ -1,5 +1,8 @@
+import { AutosizeTextarea } from "@/components/ui/autosize-textarea"
 import { useState, useMemo, useEffect, useRef } from "react"
-import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, Package, Loader2, Image as ImageIcon, Video, FileText } from "lucide-react"
+import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, Package, Image as ImageIcon, Video, FileText } from "lucide-react"
+import TableSkeleton from "../../components/admin/TableSkeleton"
+import EmptyState from "../../components/admin/EmptyState"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn, getAssetUrl } from "@/lib/utils"
@@ -189,30 +192,30 @@ export default function ManageProducts() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Kelola Produk</h1>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Kelola Produk</h1>
           <p className="text-xs font-semibold text-muted-foreground mt-0.5">Manajemen katalog barang, mesin manufaktur, dan spesifikasi tender.</p>
         </div>
-        <Button onClick={() => handleOpenModal()} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-lg cursor-pointer shadow-card">
+        <Button onClick={() => handleOpenModal()} className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold gap-2 h-10 px-4 text-sm shrink-0 rounded-xl cursor-pointer shadow-card">
           <Plus className="h-4 w-4" />
           Tambah Produk
         </Button>
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-card border border-border rounded-xl p-4 shadow-card">
+      <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-card">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-400" />
           <Input
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1) }}
             placeholder="Cari produk berdasarkan nama atau kategori..."
-            className="pl-9 h-10 text-xs border-border bg-background focus-visible:ring-accent"
+            className="pl-9 h-10 text-xs border-border bg-background focus-visible:ring-accent rounded-xl"
           />
         </div>
       </div>
 
       {/* Table Card */}
-      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-card">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-card">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -220,24 +223,22 @@ export default function ManageProducts() {
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Gambar</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Nama Produk</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Kategori</th>
-                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider">Status</th>
+                <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden sm:table-cell">Status</th>
                 <th className="text-left px-5 py-3.5 font-semibold text-xs uppercase tracking-wider hidden md:table-cell">Tgl Dibuat</th>
                 <th className="text-center px-5 py-3.5 font-semibold text-xs uppercase tracking-wider w-24">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {loading ? (
-                <tr>
-                  <td colSpan={6} className="text-center py-16 text-slate-500">
-                    <Loader2 className="h-8 w-8 text-primary animate-spin mx-auto mb-3" />
-                    <p className="font-bold text-slate-700 dark:text-slate-350">Memuat data produk...</p>
-                  </td>
-                </tr>
+                <TableSkeleton columns={6} rows={5} />
               ) : paginated.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-16 text-slate-500">
-                    <Package className="h-10 w-10 text-slate-300 mx-auto mb-3" />
-                    <p className="font-bold text-slate-700 dark:text-slate-350">Produk tidak ditemukan</p>
+                  <td colSpan={6} className="p-0 border-0">
+                    <EmptyState 
+                      icon={<Package />} 
+                      title="Produk tidak ditemukan" 
+                      description="Belum ada data produk atau pencarian tidak cocok." 
+                    />
                   </td>
                 </tr>
               ) : paginated.map((product) => {
@@ -257,10 +258,13 @@ export default function ManageProducts() {
                       <div>
                         <div className="font-bold text-slate-900 dark:text-slate-100 line-clamp-1">{product.name}</div>
                         <div className="text-[10px] text-slate-400 font-mono mt-0.5">SKU: GTM-PD-{product.id.toString().padStart(2, '0')}</div>
+                        <div className="mt-1.5 sm:hidden">
+                          {getStatusBadge(product.status)}
+                        </div>
                       </div>
                     </td>
                     <td className="px-5 py-3.5 text-slate-600 dark:text-slate-350 font-semibold hidden sm:table-cell">{product.category?.name || "Lainnya"}</td>
-                    <td className="px-5 py-3.5">{getStatusBadge(product.status)}</td>
+                    <td className="px-5 py-3.5 hidden sm:table-cell">{getStatusBadge(product.status)}</td>
                     <td className="px-5 py-3.5 text-slate-500 dark:text-slate-400 text-xs font-semibold hidden md:table-cell">
                       {new Date(product.createdAt).toLocaleDateString("id-ID")}
                     </td>
@@ -333,11 +337,11 @@ export default function ManageProducts() {
 
       {/* Modal Add/Edit */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl">
           <DialogHeader>
             <DialogTitle>{editingProduct ? "Edit Produk" : "Tambah Produk"}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4 text-left">
+          <form onSubmit={handleSubmit} className="space-y-6 text-left">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-semibold mb-1 block">Nama Produk <span className="text-red-500">*</span></label>
@@ -436,7 +440,7 @@ export default function ManageProducts() {
                 <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                 Spesifikasi Teknis <span className="text-red-500">*</span>
               </label>
-              <textarea
+              <AutosizeTextarea
                 required
                 rows={3}
                 value={formData.specification}
@@ -448,7 +452,7 @@ export default function ManageProducts() {
 
             <div>
               <label className="text-xs font-semibold mb-1 block">Deskripsi Produk <span className="text-red-500">*</span></label>
-              <textarea
+              <AutosizeTextarea
                 required
                 rows={3}
                 value={formData.description}

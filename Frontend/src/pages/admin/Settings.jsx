@@ -1,3 +1,4 @@
+import { AutosizeTextarea } from "@/components/ui/autosize-textarea"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -139,11 +140,11 @@ export default function Settings() {
     <div className="space-y-6 animate-page-fade text-left">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-extrabold text-foreground tracking-tight">Pengaturan Sistem</h1>
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Pengaturan Sistem</h1>
         <p className="text-xs font-semibold text-muted-foreground mt-0.5">Konfigurasi data profil perusahaan resmi untuk dinamisasi halaman publik.</p>
       </div>
 
-      <div className="max-w-4xl bg-card border border-border rounded-xl shadow-sm overflow-hidden">
+      <div className="max-w-4xl bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
         {/* Navigation Tabs */}
         <div className="flex border-b border-border bg-muted/40 overflow-x-auto">
           <button
@@ -185,7 +186,7 @@ export default function Settings() {
 
           {/* TAB 1: INFO PERUSAHAAN */}
           {activeTab === "info" && (
-            <div className="space-y-5 animate-page-fade">
+            <div className="space-y-6 animate-page-fade">
               <div className="grid sm:grid-cols-3 gap-5">
                 <div className="sm:col-span-2 space-y-1.5">
                   <label htmlFor="name" className="text-xs font-bold text-foreground block">
@@ -217,7 +218,7 @@ export default function Settings() {
                 <label className="text-xs font-bold text-foreground block">
                   Logo Perusahaan (Header / Footer / Login)
                 </label>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-start sm:flex-row sm:items-center gap-4">
                   <div className="w-24 h-16 shrink-0 bg-muted border border-border border-dashed rounded-lg flex items-center justify-center overflow-hidden p-2">
                     {logoPreview ? (
                       <img src={logoPreview} alt="Preview Logo" className="w-full h-full object-contain" />
@@ -232,7 +233,7 @@ export default function Settings() {
                       type="file"
                       accept="image/*"
                       onChange={handleLogoChange}
-                      className="text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
+                      className="flex-1 min-w-0 w-full text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
                     />
                     <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">Format: PNG, SVG, JPG. Sangat direkomendasikan berlatar transparan.</p>
                   </div>
@@ -244,7 +245,7 @@ export default function Settings() {
                 <label className="text-xs font-bold text-foreground block">
                   Foto Banner Header (Halaman Tentang Kami)
                 </label>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col items-start sm:flex-row sm:items-center gap-4">
                   <div className="w-24 h-16 shrink-0 bg-muted border border-border border-dashed rounded-lg flex items-center justify-center overflow-hidden">
                     {aboutImagePreview ? (
                       <img src={aboutImagePreview} alt="Preview" className="w-full h-full object-cover" />
@@ -259,7 +260,7 @@ export default function Settings() {
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
-                      className="text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
+                      className="flex-1 min-w-0 w-full text-xs h-9 border-border file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-[10px] file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer"
                     />
                     <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">Format: JPG, PNG. Lebar direkomendasikan min 1200px (Banner).</p>
                   </div>
@@ -282,7 +283,7 @@ export default function Settings() {
                 <label htmlFor="history" className="text-xs font-bold text-foreground block">
                   Sejarah Perusahaan (Gunakan Enter untuk baris baru)
                 </label>
-                <textarea
+                <AutosizeTextarea
                   id="history"
                   rows={4}
                   {...register("history")}
@@ -296,7 +297,7 @@ export default function Settings() {
                   <label htmlFor="vision" className="text-xs font-bold text-foreground block">
                     Visi Perusahaan
                   </label>
-                  <textarea
+                  <AutosizeTextarea
                     id="vision"
                     rows={4}
                     {...register("vision")}
@@ -309,7 +310,7 @@ export default function Settings() {
                   <label htmlFor="mission" className="text-xs font-bold text-foreground block">
                     Misi Perusahaan (Gunakan Enter untuk butir misi baru)
                   </label>
-                  <textarea
+                  <AutosizeTextarea
                     id="mission"
                     rows={4}
                     {...register("mission")}
@@ -323,7 +324,7 @@ export default function Settings() {
 
           {/* TAB 2: KONTAK & JAM OPERASIONAL */}
           {activeTab === "kontak" && (
-            <div className="space-y-5 animate-page-fade">
+            <div className="space-y-6 animate-page-fade">
               <div className="grid sm:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
                   <label htmlFor="phone" className="text-xs font-bold text-foreground block">
@@ -383,7 +384,7 @@ export default function Settings() {
                 <label htmlFor="address" className="text-xs font-bold text-foreground block">
                   Alamat Lengkap Workshop & Kantor
                 </label>
-                <textarea
+                <AutosizeTextarea
                   id="address"
                   rows={2}
                   {...register("address")}
@@ -396,7 +397,7 @@ export default function Settings() {
                 <label htmlFor="map_url" className="text-xs font-bold text-foreground block">
                   Google Map Share Link atau Embed Map URL
                 </label>
-                <textarea
+                <AutosizeTextarea
                   id="map_url"
                   rows={2}
                   {...register("map_url")}
@@ -450,12 +451,12 @@ export default function Settings() {
 
           {/* TAB 3: KONTEN UMUM & FOOTER */}
           {activeTab === "konten" && (
-            <div className="space-y-5 animate-page-fade">
+            <div className="space-y-6 animate-page-fade">
               <div className="space-y-1.5">
                 <label htmlFor="hero_title" className="text-xs font-bold text-foreground block">
                   Judul Utama Beranda (Hero Title)
                 </label>
-                <textarea
+                <AutosizeTextarea
                   id="hero_title"
                   rows={2}
                   {...register("hero_title")}
@@ -468,7 +469,7 @@ export default function Settings() {
                 <label htmlFor="hero_subtitle" className="text-xs font-bold text-foreground block">
                   Sub-Judul Beranda (Hero Subtitle)
                 </label>
-                <textarea
+                <AutosizeTextarea
                   id="hero_subtitle"
                   rows={3}
                   {...register("hero_subtitle")}
@@ -481,7 +482,7 @@ export default function Settings() {
                 <label htmlFor="footer_tagline" className="text-xs font-bold text-foreground block">
                   Tagline di Bagian Bawah Halaman (Footer Tagline)
                 </label>
-                <textarea
+                <AutosizeTextarea
                   id="footer_tagline"
                   rows={2}
                   {...register("footer_tagline")}

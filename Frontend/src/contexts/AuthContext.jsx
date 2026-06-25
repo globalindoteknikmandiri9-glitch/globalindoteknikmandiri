@@ -9,8 +9,21 @@ export const AuthProvider = ({ children }) => {
 
   // Cek token di awal
   useEffect(() => {
-    setUser({ id: 1, name: 'Admin', role: 'SUPERADMIN' });
-    setLoading(false);
+    const initAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const res = await api.get('/auth/me');
+          setUser(res.data.data);
+        } catch (error) {
+          console.error("Token invalid or expired", error);
+          localStorage.removeItem('token');
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+    initAuth();
   }, []);
 
   const login = async (credentials) => {

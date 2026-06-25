@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react"
-import { Search, Trash2, ChevronLeft, ChevronRight, MessageSquare, Mail, Phone, Calendar, CheckCircle2, Clock } from "lucide-react"
+import { MessageSquare, Search, Trash2, ChevronLeft, ChevronRight, CheckCircle2, Clock, Calendar, Phone, Mail, User, Info, AlertTriangle } from "lucide-react"
+import EmptyState from "../../components/admin/EmptyState"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -122,14 +123,14 @@ export default function ManageMessages() {
     <div className="space-y-6 text-left animate-page-fade">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Pesan Masuk</h1>
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">Pesan Masuk</h1>
         <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">
           Kelola pesan penawaran, konsultasi, dan pengajuan RFQ dari formulir kontak.
         </p>
       </div>
 
       {/* Control Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 rounded-xl border border-border">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 sm:p-6 rounded-2xl border border-border">
         {/* Search */}
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground/60" />
@@ -177,13 +178,11 @@ export default function ManageMessages() {
             <p className="text-xs font-semibold">Memuat data pesan...</p>
           </div>
         ) : paginated.length === 0 ? (
-          <div className="py-20 flex flex-col items-center justify-center text-center text-muted-foreground px-4">
-            <MessageSquare className="h-10 w-10 text-slate-300 dark:text-slate-700 mb-3" />
-            <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Tidak ada pesan</p>
-            <p className="text-xs mt-1 max-w-xs leading-relaxed">
-              Tidak ada pesan masuk yang memenuhi kriteria pencarian atau filter Anda.
-            </p>
-          </div>
+          <EmptyState 
+            icon={<MessageSquare />} 
+            title="Tidak ada pesan" 
+            description="Tidak ada pesan masuk yang memenuhi kriteria pencarian atau filter Anda." 
+          />
         ) : (
           <div className="divide-y divide-border">
             {paginated.map((msg) => (
@@ -304,7 +303,7 @@ export default function ManageMessages() {
 
       {/* Message Detail Dialog */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto bg-card text-foreground border border-border rounded-xl">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto bg-card text-foreground border border-border rounded-2xl">
           {selectedMessage && (
             <>
               <DialogHeader className="text-left border-b border-border pb-4">
@@ -322,7 +321,7 @@ export default function ManageMessages() {
               </DialogHeader>
 
               {/* Message Details */}
-              <div className="space-y-5 py-4 text-xs">
+              <div className="space-y-6 py-4 text-xs">
                 {/* Meta details grid */}
                 <div className="grid grid-cols-2 gap-4 bg-muted/40 p-4 rounded-xl border border-border/30">
                   <div className="space-y-1">
@@ -393,7 +392,7 @@ export default function ManageMessages() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
-        <DialogContent className="max-w-sm bg-card text-foreground border border-border rounded-xl">
+        <DialogContent className="max-w-sm bg-card text-foreground border border-border rounded-2xl">
           <DialogHeader>
             <DialogTitle className="text-base font-extrabold text-left tracking-tight">Hapus Pesan</DialogTitle>
           </DialogHeader>
