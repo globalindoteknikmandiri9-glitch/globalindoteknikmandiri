@@ -94,13 +94,13 @@ export default function Login() {
             <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider">Admin Panel</p>
           </div>
 
-          <div className="bg-card border border-border rounded-xl p-8 shadow-card">
+          <div className="bg-card border border-border rounded-2xl p-8 shadow-card">
             <div className="mb-6">
               <h2 className="text-xl font-bold text-foreground tracking-tight">Masuk ke Dashboard</h2>
               <p className="text-sm text-muted-foreground mt-1">Gunakan kredensial akun administrator Anda.</p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
               <div className="space-y-1.5">
                 <label htmlFor="username" className="text-sm font-semibold text-foreground block">
                   Username

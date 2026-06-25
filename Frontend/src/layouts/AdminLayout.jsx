@@ -12,7 +12,7 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background dark:bg-slate-950 text-foreground">
+    <div className="flex h-screen w-full overflow-hidden bg-background dark:bg-slate-950 text-foreground">
       <AdminSidebar className="hidden lg:flex" />
       <div className="flex flex-1 flex-col min-w-0">
         <AdminTopbar />

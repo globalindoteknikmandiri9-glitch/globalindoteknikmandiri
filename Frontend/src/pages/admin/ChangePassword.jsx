@@ -71,8 +71,8 @@ export default function ChangePassword() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-card border border-border rounded-xl p-8 shadow-sm">
-          <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Current Password */}
             <div className="space-y-1.5">
               <label htmlFor="current_password" className="text-sm font-semibold text-foreground block">
