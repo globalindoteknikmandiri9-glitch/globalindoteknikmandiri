@@ -51,7 +51,7 @@ Deployment backend pada cPanel disarankan menggunakan fitur bawaan **Setup Node.
    * **Application mode**: Pilih `Production`.
    * **Application root**: Isi dengan folder root backend Anda (`repositories/backend`).
    * **Application URL**: Subdomain atau domain jalur API (misal: `api.globalindoteknik.com` atau `globalindoteknik.com/api`).
-   * **Application startup file**: Isi dengan startup entry point Express Anda (misal: `src/app.js` atau `src/index.js`).
+   * **Application startup file**: Isi dengan startup entry point Express Anda (`src/index.js`).
 4. Klik **Create**. Aplikasi Node.js akan terdaftar dan berjalan sementara.
 
 ### Langkah C: Konfigurasi Environment (`.env`)
@@ -78,9 +78,10 @@ Deployment backend pada cPanel disarankan menggunakan fitur bawaan **Setup Node.
    ```bash
    npx prisma db push
    ```
-5. *(Opsional)* Jika Anda ingin menginisiasi akun Admin pertama kali melalui database seeder:
+5. *(Opsional)* Jika Anda ingin menginisiasi data awal:
    ```bash
-   node src/seed.js
+   node src/seed.js         # Membuat akun SUPERADMIN
+   node src/seed-profile.js # Mengisi CompanyProfile default
    ```
 6. Kembali ke menu **Setup Node.js App** di cPanel, lalu klik tombol **Restart** di aplikasi Node.js Anda untuk memuat ulang konfigurasi.
 
@@ -131,4 +132,11 @@ Agar halaman-halaman web yang menggunakan React Router tidak menghasilkan error 
 ## 4. Konfigurasi Tambahan & SSL
 
 1. **AutoSSL**: Pastikan fitur AutoSSL cPanel Anda aktif agar website dapat diakses secara aman melalui protokol `https://`.
-2. **CORS**: Jika domain frontend dan domain backend berbeda (misal: `globalindoteknik.com` dan `api.globalindoteknik.com`), pastikan backend mengizinkan origin dari frontend di konfigurasi CORS backend Anda.
+2. **CORS**: Backend saat ini mengizinkan semua origin (`app.use(cors())`). Untuk production, batasi origin di `Backend/src/index.js`:
+   ```js
+   app.use(cors({
+     origin: 'https://globalindoteknik.com'
+   }));
+   ```
+   Ganti dengan domain frontend Anda.
+3. **Folder uploads**: Pastikan folder `Backend/public/uploads` ada dan memiliki izin tulis (sudah termasuk dalam ZIP selama di-archive dari folder `Backend`).

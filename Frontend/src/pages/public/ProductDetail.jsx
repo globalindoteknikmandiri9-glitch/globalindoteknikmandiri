@@ -75,7 +75,7 @@ export default function ProductDetail() {
   } else {
     media.push({
       type: "image",
-      url: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800"
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-iKPMqwz7G27fyHxvGAEq2CkH1hW3PGaByP8YiP6VeA&s=10"
     })
   }
   if (product.youtube_url) {
