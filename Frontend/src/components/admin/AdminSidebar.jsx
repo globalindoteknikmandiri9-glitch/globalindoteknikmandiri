@@ -71,7 +71,7 @@ export default function AdminSidebar({ className }) {
   });
 
   return (
-    <aside className={cn("w-60 bg-navy text-slate-400 flex flex-col shrink-0 h-screen sticky top-0 overflow-y-auto sidebar-scrollbar", className)}>
+    <aside className={cn("w-60 bg-navy text-slate-400 flex flex-col shrink-0 h-screen sticky top-0 overflow-hidden", className)}>
       {/* Brand */}
       <div className="px-5 py-5 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
@@ -84,7 +84,7 @@ export default function AdminSidebar({ className }) {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-4 px-3">
+      <nav className="flex-1 py-4 px-3 overflow-y-auto sidebar-scrollbar">
         <p className="text-[10px] font-semibold text-slate-600 uppercase tracking-widest px-3 mb-3">
           Menu Utama
         </p>
@@ -116,7 +116,7 @@ export default function AdminSidebar({ className }) {
       </nav>
 
       {/* Bottom links */}
-      <div className="p-3 border-t border-slate-800 space-y-0.5">
+      <div className="p-3 border-t border-slate-800 space-y-0.5 shrink-0">
         <Link
           to="/admin/ganti-password"
           className={cn(
