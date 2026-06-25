@@ -10,7 +10,7 @@ import * as z from "zod"
 
 const loginSchema = z.object({
   username: z.string().min(1, { message: "Username harus diisi" }),
-  password: z.string().min(6, { message: "Password minimal 6 karakter" }),
+  password: z.string().min(1, { message: "Password harus diisi" }),
 })
 
 import { toast } from "sonner"
