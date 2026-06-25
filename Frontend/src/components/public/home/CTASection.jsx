@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useCompanyProfile } from "@/hooks/useCompanyProfile";
-import { Mail, MessageSquare } from "lucide-react";
+import { Mail } from "lucide-react";
+import { Icons } from "@/components/icons";
 
 export default function CTASection() {
   const { getWhatsappLink, profile } = useCompanyProfile();
@@ -34,7 +35,7 @@ export default function CTASection() {
                 asChild
               >
                 <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
-                  <MessageSquare className="h-4.5 w-4.5" />
+                  <Icons.whatsapp className="h-4.5 w-4.5" />
                   Hubungi via WhatsApp
                 </a>
               </Button>

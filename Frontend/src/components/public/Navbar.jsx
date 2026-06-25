@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom"
-import { Menu, MessageSquare, X, Sun, Moon, Monitor, Package, ChevronDown } from "lucide-react"
+import { Menu, X, Sun, Moon, Package, ChevronDown } from "lucide-react"
+import { Icons } from "@/components/icons"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -219,7 +220,7 @@ export default function Navbar() {
               asChild
             >
               <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
-                <MessageSquare className="h-4 w-4" />
+                <Icons.whatsapp className="h-4 w-4" />
                 WhatsApp
               </a>
             </Button>
@@ -341,8 +342,8 @@ export default function Navbar() {
                     className="w-full text-muted-foreground border-border bg-transparent hover:bg-muted hover:text-foreground gap-2 text-sm cursor-pointer h-11 rounded-lg"
                     asChild
                   >
-                    <a href={getWhatsappLink()} target="_blank" rel="noreferrer">
-                      <MessageSquare className="h-4 w-4" />
+                    <a href={getWhatsappLink()} target="_blank" rel="noreferrer" className="flex items-center">
+                      <Icons.whatsapp className="h-5 w-5 mr-3" />
                       WhatsApp
                     </a>
                   </Button>
