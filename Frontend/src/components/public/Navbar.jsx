@@ -198,34 +198,19 @@ export default function Navbar() {
 
           {/* Desktop Right Actions */}
           <div className="hidden lg:flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-slate-400 hover:text-white hover:bg-white/5 h-8 w-8 rounded-lg shrink-0 cursor-pointer"
-                  aria-label="Pilih Tema"
-                >
-                  {theme === 'dark' && <Moon className="h-4 w-4 transition-all text-warning" />}
-                  {theme === 'light' && <Sun className="h-4 w-4 transition-all text-warning" />}
-                  {theme === 'system' && <Monitor className="h-4 w-4 transition-all text-warning" />}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-popover border border-border text-popover-foreground w-32 shadow-dropdown">
-                <DropdownMenuItem onClick={() => setTheme('light')} className="focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2">
-                  <Sun className="h-3.5 w-3.5" />
-                  <span>Terang</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('dark')} className="focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2">
-                  <Moon className="h-3.5 w-3.5" />
-                  <span>Gelap</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme('system')} className="focus:bg-accent focus:text-accent-foreground gap-2 cursor-pointer text-xs py-2">
-                  <Monitor className="h-3.5 w-3.5" />
-                  <span>Sistem</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="text-slate-400 hover:text-white hover:bg-white/5 h-8 w-8 rounded-lg shrink-0 cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? (
+                <Moon className="h-4 w-4 transition-all text-warning" />
+              ) : (
+                <Sun className="h-4 w-4 transition-all text-warning" />
+              )}
+            </Button>
 
             <Button
               variant="ghost"
@@ -342,63 +327,14 @@ export default function Navbar() {
                 <div className="px-4 pb-6 space-y-3 border-t border-border pt-4">
                   <div className="space-y-1">
                     <button
-                      onClick={() => setThemeOpen(!themeOpen)}
+                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                       className="flex items-center justify-between w-full px-4 py-3.5 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
                     >
                       <span className="flex items-center gap-2">
-                        {theme === 'dark' && <Moon className="h-4 w-4 text-warning" />}
-                        {theme === 'light' && <Sun className="h-4 w-4 text-warning" />}
-                        {theme === 'system' && <Monitor className="h-4 w-4 text-warning" />}
-                        Pilihan Tema
+                        {theme === 'dark' ? <Moon className="h-4 w-4 text-warning" /> : <Sun className="h-4 w-4 text-warning" />}
+                        {theme === 'dark' ? 'Mode Gelap' : 'Mode Terang'}
                       </span>
-                      <ChevronDown
-                        className={cn(
-                          "h-4 w-4 transition-transform duration-200",
-                          themeOpen && "transform rotate-180"
-                        )}
-                      />
                     </button>
-
-                    {themeOpen && (
-                      <div className="pl-6 space-y-1 py-1 border-l border-border/50 ml-6 grid grid-cols-3 gap-1 animate-in slide-in-from-top-2 duration-200">
-                        <Button
-                          variant={theme === 'light' ? 'secondary' : 'ghost'}
-                          size="sm"
-                          onClick={() => setTheme('light')}
-                          className={cn(
-                            "h-11 text-xs font-semibold rounded-md cursor-pointer",
-                            theme === 'light' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                          )}
-                        >
-                          <Sun className="h-3.5 w-3.5 mr-1" />
-                          Terang
-                        </Button>
-                        <Button
-                          variant={theme === 'dark' ? 'secondary' : 'ghost'}
-                          size="sm"
-                          onClick={() => setTheme('dark')}
-                          className={cn(
-                            "h-11 text-xs font-semibold rounded-md cursor-pointer",
-                            theme === 'dark' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                          )}
-                        >
-                          <Moon className="h-3.5 w-3.5 mr-1" />
-                          Gelap
-                        </Button>
-                        <Button
-                          variant={theme === 'system' ? 'secondary' : 'ghost'}
-                          size="sm"
-                          onClick={() => setTheme('system')}
-                          className={cn(
-                            "h-11 text-xs font-semibold rounded-md cursor-pointer",
-                            theme === 'system' ? "bg-accent text-accent-foreground hover:bg-accent/80" : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                          )}
-                        >
-                          <Monitor className="h-3.5 w-3.5 mr-1" />
-                          Sistem
-                        </Button>
-                      </div>
-                    )}
                   </div>
                   <Button
                     variant="outline"

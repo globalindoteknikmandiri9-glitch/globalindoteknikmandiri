@@ -289,27 +289,27 @@ export default function Dashboard() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-muted/30 text-muted-foreground border-b border-border">
-                <th className="text-left px-6 py-3 font-semibold text-xs uppercase tracking-wide w-48">Pengguna</th>
-                <th className="text-left px-6 py-3 font-semibold text-xs uppercase tracking-wide">Aktivitas</th>
-                <th className="text-right px-6 py-3 font-semibold text-xs uppercase tracking-wide w-36">Waktu</th>
+                <th className="text-left px-4 md:px-6 py-3 font-semibold text-xs uppercase tracking-wide">Pengguna</th>
+                <th className="text-left px-4 md:px-6 py-3 font-semibold text-xs uppercase tracking-wide">Aktivitas</th>
+                <th className="text-right px-4 md:px-6 py-3 font-semibold text-xs uppercase tracking-wide">Waktu</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {(dashboardStats.recentActivity || []).length > 0 ? (
                 (dashboardStats.recentActivity || []).map((row, i) => (
                   <tr key={i} className="hover:bg-muted/50 transition-colors">
-                    <td className="px-6 py-3.5">
+                    <td className="px-4 md:px-6 py-3.5">
                       <div className="flex items-center gap-3">
                         <div className="w-7 h-7 rounded-full bg-muted border border-border flex items-center justify-center text-[10px] font-bold text-muted-foreground shrink-0 select-none">
                           {row.initials}
                         </div>
-                        <span className="font-semibold text-foreground text-sm whitespace-nowrap">{row.user}</span>
+                        <span className="font-semibold text-foreground text-sm break-words">{row.user}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-3.5 text-muted-foreground text-sm max-w-xs md:max-w-md">
+                    <td className="px-4 md:px-6 py-3.5 text-muted-foreground text-sm max-w-xs md:max-w-md">
                       <p className="line-clamp-1">{row.activity}</p>
                     </td>
-                    <td className="px-6 py-3.5 text-right text-muted-foreground/60 text-xs font-semibold whitespace-nowrap">
+                    <td className="px-4 md:px-6 py-3.5 text-right text-muted-foreground/60 text-xs font-semibold break-words">
                       {formatRelativeTime(row.time)}
                     </td>
                   </tr>
