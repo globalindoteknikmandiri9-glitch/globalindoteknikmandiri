@@ -202,7 +202,7 @@ export default function Products() {
               <ChevronRight className="h-3 w-3" />
               <span className="text-foreground">Produk</span>
             </nav>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">Katalog Produk B2B</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">Katalog Produk </h1>
             <p className="text-muted-foreground text-sm leading-relaxed mt-2 max-w-xl">
               Spesifikasi peralatan industri resmi siap suplai untuk tender kementerian, proyek konstruksi nasional, BUMN, dan laboratorium riset universitas.
             </p>
