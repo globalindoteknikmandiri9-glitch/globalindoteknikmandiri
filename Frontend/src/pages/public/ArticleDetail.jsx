@@ -118,7 +118,7 @@ export default function ArticleDetail() {
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
-      <div className="bg-background min-h-screen text-foreground pb-20">
+      <div className="bg-background min-h-screen text-foreground pb-20 pt-20 md:pt-24">
         <div className="container mx-auto max-w-4xl px-4 md:px-6 lg:px-8">
           
           {/* Breadcrumb */}
