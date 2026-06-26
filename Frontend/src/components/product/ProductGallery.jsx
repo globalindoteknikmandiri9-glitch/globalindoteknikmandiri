@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import { Play, ChevronLeft, ChevronRight, Search } from "lucide-react"
+import { createPortal } from "react-dom"
+import { Play, ChevronLeft, ChevronRight, Search, X } from "lucide-react"
 import useEmblaCarousel from "embla-carousel-react"
 
 import Lightbox from "yet-another-react-lightbox"
@@ -25,16 +26,27 @@ export default function ProductGallery({ media = [] }) {
 
   const [activeIndex, setActiveIndex] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
+  const [videoModalOpen, setVideoModalOpen] = useState(false)
+  const [activeVideoId, setActiveVideoId] = useState(null)
+  const [yarlIndex, setYarlIndex] = useState(0)
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, active: items.length > 1 })
+
+  const [canScrollPrev, setCanScrollPrev] = useState(false)
+  const [canScrollNext, setCanScrollNext] = useState(items.length > 1)
 
   useEffect(() => {
     if (!emblaApi) return
     const onSelect = () => {
       setActiveIndex(emblaApi.selectedScrollSnap())
+      setCanScrollPrev(emblaApi.canScrollPrev())
+      setCanScrollNext(emblaApi.canScrollNext())
     }
     emblaApi.on("select", onSelect)
+    emblaApi.on("reInit", onSelect)
+    onSelect() // Init state
     return () => {
       emblaApi.off("select", onSelect)
+      emblaApi.off("reInit", onSelect)
     }
   }, [emblaApi])
 
@@ -68,30 +80,24 @@ export default function ProductGallery({ media = [] }) {
     return ""
   }
 
-  // Create slides for lightbox
-  const slides = items.map((item) => {
-    if (item.type === "youtube") {
-      const id = getYoutubeId(item.url)
-      return {
-        type: "youtube",
-        src: id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "",
-        youtubeUrl: item.url,
-      }
-    }
-    return {
-      type: "image",
-      src: item.url,
-    }
-  })
+  // Separate images for YARL to prevent iframe gesture hijacking
+  const imageItems = items.map((item, index) => ({ ...item, originalIndex: index })).filter(item => item.type !== "youtube")
+  
+  const yarlSlides = imageItems.map((item) => ({
+    type: "image",
+    src: item.url,
+  }))
 
   return (
     <div className="space-y-4">
       {/* Main Viewport Container */}
       <div className="relative group w-full h-[320px] min-h-[320px] lg:h-[500px] lg:min-h-[500px] bg-slate-955 rounded-2xl border border-border shadow-sm overflow-hidden flex items-center justify-center bg-slate-950">
         {/* Media Counter */}
-        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-xs text-white px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wider select-none z-10 shadow-md">
-          {activeIndex + 1} / {items.length}
-        </div>
+        {items.length > 1 && (
+          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-xs text-white px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wider select-none z-10 shadow-md">
+            {activeIndex + 1} / {items.length}
+          </div>
+        )}
 
         {/* Zoom Icon Hint at bottom-right */}
         {items[activeIndex] && items[activeIndex].type !== "youtube" && (
@@ -133,8 +139,11 @@ export default function ProductGallery({ media = [] }) {
                       draggable="false"
                       onClick={() => {
                         if (isYoutube) {
-                          window.open(item.url, "_blank")
+                          setActiveVideoId(youtubeId)
+                          setVideoModalOpen(true)
                         } else {
+                          const idx = imageItems.findIndex(i => i.originalIndex === index)
+                          setYarlIndex(idx >= 0 ? idx : 0)
                           setLightboxOpen(true)
                         }
                       }}
@@ -145,7 +154,11 @@ export default function ProductGallery({ media = [] }) {
                       <>
                         <div 
                           className="absolute inset-0 bg-black/20 hover:bg-black/35 transition-colors duration-200 flex items-center justify-center cursor-pointer"
-                          onClick={() => window.open(item.url, "_blank")}
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            setActiveVideoId(youtubeId);
+                            setVideoModalOpen(true); 
+                          }}
                         />
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                           <div className="w-14 h-14 rounded-full bg-warning flex items-center justify-center text-warning-foreground shadow-lg group-hover:scale-105 active:scale-95 transition-transform duration-200">
@@ -154,7 +167,7 @@ export default function ProductGallery({ media = [] }) {
                         </div>
                         <div className="absolute bottom-4 left-4 right-4 text-center pointer-events-none">
                           <span className="text-[10px] uppercase font-bold tracking-wider text-slate-100 bg-black/40 px-2 py-0.5 rounded border border-white/5 backdrop-blur-xs">
-                            Klik untuk menonton di YouTube
+                            Klik untuk memutar video
                           </span>
                         </div>
                       </>
@@ -174,20 +187,30 @@ export default function ProductGallery({ media = [] }) {
                 e.stopPropagation()
                 scrollPrev()
               }}
-              className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl hidden sm:flex items-center justify-center transition-all duration-200 active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 z-10 cursor-pointer"
+              disabled={!canScrollPrev}
+              className={`absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl hidden sm:flex items-center justify-center transition-all duration-200 z-10 ${
+                !canScrollPrev 
+                  ? "opacity-50 cursor-not-allowed" 
+                  : "active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 cursor-pointer"
+              }`}
               aria-label="Previous image"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-6 h-6 text-slate-800 dark:text-white" />
             </button>
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 scrollNext()
               }}
-              className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl hidden sm:flex items-center justify-center transition-all duration-200 active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 z-10 cursor-pointer"
+              disabled={!canScrollNext}
+              className={`absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl hidden sm:flex items-center justify-center transition-all duration-200 z-10 ${
+                !canScrollNext 
+                  ? "opacity-50 cursor-not-allowed" 
+                  : "active:scale-95 text-slate-800 dark:text-white hover:bg-white dark:hover:bg-slate-900 cursor-pointer"
+              }`}
               aria-label="Next image"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-6 h-6 text-slate-800 dark:text-white" />
             </button>
           </>
         )}
@@ -229,47 +252,66 @@ export default function ProductGallery({ media = [] }) {
         </div>
       )}
 
-      {/* Lightbox for full screen inspection */}
+      {/* Lightbox for full screen inspection (IMAGES ONLY) */}
       <Lightbox
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}
-        index={activeIndex}
-        slides={slides}
+        index={yarlIndex}
+        slides={yarlSlides}
+        carousel={{ finite: true }}
         plugins={[Thumbnails, Zoom, Counter]}
         animation={{ fade: 200, swipe: 200 }}
         controller={{ closeOnBackdropClick: true }}
         on={{
           view: ({ index }) => {
-            setActiveIndex(index)
-            if (emblaApi) emblaApi.scrollTo(index)
-          },
-        }}
-        render={{
-          slide: ({ slide, rect }) => {
-            if (slide.type === "youtube") {
-              return (
-                <div
-                  className="relative flex items-center justify-center cursor-pointer select-none"
-                  onClick={() => window.open(slide.youtubeUrl, "_blank")}
-                  style={{ width: rect.width, height: rect.height }}
-                >
-                  <img
-                    src={slide.src}
-                    alt="Video Preview"
-                    className="max-w-full max-h-full object-contain"
-                  />
-                  <div className="absolute inset-0 bg-black/20 hover:bg-black/35 transition-colors duration-200 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-warning flex items-center justify-center text-warning-foreground shadow-lg">
-                      <Play className="h-8 w-8 fill-current ml-1" />
-                    </div>
-                  </div>
-                </div>
-              )
+            setYarlIndex(index)
+            const originalIndex = imageItems[index]?.originalIndex
+            if (originalIndex !== undefined) {
+              setActiveIndex(originalIndex)
+              if (emblaApi) emblaApi.scrollTo(originalIndex)
             }
-            return undefined // Use default renderer
           },
         }}
       />
+
+      {/* Dedicated Video Modal for Native Mobile Support */}
+      {videoModalOpen && activeVideoId && createPortal(
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 sm:p-6 lg:p-8"
+          onClick={() => {
+            setVideoModalOpen(false)
+            setActiveVideoId(null)
+          }}
+        >
+          {/* Close Button */}
+          <button 
+            onClick={(e) => {
+              e.stopPropagation()
+              setVideoModalOpen(false)
+              setActiveVideoId(null)
+            }}
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white hover:text-red-400 transition-colors z-[10000] bg-black/60 hover:bg-black/90 rounded-full p-2.5 shadow-xl border border-white/20"
+            aria-label="Tutup video"
+          >
+            <X className="w-6 h-6 md:w-8 md:h-8" />
+          </button>
+          
+          <div 
+            className="w-full max-w-5xl aspect-video relative rounded-xl overflow-hidden shadow-2xl bg-black"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src={`https://www.youtube.com/embed/${activeVideoId}?rel=0&showinfo=1&autoplay=1`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   )
 }
