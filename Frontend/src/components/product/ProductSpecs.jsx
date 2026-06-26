@@ -1,32 +1,26 @@
 export default function ProductSpecs({ specification }) {
   if (!specification) return null
 
-  // Deteksi apakah konten adalah HTML (dari WYSIWYG)
-  const isHtml = /<[a-z][\s\S]*>/i.test(specification)
+  // Ekstrak teks dari HTML yang dihasilkan WYSIWYG
+  let text = specification
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]+>/g, '') // Hapus tag HTML yang tersisa
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
 
-  if (isHtml) {
-    return (
-      <div className="space-y-4 text-left">
-        <h2 className="text-lg font-bold text-foreground tracking-tight">Spesifikasi Teknis</h2>
-        <div className="bg-card border border-border rounded-2xl shadow-sm p-5 sm:p-6">
-          <div 
-            className="prose prose-sm md:prose-base prose-slate dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: specification }}
-          />
-        </div>
-      </div>
-    )
-  }
-
-  // Fallback untuk spesifikasi teks biasa (versi lama)
-  const lines = specification.split("\n").filter(l => l.trim())
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
   const specsList = lines.map(line => {
-    const parts = line.split(":")
+    const parts = line.split(":");
     if (parts.length >= 2) {
-      return { label: parts[0].trim(), value: parts.slice(1).join(":").trim() }
+      return { label: parts[0].trim(), value: parts.slice(1).join(":").trim() };
     }
-    return { label: "Spesifikasi", value: line.trim() }
-  })
+    return { label: "Spesifikasi", value: line.trim() };
+  });
 
   return (
     <div className="space-y-4 text-left">
