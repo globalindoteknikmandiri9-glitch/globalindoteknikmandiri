@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async"
 import { Calendar, Clock, ChevronRightIcon, BookOpen, Link as LinkIcon, Share2, ChevronLeft, ChevronRight } from "lucide-react"
 import { toast } from "sonner"
 import api from "@/services/axios"
-import { getAssetUrl, cn } from "@/lib/utils"
+import { getAssetUrl } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import ArticleDetailSkeleton from "./ArticleDetailSkeleton"
 

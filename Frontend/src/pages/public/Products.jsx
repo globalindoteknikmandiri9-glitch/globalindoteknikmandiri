@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Helmet } from "react-helmet-async"
 import { Link, useSearchParams } from "react-router-dom"
-import { cn, getAssetUrl } from "@/lib/utils"
+import { cn, getAssetUrl, getSnippet } from "@/lib/utils"
 import api from "@/services/axios"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
@@ -84,7 +84,7 @@ export default function Products() {
   const filtered = useMemo(() => {
     return productsData.filter(p => {
       const catName = p.category?.name || ""
-      const spec = p.specification || ""
+      const spec = getSnippet(p.specification, 500)
       const statusLabel = STOCK_STATUS_MAP[p.status] || p.status
       const matchSearch =
         p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -316,7 +316,7 @@ export default function Products() {
                               <span className="text-[9px] bg-muted px-1.5 py-0.5 rounded text-muted-foreground font-mono">{getProductSku(product)}</span>
                             </div>
                             <h3 className="font-bold text-foreground text-sm mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1">{product.name}</h3>
-                            <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">{product.specification || product.description || "-"}</p>
+                            <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">{getSnippet(product.description, 120) || "-"}</p>
                           </div>
                           <div className="pt-4 border-t border-border">
                             <div className="w-full text-xs h-9 text-muted-foreground border border-border hover:bg-muted/50 gap-1.5 rounded flex items-center justify-center font-medium transition-colors">

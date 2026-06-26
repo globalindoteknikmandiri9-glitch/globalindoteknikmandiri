@@ -3,27 +3,13 @@ import { Helmet } from "react-helmet-async"
 import { useState, useEffect } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import api from "@/services/axios"
-import { getAssetUrl } from "@/lib/utils"
+import { getAssetUrl, getSnippet } from "@/lib/utils"
 
 import ProductBreadcrumb from "@/components/product/ProductBreadcrumb"
 import ProductGallery from "@/components/product/ProductGallery"
 import ProductInfo from "@/components/product/ProductInfo"
 import ProductSpecs from "@/components/product/ProductSpecs"
 import RelatedProducts from "@/components/product/RelatedProducts"
-
-function getSnippet(content, maxLen = 160) {
-  if (!content) return ""
-  let actualContent = content;
-  try {
-    const parsed = JSON.parse(content);
-    if (parsed && typeof parsed === 'object' && parsed.content !== undefined) {
-      actualContent = parsed.content;
-    }
-  } catch(e) {}
-  
-  const plain = actualContent.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim()
-  return plain.length > maxLen ? plain.slice(0, maxLen) + "…" : plain
-}
 
 export default function ProductDetail() {
   const { slug } = useParams()
@@ -127,7 +113,6 @@ export default function ProductDetail() {
                 sku={`GTM-PD-${String(product.id).padStart(3, "0")}`}
                 category={product.category?.name || "Lainnya"}
                 stockStatus={product.status}
-                shortDescription={getSnippet(product.specification || product.description, 120)}
                 description={product.description}
               />
             </div>

@@ -91,8 +91,8 @@ export default function Articles() {
         <title>Blog & Knowledge — CV Globalindo Teknik Mandiri</title>
       </Helmet>
 
-      {/* Main Container - Off-White Background inspired by Tumbas */}
-      <div className="bg-[#F8F9FA] min-h-screen text-slate-900 font-sans pb-32 selection:bg-emerald-100">
+      {/* Main Container */}
+      <div className="bg-background min-h-screen text-foreground font-sans pb-32 selection:bg-accent/30">
         
         {/* HEADER SECTION */}
         <div className="container mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8 pt-24 lg:pt-32 pb-12">
@@ -102,10 +102,10 @@ export default function Articles() {
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
               className="max-w-2xl"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4">
                 Knowledge Center
               </h1>
-              <p className="text-lg text-slate-500 leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed">
                 Temukan pembaruan terbaru, wawasan teknis, kalibrasi alat ukur, dan berita dari tim CV Globalindo Teknik Mandiri.
               </p>
             </motion.div>
@@ -114,27 +114,27 @@ export default function Articles() {
               initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
               className="relative w-full lg:w-[400px] shrink-0"
             >
-              <div className="flex items-center w-full h-14 bg-white rounded-full border border-slate-200 px-5 focus-within:border-slate-400 focus-within:ring-4 focus-within:ring-slate-100 transition-all shadow-sm">
-                <Search className="h-5 w-5 text-slate-400 mr-3" />
+              <div className="flex items-center w-full h-14 bg-card rounded-full border border-border px-5 focus-within:border-accent focus-within:ring-4 focus-within:ring-accent/20 transition-all shadow-sm">
+                <Search className="h-5 w-5 text-muted-foreground mr-3" />
                 <input 
                   type="text"
                   placeholder="Cari artikel atau referensi..."
                   value={search}
                   onChange={(e) => {setSearch(e.target.value); setPage(1);}}
-                  className="flex-1 bg-transparent border-none focus:outline-none text-base text-slate-700 placeholder:text-slate-400 font-medium"
+                  className="flex-1 bg-transparent border-none focus:outline-none text-base text-foreground placeholder:text-muted-foreground font-medium"
                 />
               </div>
             </motion.div>
           </div>
           
-          {/* Subtle separator instead of categories */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="w-full h-px bg-slate-200" />
+          {/* Subtle separator */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="w-full h-px bg-border" />
         </div>
 
         {/* LOADING STATE */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32">
-            <Loader2 className="h-8 w-8 animate-spin text-slate-400 mb-4" />
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground mb-4" />
           </div>
         ) : (
           <div className="container mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8">
@@ -149,7 +149,7 @@ export default function Articles() {
                   className="lg:col-span-8 flex flex-col group cursor-pointer"
                   onClick={() => navigate(`/artikel/${featuredArticle.slug}`)}
                 >
-                  <div className="relative w-full aspect-[16/9] lg:aspect-[1.8/1] rounded-[32px] overflow-hidden mb-6 bg-slate-200 border border-slate-200/50">
+                  <div className="relative w-full aspect-[16/9] lg:aspect-[1.8/1] rounded-[32px] overflow-hidden mb-6 bg-muted border border-border/50">
                     {getImageUrl(featuredArticle.image_url) ? (
                       <img 
                         src={getImageUrl(featuredArticle.image_url)} 
@@ -157,8 +157,8 @@ export default function Articles() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.2,1,0.3,1)]"
                       />
                     ) : (
-                      <div className="w-full h-full bg-slate-200 flex items-center justify-center">
-                         <Newspaper className="h-16 w-16 text-slate-400" />
+                      <div className="w-full h-full flex items-center justify-center">
+                         <Newspaper className="h-16 w-16 text-muted-foreground" />
                       </div>
                     )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
@@ -166,27 +166,27 @@ export default function Articles() {
                   
                   <div className="px-2">
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="px-3 py-1 text-xs font-bold rounded-full border border-slate-900 bg-slate-900 text-white">
+                      <span className="px-3 py-1 text-xs font-bold rounded-full border border-accent bg-accent/10 text-accent">
                         Featured
                       </span>
-                      <span className="text-sm text-slate-500 font-medium">{formatDate(featuredArticle.createdAt)}</span>
+                      <span className="text-sm text-muted-foreground font-medium">{formatDate(featuredArticle.createdAt)}</span>
                     </div>
                     
-                    <h2 className="text-3xl lg:text-[40px] font-bold tracking-tight leading-[1.2] text-slate-900 mb-4 group-hover:text-emerald-700 transition-colors">
+                    <h2 className="text-3xl lg:text-[40px] font-bold tracking-tight leading-[1.2] text-foreground mb-4 group-hover:text-accent transition-colors">
                       {featuredArticle.title}
                     </h2>
                     
-                    <p className="text-slate-500 text-lg leading-relaxed line-clamp-2 mb-6 max-w-3xl">
+                    <p className="text-muted-foreground text-lg leading-relaxed line-clamp-2 mb-6 max-w-3xl">
                       {featuredArticle.content.replace(/<[^>]+>/g, "")}
                     </p>
 
                     <div className="flex items-center gap-3 mt-auto">
-                      <div className="h-10 w-10 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center">
-                        <UserCircle2 className="h-6 w-6 text-slate-400" />
+                      <div className="h-10 w-10 rounded-full bg-muted overflow-hidden flex items-center justify-center">
+                        <UserCircle2 className="h-6 w-6 text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-slate-900">Admin Engineering</p>
-                        <p className="text-xs font-medium text-slate-500">Author</p>
+                        <p className="text-sm font-bold text-foreground">Admin Engineering</p>
+                        <p className="text-xs font-medium text-muted-foreground">Author</p>
                       </div>
                     </div>
                   </div>
@@ -198,8 +198,8 @@ export default function Articles() {
                   className="lg:col-span-4 flex flex-col"
                 >
                   <div className="flex items-center justify-between mb-6 px-2">
-                    <h3 className="text-xl font-bold text-slate-900">Recent Articles</h3>
-                    <button className="text-sm font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
+                    <h3 className="text-xl font-bold text-foreground">Recent Articles</h3>
+                    <button className="text-sm font-bold text-accent hover:text-accent/80 flex items-center gap-1">
                       View all <ArrowRight className="h-4 w-4" />
                     </button>
                   </div>
@@ -210,25 +210,25 @@ export default function Articles() {
                         <div 
                           key={article.id} 
                           onClick={() => navigate(`/artikel/${article.slug}`)}
-                          className="group flex gap-5 bg-white p-4 rounded-[24px] border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5"
+                          className="group flex gap-5 bg-card p-4 rounded-[24px] border border-border shadow-card cursor-pointer hover:shadow-card-hover transition-all hover:-translate-y-0.5"
                         >
-                          <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden bg-slate-100 relative">
+                          <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden bg-muted relative">
                             {getImageUrl(article.image_url) ? (
                               <img src={getImageUrl(article.image_url)} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                             ) : (
                                <div className="w-full h-full flex items-center justify-center">
-                                 <Newspaper className="h-6 w-6 text-slate-300" />
+                                 <Newspaper className="h-6 w-6 text-muted-foreground/30" />
                                </div>
                             )}
                           </div>
                           <div className="flex flex-col justify-center flex-1 py-1">
-                            <span className="text-[10px] font-extrabold uppercase tracking-wider mb-2 text-slate-400">
+                            <span className="text-[10px] font-extrabold uppercase tracking-wider mb-2 text-muted-foreground">
                               Publication
                             </span>
-                            <h4 className="text-base font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-emerald-700 transition-colors">
+                            <h4 className="text-base font-bold text-foreground leading-snug line-clamp-2 group-hover:text-accent transition-colors">
                               {article.title}
                             </h4>
-                            <span className="text-xs text-slate-400 font-medium mt-auto block">{formatDate(article.createdAt)}</span>
+                            <span className="text-xs text-muted-foreground font-medium mt-auto block">{formatDate(article.createdAt)}</span>
                           </div>
                         </div>
                       )
@@ -241,13 +241,13 @@ export default function Articles() {
 
             {/* EMPTY STATE */}
             {paginated.length === 0 && !featuredArticle ? (
-              <div className="text-center py-20 bg-white rounded-[32px] border border-slate-200 max-w-2xl mx-auto px-6 shadow-sm">
-                <Search className="h-10 w-10 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Tidak ada artikel</h3>
-                <p className="text-slate-500 mb-6">Pencarian Anda tidak membuahkan hasil.</p>
+              <div className="text-center py-20 bg-card rounded-[32px] border border-border max-w-2xl mx-auto px-6 shadow-sm">
+                <Search className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-foreground mb-2">Tidak ada artikel</h3>
+                <p className="text-muted-foreground mb-6">Pencarian Anda tidak membuahkan hasil.</p>
                 <button
                   onClick={() => { setSearch(""); setPage(1) }}
-                  className="h-12 px-8 rounded-full bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors"
+                  className="h-12 px-8 rounded-full bg-foreground text-background font-bold hover:bg-foreground/90 transition-colors"
                 >
                   Clear Search
                 </button>
@@ -256,7 +256,7 @@ export default function Articles() {
               <>
                 {/* MORE ARTICLES GRID */}
                 <div className="mb-8 px-2">
-                  <h3 className="text-2xl font-bold text-slate-900">More Articles</h3>
+                  <h3 className="text-2xl font-bold text-foreground">More Articles</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -266,9 +266,9 @@ export default function Articles() {
                         initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.5, delay: i * 0.1 }}
                         key={article.id}
                         onClick={() => navigate(`/artikel/${article.slug}`)}
-                        className="group flex flex-col bg-white p-4 rounded-[32px] border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-all hover:-translate-y-1"
+                        className="group flex flex-col bg-card p-4 rounded-[32px] border border-border shadow-card cursor-pointer hover:shadow-card-hover transition-all hover:-translate-y-1"
                       >
-                        <div className="relative aspect-[4/3] w-full rounded-[24px] overflow-hidden mb-5 bg-slate-100">
+                        <div className="relative aspect-[4/3] w-full rounded-[24px] overflow-hidden mb-5 bg-muted">
                           {getImageUrl(article.image_url) ? (
                             <img
                               src={getImageUrl(article.image_url)}
@@ -278,28 +278,28 @@ export default function Articles() {
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                               <Newspaper className="h-12 w-12 text-slate-300" />
+                               <Newspaper className="h-12 w-12 text-muted-foreground/30" />
                              </div>
                           )}
                         </div>
                         
                         <div className="flex flex-col flex-1 px-2 pb-2">
-                          <span className="text-xs font-medium text-slate-500 mb-2">{formatDate(article.createdAt)}</span>
-                          <h3 className="text-xl font-bold text-slate-900 leading-tight mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2">
+                          <span className="text-xs font-medium text-muted-foreground mb-2">{formatDate(article.createdAt)}</span>
+                          <h3 className="text-xl font-bold text-foreground leading-tight mb-3 group-hover:text-accent transition-colors line-clamp-2">
                             {article.title}
                           </h3>
-                          <p className="text-sm text-slate-500 line-clamp-2 mb-6">
+                          <p className="text-sm text-muted-foreground line-clamp-2 mb-6">
                             {article.content.replace(/<[^>]+>/g, "")}
                           </p>
                           
-                          <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100">
+                          <div className="mt-auto flex items-center justify-between pt-4 border-t border-border">
                             <div className="flex items-center gap-2">
-                              <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center">
-                                <UserCircle2 className="h-5 w-5 text-slate-400" />
+                              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                                <UserCircle2 className="h-5 w-5 text-muted-foreground" />
                               </div>
-                              <span className="text-sm font-bold text-slate-900">Admin</span>
+                              <span className="text-sm font-bold text-foreground">Admin</span>
                             </div>
-                            <div className="h-8 w-8 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-emerald-50 group-hover:border-emerald-200 group-hover:text-emerald-600 transition-colors text-slate-400">
+                            <div className="h-8 w-8 rounded-full border border-border flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/20 group-hover:text-accent transition-colors text-muted-foreground">
                               <ArrowUpRight className="h-4 w-4" />
                             </div>
                           </div>
@@ -319,8 +319,8 @@ export default function Articles() {
                         className={cn(
                           "w-12 h-12 flex items-center justify-center rounded-full text-base font-bold transition-all",
                           page === p
-                            ? "bg-slate-900 text-white shadow-md"
-                            : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                            ? "bg-primary text-primary-foreground shadow-md"
+                            : "bg-card text-muted-foreground border border-border hover:bg-muted"
                         )}
                       >
                         {p}

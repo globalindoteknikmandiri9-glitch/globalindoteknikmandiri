@@ -4,7 +4,7 @@ import { Icons } from "@/components/icons"
 import { Link } from "react-router-dom"
 import { useCompanyProfile } from "@/hooks/useCompanyProfile"
 
-export default function ProductInfo({ name, sku, category, stockStatus, shortDescription, description }) {
+export default function ProductInfo({ name, sku, category, stockStatus, description }) {
   const { getWhatsappLink } = useCompanyProfile()
 
   const stockConfig = {
@@ -66,10 +66,7 @@ export default function ProductInfo({ name, sku, category, stockStatus, shortDes
           {currentStock.label}
         </div>
       </div>
-        <p className="text-xs text-muted-foreground leading-relaxed mt-3 font-semibold">
-          {shortDescription}
-        </p>
-      {/* Divider */}
+
       <div className="border-t border-border" />
 
       {/* Long Description */}

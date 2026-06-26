@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { Eye, Package } from "lucide-react"
 import api from "@/services/axios"
-import { getAssetUrl } from "@/lib/utils"
+import { getAssetUrl, getSnippet } from "@/lib/utils"
 
 export default function RelatedProducts({ currentId, category }) {
   const [related, setRelated] = useState([])
@@ -98,7 +98,7 @@ export default function RelatedProducts({ currentId, category }) {
 
                 {/* Brief Spec */}
                 <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">
-                  {product.specification || product.description || "-"}
+                  {getSnippet(product.description, 120) || "-"}
                 </p>
               </div>
 
