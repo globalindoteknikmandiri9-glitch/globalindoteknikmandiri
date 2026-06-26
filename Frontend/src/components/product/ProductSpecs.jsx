@@ -1,8 +1,21 @@
 export default function ProductSpecs({ specification }) {
   if (!specification) return null
 
+  let col1 = "Parameter";
+  let col2 = "Nilai Spesifikasi";
+  let content = specification;
+
+  try {
+    const parsed = JSON.parse(specification);
+    if (parsed && typeof parsed === 'object' && parsed.content !== undefined) {
+      col1 = parsed.col1 || "Parameter";
+      col2 = parsed.col2 || "Nilai Spesifikasi";
+      content = parsed.content;
+    }
+  } catch(e) {}
+
   // Ekstrak teks dari HTML yang dihasilkan WYSIWYG
-  let text = specification
+  let text = content
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<\/p>/gi, '\n')
     .replace(/<\/div>/gi, '\n')
@@ -14,12 +27,28 @@ export default function ProductSpecs({ specification }) {
     .replace(/&gt;/g, '>');
 
   const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-  const specsList = lines.map(line => {
+  const specsList = [];
+  
+  lines.forEach(line => {
     const parts = line.split(":");
-    if (parts.length >= 2) {
-      return { label: parts[0].trim(), value: parts.slice(1).join(":").trim() };
+    // Jika baris memiliki titik dua, anggap sebagai parameter baru
+    if (parts.length >= 2 && parts[0].length > 0) {
+      specsList.push({
+        label: parts[0].trim(),
+        value: parts.slice(1).join(":").trim()
+      });
+    } else {
+      // Jika tidak ada titik dua, gabungkan sebagai paragraf ke nilai parameter sebelumnya
+      if (specsList.length > 0) {
+        specsList[specsList.length - 1].value += "\n" + line.trim();
+      } else {
+        // Jika ini baris pertama dan tidak punya parameter
+        specsList.push({
+          label: "Spesifikasi",
+          value: line.trim()
+        });
+      }
     }
-    return { label: "Spesifikasi", value: line.trim() };
   });
 
   return (
@@ -31,10 +60,10 @@ export default function ProductSpecs({ specification }) {
             <thead>
               <tr className="bg-muted/40 border-b border-border">
                 <th className="px-4 sm:px-6 py-3 sm:py-3.5 font-bold text-foreground uppercase tracking-wider w-1/3">
-                  Parameter
+                  {col1}
                 </th>
                 <th className="px-4 sm:px-6 py-3 sm:py-3.5 font-bold text-foreground uppercase tracking-wider">
-                  Nilai Spesifikasi
+                  {col2}
                 </th>
               </tr>
             </thead>
@@ -47,7 +76,7 @@ export default function ProductSpecs({ specification }) {
                   <td className="px-4 sm:px-6 py-3 sm:py-3.5 font-bold text-foreground/90 whitespace-nowrap">
                     {spec.label}
                   </td>
-                  <td className="px-4 sm:px-6 py-3 sm:py-3.5 text-muted-foreground font-medium">
+                  <td className="px-4 sm:px-6 py-3 sm:py-3.5 text-muted-foreground font-medium whitespace-pre-wrap">
                     {spec.value}
                   </td>
                 </tr>

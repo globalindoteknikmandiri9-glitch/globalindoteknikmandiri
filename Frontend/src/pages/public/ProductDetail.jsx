@@ -13,7 +13,15 @@ import RelatedProducts from "@/components/product/RelatedProducts"
 
 function getSnippet(content, maxLen = 160) {
   if (!content) return ""
-  const plain = content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim()
+  let actualContent = content;
+  try {
+    const parsed = JSON.parse(content);
+    if (parsed && typeof parsed === 'object' && parsed.content !== undefined) {
+      actualContent = parsed.content;
+    }
+  } catch(e) {}
+  
+  const plain = actualContent.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim()
   return plain.length > maxLen ? plain.slice(0, maxLen) + "…" : plain
 }
 

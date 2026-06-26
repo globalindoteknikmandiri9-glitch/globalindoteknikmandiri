@@ -39,6 +39,10 @@ export default function ManageProducts() {
   const [imagePreview, setImagePreview] = useState("")
   const fileInputRef = useRef(null)
 
+  // Specification Header States
+  const [specHeader1, setSpecHeader1] = useState("Parameter")
+  const [specHeader2, setSpecHeader2] = useState("Nilai Spesifikasi")
+
   const fetchInitialData = async () => {
     try {
       Promise.resolve().then(() => setLoading(true))
@@ -64,14 +68,29 @@ export default function ManageProducts() {
     setImageFile(null)
     if (product) {
       setEditingProduct(product)
+
+      let specContent = product.specification || "";
+      let h1 = "Parameter";
+      let h2 = "Nilai Spesifikasi";
+      try {
+        const parsed = JSON.parse(specContent);
+        if (parsed && typeof parsed === "object" && parsed.content !== undefined) {
+          specContent = parsed.content;
+          h1 = parsed.col1 || h1;
+          h2 = parsed.col2 || h2;
+        }
+      } catch(e) {}
+
       setFormData({
         name: product.name,
         categoryId: product.categoryId.toString(),
         status: product.status,
         youtube_url: product.youtube_url || "",
-        specification: product.specification || "",
+        specification: specContent,
         description: product.description || ""
       })
+      setSpecHeader1(h1);
+      setSpecHeader2(h2);
       const primaryImg = product.images?.find(img => img.is_primary)?.image_url || product.images?.[0]?.image_url
       setImagePreview(primaryImg ? getAssetUrl(primaryImg) : "")
     } else {
@@ -84,6 +103,8 @@ export default function ManageProducts() {
         specification: "",
         description: ""
       })
+      setSpecHeader1("Parameter");
+      setSpecHeader2("Nilai Spesifikasi");
       setImagePreview("")
     }
     setIsModalOpen(true)
@@ -121,7 +142,14 @@ export default function ManageProducts() {
     data.append("categoryId", formData.categoryId)
     data.append("status", formData.status)
     data.append("youtube_url", formData.youtube_url)
-    data.append("specification", formData.specification)
+
+    // Serialize headers with specification
+    const specData = JSON.stringify({
+      col1: specHeader1,
+      col2: specHeader2,
+      content: formData.specification
+    });
+    data.append("specification", specData)
     data.append("description", formData.description)
     if (imageFile) {
       data.append("image", imageFile)
@@ -437,11 +465,33 @@ export default function ManageProducts() {
               </div>
             </div>
 
-            <div>
-              <label className="text-xs font-semibold mb-1 block flex items-center gap-1">
+            <div className="space-y-4">
+              <label className="text-xs font-semibold block flex items-center gap-1">
                 <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                 Spesifikasi Teknis <span className="text-red-500">*</span>
               </label>
+
+              <div className="grid sm:grid-cols-2 gap-4 bg-muted/30 p-4 rounded-lg border border-border">
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Judul Kolom 1 (Kiri)</label>
+                  <Input 
+                    value={specHeader1} 
+                    onChange={(e) => setSpecHeader1(e.target.value)} 
+                    placeholder="Contoh: Parameter"
+                    className="h-8 text-xs bg-background" 
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Judul Kolom 2 (Kanan)</label>
+                  <Input 
+                    value={specHeader2} 
+                    onChange={(e) => setSpecHeader2(e.target.value)} 
+                    placeholder="Contoh: Nilai Spesifikasi"
+                    className="h-8 text-xs bg-background" 
+                  />
+                </div>
+              </div>
+
               <ReactQuill
                 theme="snow"
                 value={formData.specification}
