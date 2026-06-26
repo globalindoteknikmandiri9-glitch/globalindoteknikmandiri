@@ -17,6 +17,7 @@ const ProductDetail = lazy(() => import('./pages/public/ProductDetail'))
 const Contact = lazy(() => import('./pages/public/Contact'))
 const About = lazy(() => import('./pages/public/About'))
 const Articles = lazy(() => import('./pages/public/Articles'))
+const ArticleDetail = lazy(() => import('./pages/public/ArticleDetail'))
 
 // Admin Pages (Lazy loaded)
 const Login = lazy(() => import('./pages/admin/Login'))
@@ -47,6 +48,7 @@ function App() {
                     <Route path="/produk" element={<Products />} />
                     <Route path="/products/:slug" element={<ProductDetail />} />
                     <Route path="/artikel" element={<Articles />} />
+                    <Route path="/artikel/:slug" element={<ArticleDetail />} />
                     <Route path="/tentang-kami" element={<About />} />
                     <Route path="/hubungi-kami" element={<Contact />} />
                     {/* 404 Route */}

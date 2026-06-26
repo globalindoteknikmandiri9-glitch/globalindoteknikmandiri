@@ -1,10 +1,9 @@
 import { useState, useMemo, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Search, Calendar, ChevronLeft, ChevronRight, BookOpen, Clock, ChevronRight as ChevronRightIcon, Loader2 } from "lucide-react"
 import { Helmet } from "react-helmet-async"
 import { Button } from "@/components/ui/button"
 import { cn, getAssetUrl } from "@/lib/utils"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"
 import api from "@/services/axios"
 
 const ITEMS_PER_PAGE = 6
@@ -27,7 +26,7 @@ export default function Articles() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
-  const [selectedArticle, setSelectedArticle] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -150,7 +149,7 @@ export default function Articles() {
                     Featured Publication
                   </span>
                   <div
-                    onClick={() => setSelectedArticle(featuredArticle)}
+                    onClick={() => navigate(`/artikel/${featuredArticle.slug}`)}
                     className="group surface-panel overflow-hidden grid lg:grid-cols-12 hover:shadow-card-hover hover:border-border/80 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                   >
                     <div className="relative w-full aspect-video min-h-0 lg:col-span-7 lg:aspect-auto lg:min-h-[280px] bg-muted/30 overflow-hidden">
@@ -216,7 +215,7 @@ export default function Articles() {
                   {paginated.map((article) => (
                     <article
                       key={article.id}
-                      onClick={() => setSelectedArticle(article)}
+                      onClick={() => navigate(`/artikel/${article.slug}`)}
                       className="group surface-card overflow-hidden flex flex-col h-full hover:shadow-card-hover hover:border-border/80 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                     >
                       {/* Thumbnail */}
@@ -312,63 +311,6 @@ export default function Articles() {
         </div>
       </div>
 
-      {/* Article Detail Dialog Modal */}
-      {selectedArticle && (
-        <Dialog open={!!selectedArticle} onOpenChange={(open) => !open && setSelectedArticle(null)}>
-          <DialogContent className="max-w-2xl bg-card border border-border rounded-2xl p-0 overflow-hidden shadow-modal max-h-[90vh] flex flex-col">
-            {getImageUrl(selectedArticle.image_url) ? (
-              <div className="relative aspect-video w-full overflow-hidden bg-muted shrink-0">
-                <img
-                  src={getImageUrl(selectedArticle.image_url)}
-                  alt={selectedArticle.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                <div className="absolute bottom-5 left-6 right-6 text-white text-left">
-                  <DialogTitle className="text-xl font-bold text-white leading-tight">
-                    {selectedArticle.title}
-                  </DialogTitle>
-                  <div className="text-[10px] text-slate-300 mt-1">
-                    Dipublikasikan: {formatDate(selectedArticle.createdAt)} | Waktu Baca: {estimateReadTime(selectedArticle.content)}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="px-6 pt-6 shrink-0 text-left">
-                <DialogHeader>
-                  <DialogTitle className="text-xl font-bold leading-snug">{selectedArticle.title}</DialogTitle>
-                  <p className="text-[10px] text-muted-foreground mt-1">
-                    Dipublikasikan: {formatDate(selectedArticle.createdAt)} | Waktu Baca: {estimateReadTime(selectedArticle.content)}
-                  </p>
-                </DialogHeader>
-              </div>
-            )}
-
-            {/* Scrollable content body */}
-            <div className="p-6 overflow-y-auto flex-1 text-left animate-page-fade">
-              {/* Render content — support both plain text and simple HTML */}
-              {selectedArticle.content ? (
-                <div
-                  className="prose prose-sm max-w-none text-foreground prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:text-xs"
-                  dangerouslySetInnerHTML={{ __html: selectedArticle.content.replace(/\n/g, "<br/>") }}
-                />
-              ) : (
-                <p className="text-xs text-muted-foreground italic">Konten artikel belum tersedia.</p>
-              )}
-            </div>
-
-            {/* Fixed footer */}
-            <div className="px-6 py-4 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-muted-foreground bg-card shrink-0 text-left">
-              <span className="text-[11px] font-medium">CV Globalindo Teknik Mandiri — Engineering & Quality Assurance</span>
-              <DialogClose asChild>
-                <Button variant="outline" className="text-xs h-9 rounded-lg shadow-soft-sm shrink-0 cursor-pointer self-end sm:self-auto">
-                  Selesai Membaca
-                </Button>
-              </DialogClose>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
     </>
   )
 }
