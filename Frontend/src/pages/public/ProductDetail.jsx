@@ -11,6 +11,12 @@ import ProductInfo from "@/components/product/ProductInfo"
 import ProductSpecs from "@/components/product/ProductSpecs"
 import RelatedProducts from "@/components/product/RelatedProducts"
 
+function getSnippet(content, maxLen = 160) {
+  if (!content) return ""
+  const plain = content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim()
+  return plain.length > maxLen ? plain.slice(0, maxLen) + "…" : plain
+}
+
 export default function ProductDetail() {
   const { slug } = useParams()
   const [product, setProduct] = useState(null)
@@ -85,31 +91,13 @@ export default function ProductDetail() {
     })
   }
 
-  // Format specifications for ProductSpecs if product.specification is a string
-  const specifications = []
-  if (product.specification) {
-    const lines = product.specification.split("\n").filter(l => l.trim())
-    lines.forEach(line => {
-      const parts = line.split(":")
-      if (parts.length >= 2) {
-        specifications.push({
-          label: parts[0].trim(),
-          value: parts.slice(1).join(":").trim()
-        })
-      } else {
-        specifications.push({
-          label: "Spesifikasi",
-          value: line.trim()
-        })
-      }
-    })
-  }
+  // Removed manual specifications parsing because ProductSpecs handles it natively now.
 
   return (
     <>
       <Helmet>
         <title>{`${product.name} — CV Globalindo Teknik Mandiri`}</title>
-        <meta name="description" content={product.specification || product.description} />
+        <meta name="description" content={getSnippet(product.specification || product.description, 160)} />
       </Helmet>
 
       <div className="bg-background min-h-screen text-foreground animate-page-fade">
@@ -131,7 +119,7 @@ export default function ProductDetail() {
                 sku={`GTM-PD-${String(product.id).padStart(3, "0")}`}
                 category={product.category?.name || "Lainnya"}
                 stockStatus={product.status}
-                shortDescription={product.specification?.split("\n")[0] || ""}
+                shortDescription={getSnippet(product.specification || product.description, 120)}
                 description={product.description}
               />
             </div>
@@ -140,8 +128,8 @@ export default function ProductDetail() {
           {/* Spacing wrapper */}
           <div className="mt-16 space-y-16">
             {/* 4. Technical Specifications */}
-            {specifications.length > 0 && (
-              <ProductSpecs specifications={specifications} />
+            {product.specification && (
+              <ProductSpecs specification={product.specification} />
             )}
 
             {/* 5. Related Products */}

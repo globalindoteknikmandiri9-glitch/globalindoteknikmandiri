@@ -1,5 +1,7 @@
 import { AutosizeTextarea } from "@/components/ui/autosize-textarea"
 import { useState, useMemo, useEffect, useRef } from "react"
+import ReactQuill from "react-quill-new"
+import "react-quill-new/dist/quill.snow.css"
 import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, BookOpen, Image as ImageIcon, FileText, Eye, EyeOff } from "lucide-react"
 import TableSkeleton from "../../components/admin/TableSkeleton"
 import EmptyState from "../../components/admin/EmptyState"
@@ -401,13 +403,12 @@ export default function ManageArticles() {
                 <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                 Konten Artikel <span className="text-red-500">*</span>
               </label>
-              <AutosizeTextarea
-                required
-                rows={10}
+              <ReactQuill
+                theme="snow"
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                placeholder="Tulis konten artikel di sini. Anda bisa menggunakan format teks biasa atau HTML sederhana..."
-                className="w-full px-3 py-2 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-accent "
+                onChange={(content) => setFormData({ ...formData, content })}
+                placeholder="Tulis konten artikel di sini..."
+                className="bg-background [&_.ql-editor]:min-h-[250px] [&_.ql-editor]:text-xs [&_.ql-toolbar]:rounded-t-lg [&_.ql-container]:rounded-b-lg border-border"
               />
               <p className="text-[10px] text-muted-foreground mt-1">
                 Konten ini akan ditampilkan di halaman detail artikel publik.

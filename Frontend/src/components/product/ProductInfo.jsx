@@ -75,9 +75,16 @@ export default function ProductInfo({ name, sku, category, stockStatus, shortDes
       {/* Long Description */}
       <div className="space-y-3">
         <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">Deskripsi Lengkap</h3>
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          {description}
-        </p>
+        {description && /<[a-z][\s\S]*>/i.test(description) ? (
+          <div 
+            className="prose prose-sm prose-slate dark:prose-invert max-w-none text-muted-foreground"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        ) : (
+          <p className="text-xs text-muted-foreground leading-relaxed whitespace-pre-wrap">
+            {description}
+          </p>
+        )}
       </div>
 
       {/* Trust Checklist */}

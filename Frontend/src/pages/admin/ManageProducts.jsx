@@ -1,5 +1,7 @@
 import { AutosizeTextarea } from "@/components/ui/autosize-textarea"
 import { useState, useMemo, useEffect, useRef } from "react"
+import ReactQuill from "react-quill-new"
+import "react-quill-new/dist/quill.snow.css"
 import { Search, Plus, Pencil, Trash2, ChevronLeft, ChevronRight, Package, Image as ImageIcon, Video, FileText } from "lucide-react"
 import TableSkeleton from "../../components/admin/TableSkeleton"
 import EmptyState from "../../components/admin/EmptyState"
@@ -440,25 +442,23 @@ export default function ManageProducts() {
                 <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                 Spesifikasi Teknis <span className="text-red-500">*</span>
               </label>
-              <AutosizeTextarea
-                required
-                rows={3}
+              <ReactQuill
+                theme="snow"
                 value={formData.specification}
-                onChange={(e) => setFormData({ ...formData, specification: e.target.value })}
+                onChange={(content) => setFormData({ ...formData, specification: content })}
                 placeholder="Rincian dimensi, berat, kapasitas, material..."
-                className="w-full px-3 py-2 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                className="bg-background [&_.ql-editor]:min-h-[150px] [&_.ql-editor]:text-xs [&_.ql-toolbar]:rounded-t-lg [&_.ql-container]:rounded-b-lg border-border"
               />
             </div>
 
             <div>
               <label className="text-xs font-semibold mb-1 block">Deskripsi Produk <span className="text-red-500">*</span></label>
-              <AutosizeTextarea
-                required
-                rows={3}
+              <ReactQuill
+                theme="snow"
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(content) => setFormData({ ...formData, description: content })}
                 placeholder="Deskripsi fungsi, keunggulan, garansi..."
-                className="w-full px-3 py-2 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                className="bg-background [&_.ql-editor]:min-h-[150px] [&_.ql-editor]:text-xs [&_.ql-toolbar]:rounded-t-lg [&_.ql-container]:rounded-b-lg border-border"
               />
             </div>
 
