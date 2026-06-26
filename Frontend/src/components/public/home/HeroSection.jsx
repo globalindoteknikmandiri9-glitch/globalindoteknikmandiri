@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 import { getAssetUrl } from "@/lib/utils";
-import DecayCard from "@/components/ui/DecayCard";
+import TiltedCard from "@/components/ui/TiltedCard";
 
 export default function HeroSection() {
   const { profile } = useCompanyProfile();
@@ -80,27 +80,18 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Right Column: ReactBits DecayCard */}
+          {/* Right Column: TiltedCard */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            className="w-full flex justify-center lg:justify-end"
+            className="hidden lg:flex w-full justify-center"
           >
-            <div className="w-full max-w-[500px] aspect-[4/5] lg:aspect-[3/4]">
-              <DecayCard 
-                width="100%" 
-                height="100%" 
-                image={bgImage}
-                maxDisplacement={300}
-                movementBound={30}
-              >
-                <span className="text-white drop-shadow-lg">GTM</span>
-                <br />
-                <span className="text-lg font-medium opacity-90 block mt-2 text-white">
-                  Presisi & Inovasi
-                </span>
-              </DecayCard>
+            <div className="w-full max-w-[400px] aspect-[4/5]">
+              <TiltedCard 
+                imageSrc={bgImage} 
+                altText="Workshop CV Globalindo Teknik Mandiri" 
+              />
             </div>
           </motion.div>
         </div>

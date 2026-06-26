@@ -62,27 +62,24 @@ export default function About() {
       </Helmet>
 
       {/* Page Header */}
-      <div className="relative bg-navy overflow-hidden min-h-[220px] flex items-center border-b border-border">
-        {/* Background image overlay */}
-        <div className="absolute inset-0">
-          <img 
-            src={profile.about_image_url ? getAssetUrl(profile.about_image_url) : "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1600&q=80"}
-            alt="Tentang Kami Header"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/80" />
-        </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 text-left w-full">
-          <nav className="text-[11px] text-slate-300/80 mb-3 flex items-center gap-1.5 font-bold uppercase tracking-wider">
+      <div className="bg-background pt-24 lg:pt-32 pb-12">
+        <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+          <nav className="flex items-center flex-wrap gap-2 text-[11px] mb-8 text-muted-foreground/60 font-bold uppercase tracking-wider">
             <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
-            <ChevronRight className="h-3 w-3" />
-            <span className="text-slate-400">Tentang Kami</span>
+            <ChevronRight className="h-3 w-3 shrink-0" />
+            <span className="text-foreground">Tentang Kami</span>
           </nav>
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">Tentang Perusahaan</h1>
-          <p className="text-slate-300 max-w-xl text-sm leading-relaxed mt-2">
-            Mengenal rekam jejak, legalitas hukum, dan kapasitas produksi fisik {profile.name} sebagai pabrikator teknik nasional terpercaya.
-          </p>
+
+          <div className="max-w-3xl mb-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4">
+              Tentang Perusahaan
+            </h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Mengenal rekam jejak, legalitas hukum, dan kapasitas produksi fisik {profile.name} sebagai pabrikator teknik nasional terpercaya.
+            </p>
+          </div>
+          
+          <div className="w-full h-px bg-border" />
         </div>
       </div>
 

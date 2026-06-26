@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Helmet } from "react-helmet-async"
-import { Search, Loader2, ArrowRight, UserCircle2, ArrowUpRight, Newspaper } from "lucide-react"
+import { Search, Loader2, ArrowRight, UserCircle2, ArrowUpRight, Newspaper, ChevronRightIcon } from "lucide-react"
 import api from "@/services/axios"
 import { getAssetUrl, cn } from "@/lib/utils"
 
@@ -97,6 +97,13 @@ export default function Articles() {
         {/* HEADER SECTION */}
         <div className="container mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8 pt-24 lg:pt-32 pb-12">
           
+          {/* Breadcrumb */}
+          <nav className="flex items-center flex-wrap gap-2 text-[11px] mb-8 text-muted-foreground/60 font-bold uppercase tracking-wider">
+            <Link to="/" className="hover:text-accent transition-colors">Beranda</Link>
+            <ChevronRightIcon className="h-3 w-3 shrink-0" />
+            <span className="text-foreground">Artikel</span>
+          </nav>
+
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-8">
             <motion.div 
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
