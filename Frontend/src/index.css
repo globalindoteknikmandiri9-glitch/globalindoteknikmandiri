@@ -94,12 +94,13 @@
     box-sizing: border-box;
   }
 
-  /* ── Hide scrollbar globally (scroll still works) ─────────────────────── */
-  * {
-    scrollbar-width: none;
-  }
-  *::-webkit-scrollbar {
+  /* ── Hide main page scrollbar (scroll still works) ─────────────────────── */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
     display: none;
+  }
+  html, body {
+    scrollbar-width: none;
   }
 
   html,
