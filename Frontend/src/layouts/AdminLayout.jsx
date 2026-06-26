@@ -16,7 +16,7 @@ export default function AdminLayout() {
       <AdminSidebar className="hidden lg:flex" />
       <div className="flex flex-1 flex-col min-w-0">
         <AdminTopbar />
-        <main key={location.pathname} className="flex-1 p-6 overflow-y-auto overflow-x-hidden min-w-0 animate-page-fade">
+        <main key={location.pathname} className="flex-1 p-6 overflow-y-auto overflow-x-hidden min-w-0 animate-page-fade custom-scrollbar">
           <Outlet />
         </main>
       </div>
