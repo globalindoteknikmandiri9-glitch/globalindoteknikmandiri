@@ -11,8 +11,23 @@ import { procurementData } from "@/data/procurement"
 import {
   Loader2, Save, ChevronDown, ChevronUp,
   LayoutTemplate, Zap, ShieldCheck, Hammer,
-  GitBranch, FileCheck, Maximize2
+  GitBranch, FileCheck, Maximize2, CheckCircle2, Award, Users, Package, MapPin
 } from "lucide-react"
+
+// Default data fallbacks
+const defaultTrustMetadata = ["E-Katalog LKPP", "Standar SNI", "Faktur Pajak"];
+const defaultCredentialsList = [
+  { title: "Status PKP Aktif", desc: "Kami menerbitkan Faktur Pajak E-Faktur resmi untuk setiap pembelian guna kepatuhan perpajakan badan usaha." },
+  { title: "Legalitas BKPM Lengkap", desc: "Dilengkapi NIB & Izin Usaha Industri (IUI) resmi dari OSS BKPM untuk manufaktur baja dan permesinan." },
+  { title: "Dukungan TKDN Pemerintah", desc: "Mengutamakan perakitan lokal di workshop Bogor guna memenuhi standar minimal TKDN pada tender kementerian." },
+  { title: "Siap Tender LPSE / LKPP", desc: "Kami siap menerbitkan Surat Dukungan Pabrikator resmi yang diakui oleh Pejabat Pembuat Komitmen (PPK) proyek." }
+];
+const defaultHomeStats = [
+  { value: "2009", label: "Tahun Didirikan" },
+  { value: "15+ Tahun", label: "Pengalaman Industri" },
+  { value: "50+ BUMN & Swasta", label: "Mitra Aktif B2B" },
+  { value: "500+ SKU", label: "Katalog Produk Aktif" }
+];
 
 // ── Collapsible Section component ──────────────────────────────────────────
 function Section({ icon: Icon, title, children, defaultOpen = false }) {
@@ -123,6 +138,11 @@ export default function ManageHomePage() {
   const [workflow, setWorkflow] = useState([])
   const [support, setSupport] = useState([])
 
+  // --- New editable lists ---
+  const [trustMetadata, setTrustMetadata] = useState([])
+  const [credentialsList, setCredentialsList] = useState([])
+  const [homeStats, setHomeStats] = useState([])
+
   // ── Load profile from API ──────────────────────────────────────────────
   useEffect(() => {
     api.get("/admin/profile")
@@ -148,6 +168,9 @@ export default function ManageHomePage() {
         setFacilities(parseOrFallback(d.home_workshop_facilities, procurementData.workshop.facilities))
         setWorkflow(parseOrFallback(d.home_procurement_workflow, procurementData.workflow))
         setSupport(parseOrFallback(d.home_procurement_support, procurementData.tenderSupport))
+        setTrustMetadata(parseOrFallback(d.home_trust_metadata, defaultTrustMetadata))
+        setCredentialsList(parseOrFallback(d.home_credentials_list, defaultCredentialsList))
+        setHomeStats(parseOrFallback(d.home_stats, defaultHomeStats))
       })
       .catch(() => {
         toast.error("Gagal memuat data halaman beranda.")
@@ -156,6 +179,9 @@ export default function ManageHomePage() {
         setFacilities(procurementData.workshop.facilities)
         setWorkflow(procurementData.workflow)
         setSupport(procurementData.tenderSupport)
+        setTrustMetadata(defaultTrustMetadata)
+        setCredentialsList(defaultCredentialsList)
+        setHomeStats(defaultHomeStats)
       })
       .finally(() => setLoading(false))
   }, [])
@@ -184,6 +210,9 @@ export default function ManageHomePage() {
       formData.append("home_workshop_facilities", JSON.stringify(facilities))
       formData.append("home_procurement_workflow", JSON.stringify(workflow))
       formData.append("home_procurement_support", JSON.stringify(support))
+      formData.append("home_trust_metadata", JSON.stringify(trustMetadata))
+      formData.append("home_credentials_list", JSON.stringify(credentialsList))
+      formData.append("home_stats", JSON.stringify(homeStats))
 
       // Workshop image
       if (workshopImageFile) {
@@ -231,6 +260,22 @@ export default function ManageHomePage() {
 
   const updateSupport = (idx, field, val) => {
     setSupport(prev => {
+      const next = [...prev]
+      next[idx] = { ...next[idx], [field]: val }
+      return next
+    })
+  }
+
+  const updateCredentials = (idx, field, val) => {
+    setCredentialsList(prev => {
+      const next = [...prev]
+      next[idx] = { ...next[idx], [field]: val }
+      return next
+    })
+  }
+
+  const updateHomeStats = (idx, field, val) => {
+    setHomeStats(prev => {
       const next = [...prev]
       next[idx] = { ...next[idx], [field]: val }
       return next
@@ -301,6 +346,26 @@ export default function ManageHomePage() {
             />
           </div>
         </Field>
+        
+        <div className="space-y-2 pt-4">
+          <p className="text-xs font-bold text-foreground">Trust Metadata (Label Centang Bawah Hero)</p>
+          <div className="grid md:grid-cols-3 gap-3">
+            {trustMetadata.map((tm, idx) => (
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 flex gap-2 items-center">
+                <CheckCircle2 className="h-4 w-4 text-warning shrink-0" />
+                <TextInput 
+                  value={tm} 
+                  onChange={v => {
+                    const next = [...trustMetadata];
+                    next[idx] = v;
+                    setTrustMetadata(next);
+                  }} 
+                  placeholder="Contoh: E-Katalog LKPP" 
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </Section>
 
       {/* ── CTA SECTION ───────────────────────────────────────────────── */}
@@ -323,6 +388,32 @@ export default function ManageHomePage() {
         <Field label="Deskripsi Legalitas & Komitmen Perusahaan">
           <TextArea value={credDesc} onChange={setCredDesc} rows={4} placeholder="CV Globalindo Teknik Mandiri adalah badan usaha berbadan hukum resmi yang berkomitmen penuh..." />
         </Field>
+
+        <div className="space-y-2 pt-2">
+          <p className="text-xs font-bold text-foreground">Daftar Poin Legalitas (4 Item)</p>
+          <div className="grid md:grid-cols-2 gap-3">
+            {credentialsList.map((cred, idx) => (
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Poin #{idx + 1}</p>
+                <TextInput value={cred.title} onChange={v => updateCredentials(idx, "title", v)} placeholder="Judul Poin" />
+                <TextArea value={cred.desc} onChange={v => updateCredentials(idx, "desc", v)} rows={2} placeholder="Deskripsi poin" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2 pt-4 border-t border-border">
+          <p className="text-xs font-bold text-foreground">Statistik Singkat (4 Item)</p>
+          <div className="grid md:grid-cols-2 gap-3">
+            {homeStats.map((stat, idx) => (
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 flex flex-col">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Statistik #{idx + 1}</p>
+                <TextInput value={stat.value} onChange={v => updateHomeStats(idx, "value", v)} placeholder="Angka / Nilai (Misal: 50+)" />
+                <TextInput value={stat.label} onChange={v => updateHomeStats(idx, "label", v)} placeholder="Label (Misal: Mitra Aktif B2B)" />
+              </div>
+            ))}
+          </div>
+        </div>
       </Section>
 
       {/* ── WORKSHOP SECTION ──────────────────────────────────────────── */}

@@ -48,6 +48,11 @@ model CompanyProfile {
   home_workshop_facilities String? @db.LongText
   home_procurement_workflow String? @db.LongText
   home_procurement_support  String? @db.LongText
+  home_trust_metadata     String? @db.LongText
+  home_credentials_list   String? @db.LongText
+  home_stats              String? @db.LongText
+  about_credentials       String? @db.LongText
+  about_core_values       String? @db.LongText
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }

@@ -1,38 +1,57 @@
 import { Helmet } from "react-helmet-async"
-import { CheckCircle, Award, Users, Package, MapPin, ArrowRight, ChevronRight } from "lucide-react"
+import { CheckCircle, Award, Users, Package, MapPin, ArrowRight, ChevronRight, Activity, Zap, Star } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useCompanyProfile } from "@/hooks/useCompanyProfile"
 import { getAssetUrl } from "@/lib/utils"
 
-const values = [
-  {
-    title: "Integritas & Transparansi",
-    desc: "Menjunjung tinggi kejujuran hukum dalam setiap transaksi, penerbitan faktur pajak resmi, dan dokumen dukungan tender.",
-  },
-  {
-    title: "Kapasitas & Presisi",
-    desc: "Memastikan seluruh barang hasil fabrikasi lokal diproduksi presisi menggunakan mesin CNC dan las argon handal.",
-  },
-  {
-    title: "Kepatuhan Regulasi",
-    desc: "Mengedepankan kepatuhan penuh terhadap standar mutu SNI, spesifikasi teknis Kementerian Perhubungan, dan komitmen TKDN.",
-  },
-  {
-    title: "Layanan Purna Jual",
-    desc: "Tidak sekadar menjual, kami mengirim teknisi internal untuk supervisi instalasi, kalibrasi berkala, dan training operator.",
-  },
-]
+const iconMap = {
+  Award, Users, Package, MapPin, CheckCircle, Activity, Zap, Star
+};
 
 export default function About() {
   const { profile } = useCompanyProfile()
-  
-  const credentials = [
-    { label: "Tahun Berdiri", value: profile.established || "2009", icon: Award },
-    { label: "Mitra Aktif B2B", value: "50+ Perusahaan", icon: Users },
-    { label: "Katalog Produk", value: "500+ SKU", icon: Package },
-    { label: "Layanan Pengiriman", value: "Nasional", icon: MapPin },
-  ]
+  const defaultAboutCredentials = [
+    { label: "Tahun Berdiri", value: profile.established || "2009", icon: "Award" },
+    { label: "Mitra Aktif B2B", value: "50+ Perusahaan", icon: "Users" },
+    { label: "Katalog Produk", value: "500+ SKU", icon: "Package" },
+    { label: "Layanan Pengiriman", value: "Nasional", icon: "MapPin" },
+  ];
+
+  let credentials = defaultAboutCredentials;
+  if (profile?.about_credentials) {
+    try {
+      const parsed = JSON.parse(profile.about_credentials);
+      if (Array.isArray(parsed) && parsed.length > 0) credentials = parsed;
+    } catch(e) {}
+  }
+
+  const defaultValues = [
+    {
+      title: "Integritas & Transparansi",
+      desc: "Menjunjung tinggi kejujuran hukum dalam setiap transaksi, penerbitan faktur pajak resmi, dan dokumen dukungan tender.",
+    },
+    {
+      title: "Kapasitas & Presisi",
+      desc: "Memastikan seluruh barang hasil fabrikasi lokal diproduksi presisi menggunakan mesin CNC dan las argon handal.",
+    },
+    {
+      title: "Kepatuhan Regulasi",
+      desc: "Mengedepankan kepatuhan penuh terhadap standar mutu SNI, spesifikasi teknis Kementerian Perhubungan, dan komitmen TKDN.",
+    },
+    {
+      title: "Layanan Purna Jual",
+      desc: "Tidak sekadar menjual, kami mengirim teknisi internal untuk supervisi instalasi, kalibrasi berkala, dan training operator.",
+    },
+  ];
+
+  let valuesList = defaultValues;
+  if (profile?.about_core_values) {
+    try {
+      const parsed = JSON.parse(profile.about_core_values);
+      if (Array.isArray(parsed) && parsed.length > 0) valuesList = parsed;
+    } catch(e) {}
+  }
 
   const historyParagraphs = profile.history
     ? profile.history.split('\n').filter(p => p.trim() !== '')
@@ -126,7 +145,10 @@ export default function About() {
             {credentials.map((c, i) => (
               <div key={i} className="surface-card p-4 sm:p-6 lg:p-8 flex flex-col h-full items-center text-center hover:-translate-y-1 transition-all duration-300">
                 <div className="w-10 h-10 bg-muted/30 border border-border/40 rounded-xl flex items-center justify-center mb-4">
-                  <c.icon className="h-5 w-5 text-muted-foreground" />
+                  {(() => {
+                    const Icon = iconMap[c.icon] || Award;
+                    return <Icon className="h-5 w-5 text-muted-foreground" />;
+                  })()}
                 </div>
                 <div className="text-2xl font-bold text-foreground">{c.value}</div>
                 <div className="text-xs font-semibold text-muted-foreground mt-1 uppercase tracking-wide">{c.label}</div>
@@ -173,7 +195,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 text-left">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight mb-8">Nilai Inti Perusahaan</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
-            {values.map((v, i) => (
+            {valuesList.map((v, i) => (
               <div key={i} className="surface-card p-5 sm:p-8 hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300 flex flex-col h-full justify-between">
                 <div>
                   <div className="w-8 h-8 rounded-xl bg-background border border-border flex items-center justify-center mb-4">

@@ -33,7 +33,12 @@ const getProfile = async (req, res) => {
           home_workshop_acreage: '',
           home_workshop_facilities: '',
           home_procurement_workflow: '',
-          home_procurement_support: ''
+          home_procurement_support: '',
+          home_trust_metadata: '',
+          home_credentials_list: '',
+          home_stats: '',
+          about_credentials: '',
+          about_core_values: ''
         }
       });
     }
@@ -73,7 +78,12 @@ const updateProfile = async (req, res) => {
       home_workshop_acreage,
       home_workshop_facilities,
       home_procurement_workflow,
-      home_procurement_support
+      home_procurement_support,
+      home_trust_metadata,
+      home_credentials_list,
+      home_stats,
+      about_credentials,
+      about_core_values
     } = req.body;
     
     let profile = await prisma.companyProfile.findFirst();
@@ -105,7 +115,12 @@ const updateProfile = async (req, res) => {
       home_workshop_acreage,
       home_workshop_facilities,
       home_procurement_workflow,
-      home_procurement_support
+      home_procurement_support,
+      home_trust_metadata,
+      home_credentials_list,
+      home_stats,
+      about_credentials,
+      about_core_values
     };
 
     if (req.files) {

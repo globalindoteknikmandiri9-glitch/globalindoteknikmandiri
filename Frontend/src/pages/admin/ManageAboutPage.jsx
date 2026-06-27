@@ -8,8 +8,34 @@ import { invalidateProfileCache } from "@/hooks/useCompanyProfile"
 import { getAssetUrl } from "@/lib/utils"
 import {
   Loader2, Save, ChevronDown, ChevronUp,
-  LayoutTemplate, BookOpen, Eye, Heart, Image as ImageIcon
+  LayoutTemplate, BookOpen, Eye, Heart, Image as ImageIcon, Award, Users, Package, MapPin
 } from "lucide-react"
+
+// Parse Helper
+function parseOrFallback(jsonStr, fallback) {
+  if (!jsonStr) return fallback
+  try {
+    const parsed = JSON.parse(jsonStr)
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed
+  } catch {
+    // ignore
+  }
+  return fallback
+}
+
+const defaultAboutCredentials = [
+  { label: "Tahun Berdiri", value: "2009", icon: "Award" },
+  { label: "Mitra Aktif B2B", value: "50+ Perusahaan", icon: "Users" },
+  { label: "Katalog Produk", value: "500+ SKU", icon: "Package" },
+  { label: "Layanan Pengiriman", value: "Nasional", icon: "MapPin" },
+];
+
+const defaultAboutCoreValues = [
+  { title: "Integritas & Transparansi", desc: "Menjunjung tinggi kejujuran hukum dalam setiap transaksi, penerbitan faktur pajak resmi, dan dokumen dukungan tender." },
+  { title: "Kapasitas & Presisi", desc: "Memastikan seluruh barang hasil fabrikasi lokal diproduksi presisi menggunakan mesin CNC dan las argon handal." },
+  { title: "Kepatuhan Regulasi", desc: "Mengedepankan kepatuhan penuh terhadap standar mutu SNI, spesifikasi teknis Kementerian Perhubungan, dan komitmen TKDN." },
+  { title: "Layanan Purna Jual", desc: "Tidak sekadar menjual, kami mengirim teknisi internal untuk supervisi instalasi, kalibrasi berkala, dan training operator." }
+];
 
 // ── Collapsible Section ─────────────────────────────────────────────────────
 function Section({ icon: Icon, title, children, defaultOpen = false }) {
@@ -95,6 +121,10 @@ export default function ManageAboutPage() {
   const [aboutImageFile, setAboutImageFile] = useState(null)
   const [aboutImagePreview, setAboutImagePreview] = useState("")
 
+  // Dynamic Lists
+  const [aboutCredentials, setAboutCredentials] = useState([])
+  const [aboutCoreValues, setAboutCoreValues] = useState([])
+
   // ── Load profile ──────────────────────────────────────────────────────
   useEffect(() => {
     api.get("/admin/profile")
@@ -109,9 +139,14 @@ export default function ManageAboutPage() {
         if (d.about_image_url) {
           setAboutImagePreview(getAssetUrl(d.about_image_url))
         }
+        
+        setAboutCredentials(parseOrFallback(d.about_credentials, defaultAboutCredentials))
+        setAboutCoreValues(parseOrFallback(d.about_core_values, defaultAboutCoreValues))
       })
       .catch(() => {
         toast.error("Gagal memuat data halaman Tentang Kami.")
+        setAboutCredentials(defaultAboutCredentials)
+        setAboutCoreValues(defaultAboutCoreValues)
       })
       .finally(() => setLoading(false))
   }, [])
@@ -127,6 +162,8 @@ export default function ManageAboutPage() {
       formData.append("history", history)
       formData.append("vision", vision)
       formData.append("mission", mission)
+      formData.append("about_credentials", JSON.stringify(aboutCredentials))
+      formData.append("about_core_values", JSON.stringify(aboutCoreValues))
       if (aboutImageFile) {
         formData.append("about_image", aboutImageFile)
       }
@@ -143,6 +180,22 @@ export default function ManageAboutPage() {
     } finally {
       setSaving(false)
     }
+  }
+
+  const updateAboutCredential = (idx, field, val) => {
+    setAboutCredentials(prev => {
+      const next = [...prev]
+      next[idx] = { ...next[idx], [field]: val }
+      return next
+    })
+  }
+
+  const updateCoreValue = (idx, field, val) => {
+    setAboutCoreValues(prev => {
+      const next = [...prev]
+      next[idx] = { ...next[idx], [field]: val }
+      return next
+    })
   }
 
   // ── Loading ───────────────────────────────────────────────────────────
@@ -260,6 +313,36 @@ export default function ManageAboutPage() {
             placeholder={`1. Memproduksi peralatan teknik yang memenuhi standar kualitas nasional dan internasional.\n2. Memberikan layanan purna jual yang responsif dan solutif bagi seluruh klien.\n3. Terus berinovasi dalam desain produk untuk meningkatkan efisiensi dan keamanan kerja.\n4. Membangun kemitraan jangka panjang yang saling menguntungkan dengan seluruh pemangku kepentingan.`}
           />
         </Field>
+      </Section>
+
+      {/* ── STATISTIK & NILAI INTI ─────────────────────────────────────────── */}
+      <Section icon={Award} title="Statistik & Nilai Inti">
+        <div className="space-y-2">
+          <p className="text-xs font-bold text-foreground">Statistik Singkat (4 Item)</p>
+          <div className="grid md:grid-cols-2 gap-3">
+            {aboutCredentials.map((cred, idx) => (
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 flex flex-col">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Statistik #{idx + 1}</p>
+                <TextInput value={cred.value} onChange={v => updateAboutCredential(idx, "value", v)} placeholder="Nilai (Misal: 50+ Perusahaan)" />
+                <TextInput value={cred.label} onChange={v => updateAboutCredential(idx, "label", v)} placeholder="Label (Misal: Mitra Aktif B2B)" />
+                <div className="text-xs text-muted-foreground">Ikon: <span className="font-mono bg-background px-1 rounded border">{cred.icon}</span> (Ubah di source code jika perlu)</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="space-y-2 pt-4 border-t border-border">
+          <p className="text-xs font-bold text-foreground">Nilai Inti (4 Item)</p>
+          <div className="grid md:grid-cols-2 gap-3">
+            {aboutCoreValues.map((val, idx) => (
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Nilai #{idx + 1}</p>
+                <TextInput value={val.title} onChange={v => updateCoreValue(idx, "title", v)} placeholder="Judul Nilai Inti" />
+                <TextArea value={val.desc} onChange={v => updateCoreValue(idx, "desc", v)} rows={2} placeholder="Deskripsi nilai inti..." />
+              </div>
+            ))}
+          </div>
+        </div>
       </Section>
 
       {/* Bottom save */}

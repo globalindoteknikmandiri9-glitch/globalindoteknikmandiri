@@ -68,15 +68,21 @@ export default function HeroSection() {
 
             {/* Trust Metadata */}
             <div className="mt-12 pt-8 border-t border-border flex flex-wrap items-center gap-x-8 gap-y-4 text-sm text-muted-foreground font-medium">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-warning" /> E-Katalog LKPP
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-warning" /> Standar SNI
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-warning" /> Faktur Pajak
-              </span>
+              {(() => {
+                const defaultMetadata = ["E-Katalog LKPP", "Standar SNI", "Faktur Pajak"];
+                let metadata = defaultMetadata;
+                if (profile.home_trust_metadata) {
+                  try {
+                    const parsed = JSON.parse(profile.home_trust_metadata);
+                    if (Array.isArray(parsed) && parsed.length > 0) metadata = parsed;
+                  } catch (e) {}
+                }
+                return metadata.map((item, idx) => (
+                  <span key={idx} className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-warning" /> {item}
+                  </span>
+                ));
+              })()}
             </div>
           </motion.div>
 

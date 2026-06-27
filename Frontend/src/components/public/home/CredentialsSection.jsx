@@ -4,16 +4,41 @@ import { FileCheck, ShieldCheck, Scale, Award } from "lucide-react";
 
 export default function CredentialsSection() {
   const { profile } = useCompanyProfile();
-  const establishedYear = parseInt(profile.established || '2009', 10);
+  const establishedYear = parseInt(profile?.established || '2009', 10);
   const currentYear = new Date().getFullYear();
   const experienceYears = currentYear - establishedYear;
 
-  const stats = [
+  const defaultHomeStats = [
     { value: `${establishedYear}`, label: "Tahun Didirikan" },
     { value: `${experienceYears}+ Tahun`, label: "Pengalaman Industri" },
     { value: "50+ BUMN & Swasta", label: "Mitra Aktif B2B" },
     { value: "500+ SKU", label: "Katalog Produk Aktif" }
   ];
+
+  let stats = defaultHomeStats;
+  if (profile?.home_stats) {
+    try {
+      const parsed = JSON.parse(profile.home_stats);
+      if (Array.isArray(parsed) && parsed.length > 0) stats = parsed;
+    } catch (e) {}
+  }
+
+  const defaultCredentialsList = [
+    { title: "Status PKP Aktif", desc: "Kami menerbitkan Faktur Pajak E-Faktur resmi untuk setiap pembelian guna kepatuhan perpajakan badan usaha." },
+    { title: "Legalitas BKPM Lengkap", desc: "Dilengkapi NIB & Izin Usaha Industri (IUI) resmi dari OSS BKPM untuk manufaktur baja dan permesinan." },
+    { title: "Dukungan TKDN Pemerintah", desc: "Mengutamakan perakitan lokal di workshop Bogor guna memenuhi standar minimal TKDN pada tender kementerian." },
+    { title: "Siap Tender LPSE / LKPP", desc: "Kami siap menerbitkan Surat Dukungan Pabrikator resmi yang diakui oleh Pejabat Pembuat Komitmen (PPK) proyek." }
+  ];
+
+  let credentialsList = defaultCredentialsList;
+  if (profile?.home_credentials_list) {
+    try {
+      const parsed = JSON.parse(profile.home_credentials_list);
+      if (Array.isArray(parsed) && parsed.length > 0) credentialsList = parsed;
+    } catch(e) {}
+  }
+
+  const icons = [FileCheck, ShieldCheck, Scale, Award];
 
   return (
     <section className="bg-background py-12 md:py-16 lg:py-24 border-b border-border">
@@ -39,45 +64,20 @@ export default function CredentialsSection() {
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">
-              <div className="flex gap-3">
-                <FileCheck className="h-6 w-6 text-accent shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-sm">Status PKP Aktif</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                    Kami menerbitkan Faktur Pajak E-Faktur resmi untuk setiap pembelian guna kepatuhan perpajakan badan usaha.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <ShieldCheck className="h-6 w-6 text-accent shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-sm">Legalitas BKPM Lengkap</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                    Dilengkapi NIB & Izin Usaha Industri (IUI) resmi dari OSS BKPM untuk manufaktur baja dan permesinan.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <Scale className="h-6 w-6 text-accent shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-sm">Dukungan TKDN Pemerintah</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                    Mengutamakan perakitan lokal di workshop Bogor guna memenuhi standar minimal TKDN pada tender kementerian.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <Award className="h-6 w-6 text-accent shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-sm">Siap Tender LPSE / LKPP</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-                    Kami siap menerbitkan Surat Dukungan Pabrikator resmi yang diakui oleh Pejabat Pembuat Komitmen (PPK) proyek.
-                  </p>
-                </div>
-              </div>
+              {credentialsList.map((cred, idx) => {
+                const Icon = icons[idx % icons.length];
+                return (
+                  <div key={idx} className="flex gap-3">
+                    <Icon className="h-6 w-6 text-accent shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{cred.title}</h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                        {cred.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
