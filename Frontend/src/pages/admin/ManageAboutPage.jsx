@@ -7,7 +7,7 @@ import api from "@/services/axios"
 import { invalidateProfileCache } from "@/hooks/useCompanyProfile"
 import { getAssetUrl } from "@/lib/utils"
 import {
-  Loader2, Save, ChevronDown, ChevronUp,
+  Loader2, Save, ChevronDown, ChevronUp, Plus, Trash2,
   LayoutTemplate, BookOpen, Eye, Heart, Image as ImageIcon, Award, Users, Package, MapPin
 } from "lucide-react"
 
@@ -189,6 +189,8 @@ export default function ManageAboutPage() {
       return next
     })
   }
+  const addAboutCredential = () => setAboutCredentials(prev => [...prev, { label: "", value: "", icon: "Award" }])
+  const removeAboutCredential = (idx) => setAboutCredentials(prev => prev.filter((_, i) => i !== idx))
 
   const updateCoreValue = (idx, field, val) => {
     setAboutCoreValues(prev => {
@@ -197,6 +199,8 @@ export default function ManageAboutPage() {
       return next
     })
   }
+  const addCoreValue = () => setAboutCoreValues(prev => [...prev, { title: "", desc: "" }])
+  const removeCoreValue = (idx) => setAboutCoreValues(prev => prev.filter((_, i) => i !== idx))
 
   // ── Loading ───────────────────────────────────────────────────────────
   if (loading) {
@@ -318,11 +322,21 @@ export default function ManageAboutPage() {
       {/* ── STATISTIK & NILAI INTI ─────────────────────────────────────────── */}
       <Section icon={Award} title="Statistik & Nilai Inti">
         <div className="space-y-2">
-          <p className="text-xs font-bold text-foreground">Statistik Singkat (4 Item)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Statistik Singkat ({aboutCredentials.length} Item)</p>
+            <Button type="button" onClick={addAboutCredential} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Statistik
+            </Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-3">
             {aboutCredentials.map((cred, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 flex flex-col">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Statistik #{idx + 1}</p>
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 flex flex-col relative">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Statistik #{idx + 1}</p>
+                  <Button type="button" onClick={() => removeAboutCredential(idx)} variant="ghost" size="icon" className="h-5 w-5 text-destructive hover:bg-destructive/10">
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
                 <TextInput value={cred.value} onChange={v => updateAboutCredential(idx, "value", v)} placeholder="Nilai (Misal: 50+ Perusahaan)" />
                 <TextInput value={cred.label} onChange={v => updateAboutCredential(idx, "label", v)} placeholder="Label (Misal: Mitra Aktif B2B)" />
                 <div className="text-xs text-muted-foreground">Ikon: <span className="font-mono bg-background px-1 rounded border">{cred.icon}</span> (Ubah di source code jika perlu)</div>
@@ -332,11 +346,21 @@ export default function ManageAboutPage() {
         </div>
         
         <div className="space-y-2 pt-4 border-t border-border">
-          <p className="text-xs font-bold text-foreground">Nilai Inti (4 Item)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Nilai Inti ({aboutCoreValues.length} Item)</p>
+            <Button type="button" onClick={addCoreValue} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Nilai Inti
+            </Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-3">
             {aboutCoreValues.map((val, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Nilai #{idx + 1}</p>
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 relative">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Nilai #{idx + 1}</p>
+                  <Button type="button" onClick={() => removeCoreValue(idx)} variant="ghost" size="icon" className="h-5 w-5 text-destructive hover:bg-destructive/10">
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
                 <TextInput value={val.title} onChange={v => updateCoreValue(idx, "title", v)} placeholder="Judul Nilai Inti" />
                 <TextArea value={val.desc} onChange={v => updateCoreValue(idx, "desc", v)} rows={2} placeholder="Deskripsi nilai inti..." />
               </div>

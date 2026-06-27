@@ -9,7 +9,7 @@ import { getAssetUrl } from "@/lib/utils"
 import { divisionsData } from "@/data/divisions"
 import { procurementData } from "@/data/procurement"
 import {
-  Loader2, Save, ChevronDown, ChevronUp,
+  Loader2, Save, ChevronDown, ChevronUp, Plus, Trash2,
   LayoutTemplate, Zap, ShieldCheck, Hammer,
   GitBranch, FileCheck, Maximize2, CheckCircle2, Award, Users, Package, MapPin
 } from "lucide-react"
@@ -241,6 +241,8 @@ export default function ManageHomePage() {
       return next
     })
   }
+  const addDiv = () => setDivisions(prev => [...prev, { title: "", description: "", keyProducts: [] }])
+  const removeDiv = (idx) => setDivisions(prev => prev.filter((_, i) => i !== idx))
 
   const updateFac = (idx, field, val) => {
     setFacilities(prev => {
@@ -249,6 +251,8 @@ export default function ManageHomePage() {
       return next
     })
   }
+  const addFac = () => setFacilities(prev => [...prev, { title: "", desc: "" }])
+  const removeFac = (idx) => setFacilities(prev => prev.filter((_, i) => i !== idx))
 
   const updateFlow = (idx, field, val) => {
     setWorkflow(prev => {
@@ -257,6 +261,8 @@ export default function ManageHomePage() {
       return next
     })
   }
+  const addFlow = () => setWorkflow(prev => [...prev, { step: "", title: "", desc: "" }])
+  const removeFlow = (idx) => setWorkflow(prev => prev.filter((_, i) => i !== idx))
 
   const updateSupport = (idx, field, val) => {
     setSupport(prev => {
@@ -265,6 +271,8 @@ export default function ManageHomePage() {
       return next
     })
   }
+  const addSupport = () => setSupport(prev => [...prev, { title: "", desc: "" }])
+  const removeSupport = (idx) => setSupport(prev => prev.filter((_, i) => i !== idx))
 
   const updateCredentials = (idx, field, val) => {
     setCredentialsList(prev => {
@@ -273,6 +281,8 @@ export default function ManageHomePage() {
       return next
     })
   }
+  const addCredentialsList = () => setCredentialsList(prev => [...prev, { title: "", desc: "" }])
+  const removeCredentialsList = (idx) => setCredentialsList(prev => prev.filter((_, i) => i !== idx))
 
   const updateHomeStats = (idx, field, val) => {
     setHomeStats(prev => {
@@ -281,6 +291,11 @@ export default function ManageHomePage() {
       return next
     })
   }
+  const addHomeStats = () => setHomeStats(prev => [...prev, { value: "", label: "" }])
+  const removeHomeStats = (idx) => setHomeStats(prev => prev.filter((_, i) => i !== idx))
+
+  const addTrustMetadata = () => setTrustMetadata(prev => [...prev, ""])
+  const removeTrustMetadata = (idx) => setTrustMetadata(prev => prev.filter((_, i) => i !== idx))
 
   // ── Loading state ──────────────────────────────────────────────────────
   if (loading) {
@@ -348,10 +363,15 @@ export default function ManageHomePage() {
         </Field>
         
         <div className="space-y-2 pt-4">
-          <p className="text-xs font-bold text-foreground">Trust Metadata (Label Centang Bawah Hero)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Trust Metadata (Label Centang Bawah Hero)</p>
+            <Button type="button" onClick={addTrustMetadata} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Item
+            </Button>
+          </div>
           <div className="grid md:grid-cols-3 gap-3">
             {trustMetadata.map((tm, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 flex gap-2 items-center">
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 flex gap-2 items-center relative">
                 <CheckCircle2 className="h-4 w-4 text-warning shrink-0" />
                 <TextInput 
                   value={tm} 
@@ -362,6 +382,9 @@ export default function ManageHomePage() {
                   }} 
                   placeholder="Contoh: E-Katalog LKPP" 
                 />
+                <Button type="button" onClick={() => removeTrustMetadata(idx)} variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:bg-destructive/10 shrink-0">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             ))}
           </div>
@@ -390,11 +413,21 @@ export default function ManageHomePage() {
         </Field>
 
         <div className="space-y-2 pt-2">
-          <p className="text-xs font-bold text-foreground">Daftar Poin Legalitas (4 Item)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Daftar Poin Legalitas ({credentialsList.length} Item)</p>
+            <Button type="button" onClick={addCredentialsList} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Poin
+            </Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-3">
             {credentialsList.map((cred, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Poin #{idx + 1}</p>
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 relative">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Poin #{idx + 1}</p>
+                  <Button type="button" onClick={() => removeCredentialsList(idx)} variant="ghost" size="icon" className="h-5 w-5 text-destructive hover:bg-destructive/10">
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
                 <TextInput value={cred.title} onChange={v => updateCredentials(idx, "title", v)} placeholder="Judul Poin" />
                 <TextArea value={cred.desc} onChange={v => updateCredentials(idx, "desc", v)} rows={2} placeholder="Deskripsi poin" />
               </div>
@@ -403,11 +436,21 @@ export default function ManageHomePage() {
         </div>
 
         <div className="space-y-2 pt-4 border-t border-border">
-          <p className="text-xs font-bold text-foreground">Statistik Singkat (4 Item)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Statistik Singkat ({homeStats.length} Item)</p>
+            <Button type="button" onClick={addHomeStats} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Statistik
+            </Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-3">
             {homeStats.map((stat, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 flex flex-col">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Statistik #{idx + 1}</p>
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 flex flex-col relative">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Statistik #{idx + 1}</p>
+                  <Button type="button" onClick={() => removeHomeStats(idx)} variant="ghost" size="icon" className="h-5 w-5 text-destructive hover:bg-destructive/10">
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
                 <TextInput value={stat.value} onChange={v => updateHomeStats(idx, "value", v)} placeholder="Angka / Nilai (Misal: 50+)" />
                 <TextInput value={stat.label} onChange={v => updateHomeStats(idx, "label", v)} placeholder="Label (Misal: Mitra Aktif B2B)" />
               </div>
@@ -428,11 +471,21 @@ export default function ManageHomePage() {
         </div>
 
         <div className="space-y-2 pt-2">
-          <p className="text-xs font-bold text-foreground">Fasilitas Workshop (4 Item)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Fasilitas Workshop ({facilities.length} Item)</p>
+            <Button type="button" onClick={addFac} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Fasilitas
+            </Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-3">
             {facilities.map((fac, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Fasilitas #{idx + 1}</p>
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 relative">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Fasilitas #{idx + 1}</p>
+                  <Button type="button" onClick={() => removeFac(idx)} variant="ghost" size="icon" className="h-5 w-5 text-destructive hover:bg-destructive/10">
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
                 <TextInput value={fac.title} onChange={v => updateFac(idx, "title", v)} placeholder="Nama Fasilitas" />
                 <TextArea value={fac.desc} onChange={v => updateFac(idx, "desc", v)} rows={2} placeholder="Deskripsi singkat fasilitas" />
               </div>
@@ -442,14 +495,22 @@ export default function ManageHomePage() {
       </Section>
 
       {/* ── DIVISI UNIT BISNIS ────────────────────────────────────────── */}
-      <Section icon={GitBranch} title="Divisi Unit Bisnis (6 Kartu)">
+      <Section icon={GitBranch} title={`Divisi Unit Bisnis (${divisions.length} Kartu)`}>
+        <div className="flex justify-end mb-4">
+          <Button type="button" onClick={addDiv} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+            <Plus className="h-3 w-3" /> Tambah Divisi
+          </Button>
+        </div>
         <div className="grid md:grid-cols-2 gap-4">
           {divisions.map((div, idx) => (
-            <div key={idx} className="p-4 border border-border rounded-lg bg-muted/20 space-y-3">
-              <div className="flex items-center gap-2">
+            <div key={idx} className="p-4 border border-border rounded-lg bg-muted/20 space-y-3 relative">
+              <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
                   Divisi #{idx + 1}
                 </span>
+                <Button type="button" onClick={() => removeDiv(idx)} variant="ghost" size="icon" className="h-6 w-6 text-destructive hover:bg-destructive/10">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
               <Field label="Nama Divisi">
                 <TextInput value={div.title} onChange={v => updateDiv(idx, "title", v)} placeholder="Nama Divisi" />
@@ -473,17 +534,25 @@ export default function ManageHomePage() {
       <Section icon={FileCheck} title="Alur Kerja Sama B2B & Dokumen Tender">
         {/* Workflow Steps */}
         <div className="space-y-2">
-          <p className="text-xs font-bold text-foreground">Alur Kerja Sama B2B (5 Langkah)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Alur Kerja Sama B2B ({workflow.length} Langkah)</p>
+            <Button type="button" onClick={addFlow} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Langkah
+            </Button>
+          </div>
           <div className="space-y-2">
             {workflow.map((flow, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 flex flex-col sm:flex-row gap-3 items-start sm:items-center relative">
                 <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-xs font-bold text-primary shrink-0 font-mono">
                   {flow.step || `0${idx + 1}`}
                 </div>
-                <div className="grid sm:grid-cols-2 gap-2 w-full">
+                <div className="grid sm:grid-cols-2 gap-2 w-full pr-8 sm:pr-0">
                   <TextInput value={flow.title} onChange={v => updateFlow(idx, "title", v)} placeholder="Judul langkah" />
                   <TextInput value={flow.desc} onChange={v => updateFlow(idx, "desc", v)} placeholder="Deskripsi singkat" />
                 </div>
+                <Button type="button" onClick={() => removeFlow(idx)} variant="ghost" size="icon" className="absolute top-2 right-2 sm:static sm:h-7 sm:w-7 text-destructive hover:bg-destructive/10 shrink-0">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             ))}
           </div>
@@ -491,11 +560,21 @@ export default function ManageHomePage() {
 
         {/* Tender Support Items */}
         <div className="space-y-2 pt-3 border-t border-border">
-          <p className="text-xs font-bold text-foreground">Dukungan Dokumen Tender (4 Item)</p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-bold text-foreground">Dukungan Dokumen Tender ({support.length} Item)</p>
+            <Button type="button" onClick={addSupport} variant="outline" size="sm" className="h-7 text-[10px] gap-1 px-2">
+              <Plus className="h-3 w-3" /> Tambah Item
+            </Button>
+          </div>
           <div className="grid md:grid-cols-2 gap-3">
             {support.map((sup, idx) => (
-              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Item #{idx + 1}</p>
+              <div key={idx} className="p-3 border border-border rounded-lg bg-muted/20 space-y-2 relative">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Item #{idx + 1}</p>
+                  <Button type="button" onClick={() => removeSupport(idx)} variant="ghost" size="icon" className="h-5 w-5 text-destructive hover:bg-destructive/10">
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
                 <TextInput value={sup.title} onChange={v => updateSupport(idx, "title", v)} placeholder="Judul item dukungan" />
                 <TextArea value={sup.desc} onChange={v => updateSupport(idx, "desc", v)} rows={2} placeholder="Deskripsi..." />
               </div>
