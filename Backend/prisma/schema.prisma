@@ -102,15 +102,17 @@ model ProductImage {
 }
 
 model Article {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  content   String   @db.Text
-  image_url String?
-  status    String   @default("draft")
-  authorId  Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  content     String   @db.Text
+  image_url   String?
+  status      String   @default("draft")
+  authorId    Int?
+  author_name String?  @default("Globalindo Team")
+  read_time   Int?     @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model ContactMessage {

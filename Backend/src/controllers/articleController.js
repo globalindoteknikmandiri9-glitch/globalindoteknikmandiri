@@ -16,7 +16,7 @@ const getAllArticles = async (req, res) => {
 
 const createArticle = async (req, res) => {
   try {
-    const { title, content, status } = req.body;
+    const { title, content, status, author_name, read_time } = req.body;
     const slug = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + '-' + Date.now();
     let image_url = '';
 
@@ -31,7 +31,9 @@ const createArticle = async (req, res) => {
         content,
         status,
         image_url,
-        authorId: req.user.id
+        authorId: req.user.id,
+        author_name: author_name || 'Globalindo Team',
+        read_time: read_time ? parseInt(read_time) : 1
       }
     });
 
@@ -45,7 +47,7 @@ const createArticle = async (req, res) => {
 const updateArticle = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, content, status } = req.body;
+    const { title, content, status, author_name, read_time } = req.body;
     const slug = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + '-' + Date.now();
 
     let article = await prisma.article.findUnique({ where: { id: parseInt(id) } });
@@ -69,7 +71,9 @@ const updateArticle = async (req, res) => {
         slug,
         content,
         status,
-        image_url
+        image_url,
+        author_name: author_name || 'Globalindo Team',
+        read_time: read_time ? parseInt(read_time) : 1
       }
     });
 

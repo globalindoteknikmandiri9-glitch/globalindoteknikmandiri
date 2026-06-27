@@ -78,15 +78,6 @@ export default function WorkshopSection() {
                 className="w-full aspect-[4/3] object-cover"
                 loading="lazy"
               />
-              
-              {/* Badge Overlay */}
-              <div className="absolute bottom-4 left-4 right-4 bg-slate-950/90 backdrop-blur-sm border border-slate-800/80 rounded-lg p-3 text-white flex items-center gap-2 shadow-card-hover">
-                <MapPin className="h-4.5 w-4.5 text-accent shrink-0" />
-                <div className="text-xs">
-                  <span className="font-bold block text-white">Workshop Cibadak, Bogor</span>
-                  <span className="text-slate-300">Akses inspeksi fisik terbuka untuk auditor pengadaan tender.</span>
-                </div>
-              </div>
             </div>
           </div>
         </motion.div>

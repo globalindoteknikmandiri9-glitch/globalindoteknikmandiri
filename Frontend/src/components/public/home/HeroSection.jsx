@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
 import { useCompanyProfile } from "@/hooks/useCompanyProfile";
 import { getAssetUrl } from "@/lib/utils";
-import TiltedCard from "@/components/ui/TiltedCard";
 
 export default function HeroSection() {
   const { profile } = useCompanyProfile();
@@ -86,17 +85,20 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Right Column: TiltedCard */}
+          {/* Right Column: Hero Image */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            className="hidden lg:flex w-full justify-center"
+            className="hidden lg:flex w-full justify-center lg:justify-end"
           >
-            <div className="w-full max-w-[400px] aspect-[4/5]">
-              <TiltedCard 
-                imageSrc={bgImage} 
-                altText="Workshop CV Globalindo Teknik Mandiri" 
+            <div className="w-full max-w-[500px] relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent rounded-2xl transform translate-x-4 translate-y-4 -z-10"></div>
+              <img
+                src={bgImage}
+                alt="CV Globalindo Teknik Mandiri"
+                className="w-full aspect-video sm:aspect-auto h-auto object-cover sm:object-contain bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-border/50"
+                style={{ maxHeight: "400px" }}
               />
             </div>
           </motion.div>

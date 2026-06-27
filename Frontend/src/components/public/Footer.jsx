@@ -26,8 +26,11 @@ export default function Footer() {
                 <img 
                   src={profile.logo_url ? getAssetUrl(profile.logo_url) : "/logo.png"} 
                   alt={profile.name} 
-                  className="h-8 md:h-10 w-auto object-contain" 
+                  className="h-8 md:h-10 w-auto object-contain shrink-0" 
                 />
+                <span className="font-bold text-white text-base md:text-lg tracking-tight">
+                  {profile.name}
+                </span>
               </div>
               <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
                 {profile.footer_tagline}

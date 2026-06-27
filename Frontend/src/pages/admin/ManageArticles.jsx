@@ -25,11 +25,12 @@ export default function ManageArticles() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [editingArticle, setEditingArticle] = useState(null)
 
-  // Form states
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    status: "draft"
+    status: "draft",
+    author_name: "",
+    read_time: ""
   })
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState("")
@@ -59,12 +60,14 @@ export default function ManageArticles() {
       setFormData({
         title: article.title,
         content: article.content,
-        status: article.status
+        status: article.status,
+        author_name: article.author_name || "",
+        read_time: article.read_time || ""
       })
       setImagePreview(article.image_url ? getAssetUrl(article.image_url) : "")
     } else {
       setEditingArticle(null)
-      setFormData({ title: "", content: "", status: "draft" })
+      setFormData({ title: "", content: "", status: "draft", author_name: "", read_time: "" })
       setImagePreview("")
     }
     setIsModalOpen(true)
@@ -99,6 +102,8 @@ export default function ManageArticles() {
     data.append("title", formData.title)
     data.append("content", formData.content)
     data.append("status", formData.status)
+    if (formData.author_name) data.append("author_name", formData.author_name)
+    if (formData.read_time) data.append("read_time", formData.read_time)
     if (imageFile) {
       data.append("image", imageFile)
     }
@@ -356,6 +361,30 @@ export default function ManageArticles() {
                 <option value="draft">Draft (Tersimpan, tidak tampil di publik)</option>
                 <option value="published">Dipublikasi (Tampil di halaman artikel)</option>
               </select>
+            </div>
+
+            {/* Author Name and Read Time */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-semibold mb-1 block">Nama Publisher / Penulis</label>
+                <Input
+                  value={formData.author_name}
+                  onChange={(e) => setFormData({ ...formData, author_name: e.target.value })}
+                  placeholder="Contoh: Globalindo Team"
+                  className="text-xs"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold mb-1 block">Estimasi Waktu Baca (Menit)</label>
+                <Input
+                  type="number"
+                  min="1"
+                  value={formData.read_time}
+                  onChange={(e) => setFormData({ ...formData, read_time: e.target.value })}
+                  placeholder="Contoh: 3"
+                  className="text-xs"
+                />
+              </div>
             </div>
 
             {/* Image Upload */}

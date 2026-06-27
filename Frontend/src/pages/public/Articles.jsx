@@ -192,8 +192,8 @@ export default function Articles() {
                         <UserCircle2 className="h-6 w-6 text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-foreground">Admin Engineering</p>
-                        <p className="text-xs font-medium text-muted-foreground">Author</p>
+                        <p className="text-sm font-bold text-foreground">{featuredArticle.author_name || "Globalindo Team"}</p>
+                        <p className="text-xs font-medium text-muted-foreground">Publisher</p>
                       </div>
                     </div>
                   </div>
@@ -304,7 +304,7 @@ export default function Articles() {
                               <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
                                 <UserCircle2 className="h-5 w-5 text-muted-foreground" />
                               </div>
-                              <span className="text-sm font-bold text-foreground">Admin</span>
+                              <span className="text-sm font-bold text-foreground">{article.author_name || "Globalindo Team"}</span>
                             </div>
                             <div className="h-8 w-8 rounded-full border border-border flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/20 group-hover:text-accent transition-colors text-muted-foreground">
                               <ArrowUpRight className="h-4 w-4" />

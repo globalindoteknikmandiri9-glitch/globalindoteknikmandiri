@@ -81,6 +81,9 @@ export default function Navbar() {
               alt={profile.name}
               className="h-8 md:h-10 w-auto object-contain"
             />
+            <span className="font-bold text-white text-sm md:text-base tracking-tight hidden sm:block">
+              {profile.name}
+            </span>
           </Link>
 
           {/* Desktop Nav - centered */}

@@ -160,9 +160,9 @@ export default function ArticleDetail() {
               <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 text-xs text-muted-foreground font-medium">
                 <span className="flex items-center gap-1.5">
                   <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-foreground font-bold text-[10px]">
-                    GT
+                    {article.author_name ? article.author_name.charAt(0).toUpperCase() : 'G'}
                   </div>
-                  Globalindo Team
+                  {article.author_name || "Globalindo Team"}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4 text-muted-foreground/70" />
@@ -170,7 +170,7 @@ export default function ArticleDetail() {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4 text-muted-foreground/70" />
-                  <span>{estimateReadTime(article.content)}</span>
+                  <span>{article.read_time ? `${article.read_time} Menit` : estimateReadTime(article.content)}</span>
                 </span>
               </div>
             </div>
